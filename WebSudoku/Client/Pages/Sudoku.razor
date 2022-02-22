@@ -1,0 +1,66 @@
+﻿@page "/sudoku"
+@using WebSudoku.Shared
+@inject HttpClient Http
+
+<PageTitle>Sudoku</PageTitle>
+
+@if (board == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table style="border:thick solid black; background-color: black; width:50%">
+        <tbody>
+            @for (int r = 0; r < 9; r++)
+            {
+                <tr>
+                @for (int c = 0; c < 9; c++)
+                {
+                    int row = r, column = c;
+                    string borderRight;
+                    string borderBottom;
+                    @if (column == 2 || column == 5)
+                    {
+                        borderRight = "border-right: thick solid black;";
+                    }
+                    else
+                    {
+                        borderRight = string.Empty;
+                    }
+                    @if (row == 2 || row == 5)
+                    {
+                        borderBottom = "border-bottom: thick solid black;";
+                    }
+                    else
+                    {
+                        borderBottom = string.Empty;
+                    }
+                    <td style="@borderRight @borderBottom">
+                        <Cell OnValueChanged="(args) => OnCellChanged(row, column, args)"></Cell>
+                    </td>
+                }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public EventCallback<int> OnValueSet { get; set; }
+
+    private Board board = new Board();
+
+    protected void OnCellChanged(int row ,int column, ChangeEventArgs args)
+    {
+        var value = args.Value;
+        if (value is string s && int.TryParse(s, out int number) && number >= 1 && number <= 9)
+        {
+            board.Cells[row, column] = number;
+        }
+        else
+        {
+            board.Cells[row, column] = 0;
+        }
+    }
+}
