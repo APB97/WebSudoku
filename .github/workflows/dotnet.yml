@@ -40,7 +40,7 @@ jobs:
       run: |
         mkdir ./public
         mv WebSudoku/Client/bin/Release/net6.0/publish/wwwroot ./public
-  
+        mv WebSudoku/Client/404.html ./public
     - name: GitHub Pages action
     # You may pin to the exact commit or the version.
     # uses: peaceiris/actions-gh-pages@bbdfb200618d235585ad98e965f4aafc39b4c501
