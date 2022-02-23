@@ -14,6 +14,8 @@
 }
 else if (!success)
 {
+    <h4>Your time: </h4>
+    <TimerDisplay OnTimePassed="Timer_OnTimePassed"/>
     <table style="border:thick solid black; background-color: black; width:33%">
         <tbody>
             @for (int r = 0; r < 9; r++)
@@ -57,17 +59,26 @@ else if (!success)
 else
 {
     <h1>Success</h1>
+    <p>You finished with time @timePassed.</p>
     <button class="btn btn-primary" onclick="@(() => Navigation.NavigateTo("/sudoku", forceLoad: true))">Play again</button>
 }
 
 @code {
-    public EventCallback<int> OnValueSet { get; set; }
-
     private Board board = new Board();
 
     private int emptyCells = 0;
 
     private bool success = false;
+
+    private TimeSpan timePassed = TimeSpan.FromSeconds(0);
+
+    protected void Timer_OnTimePassed(TimeSpan time)
+    {
+        if (!success)
+        {
+            timePassed = time;
+        }
+    }
 
     protected override void OnInitialized()
     {

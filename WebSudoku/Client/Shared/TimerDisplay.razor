@@ -1,0 +1,21 @@
+﻿<span>@SpanToShow</span>
+
+@code {
+    public TimeSpan SpanToShow { get; set; }
+
+    protected Timer? timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        
+        timer = new Timer(async args => { 
+            SpanToShow += TimeSpan.FromSeconds(1);
+            StateHasChanged();
+            await OnTimePassed.InvokeAsync(SpanToShow);
+        }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
+
+    [Parameter]
+    public EventCallback<TimeSpan> OnTimePassed { get; set; }
+}
