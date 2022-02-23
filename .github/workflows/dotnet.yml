@@ -24,10 +24,9 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       if: github.event_name == 'push'
-    - name: Publish
-      run: dotnet publish --configuration Release
-    - name: Move files
+    - name: Publish and Move files
       run: |
+        dotnet publish --configuration Release
         mkdir ./public
         mv WebSudoku/Client/bin/Release/net6.0/wwwroot ./public
   
