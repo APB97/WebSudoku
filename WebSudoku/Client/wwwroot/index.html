@@ -24,6 +24,11 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script>
+        if (window.location.hash.length > 1) {
+            const path = window.location.hash.replace('#', '')
+            history.pushState({ page: 1 }, "Web Sudoku", '/WebSudoku' + path)
+    </script>
 </body>
 
 </html>
