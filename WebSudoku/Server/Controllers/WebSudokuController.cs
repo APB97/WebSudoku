@@ -16,11 +16,15 @@ namespace WebSudoku.Server.Controllers
             _validator = validator;
         }
 
+        [HttpGet]
+        [Route("[controller]/WebSudoku")]
         public IActionResult WebSudoku()
         {
             return RedirectToPage("Index");
         }
-
+        
+        [HttpGet]
+        [Route("[controller]/sudoku")]
         public IActionResult sudoku()
         {
             return RedirectToPage("Sudoku");
