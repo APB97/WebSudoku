@@ -36,7 +36,7 @@
       "System.Text.Encodings.Web.dll": "sha256-lbz4zwrlkLNTB+aU7UyZ+GL9noXaZs9wez0jDK2yEN4=",
       "System.Text.Json.dll": "sha256-KRnOQGf8uCXmmBZrwQqVyALxG\/sSsn9Q04lg+uGzLpE=",
       "WebSudoku.Client.dll": "sha256-XGlq6vGpq3P3LPMiHPpTjlXM0BgrO8wuwb4T3S2x+2o=",
-      "WebSudoku.Shared.dll": "sha256-G9imL0g2v3CNKdk4VsW++78l42scF9uVITEAqmhyyy0="
+      "WebSudoku.Shared.dll": "sha256-GMqpm7bjBZfNXt02Fka9AebFVU45R\/7jYxEcIZwh8AE="
     },
     "extensions": null,
     "lazyAssembly": null,

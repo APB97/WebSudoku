@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-\/o1ON0WJyxlmDOZHTdaCjtUfMkcWnqraNMQ6THBSvc0=",
+      "hash": "sha256-IAnKDU0tTsfef9rD2UW8b9YzdhcizhNbeLwPybRz0h8=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -153,7 +153,7 @@
       "url": "_framework\/WebSudoku.Client.dll"
     },
     {
-      "hash": "sha256-G9imL0g2v3CNKdk4VsW++78l42scF9uVITEAqmhyyy0=",
+      "hash": "sha256-GMqpm7bjBZfNXt02Fka9AebFVU45R\/7jYxEcIZwh8AE=",
       "url": "_framework\/WebSudoku.Shared.dll"
     },
     {
@@ -229,5 +229,5 @@
       "url": "manifest.json"
     }
   ],
-  "version": "YI84ZEBH"
+  "version": "BAPJcP3i"
 };
