@@ -45,7 +45,7 @@ jobs:
       # Set a target branch for deployment.
       # publish_branch: # optional, default is gh-pages
       # Set an input directory for deployment.
-        publish_dir: public #WebSudoku\Client\bin\Release\net6.0\wwwroot # optional, default is public
+        publish_dir: public/wwwroot #WebSudoku\Client\bin\Release\net6.0\wwwroot # optional, default is public
       # Set an destination subdirectory for deployment.
       # destination_dir: # optional, default is 
       # Set an external repository (owner/repo).
