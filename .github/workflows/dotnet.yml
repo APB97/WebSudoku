@@ -27,7 +27,7 @@ jobs:
       if: github.event_name == 'push'
     - name: Publish and Move files
       run: |
-        dotnet publish WebSudoku/Client --configuration Release
+        dotnet publish WebSudoku --configuration Release
         mkdir ./public
         mv WebSudoku/Client/bin/Release/net6.0/wwwroot ./public
   
