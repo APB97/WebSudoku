@@ -196,18 +196,18 @@
       "mscorlib.dll": "sha256-c1dVVfosFaf5aiS3brr2amBi1Ue0kg6mqECzmCbGyfA=",
       "netstandard.dll": "sha256-+9Yr\/gSP3tCZAMbOdAcGhHGuMcyg\/AaxVKtt3tGsvao=",
       "System.Private.CoreLib.dll": "sha256-SnxOe5QK250duVAQOw0iWr1sODhUuVEUykExQyQ\/WSk=",
-      "WebSudoku.Shared.dll": "sha256-G9imL0g2v3CNKdk4VsW++78l42scF9uVITEAqmhyyy0=",
-      "WebSudoku.Client.dll": "sha256-\/GIBACxrGSUs+sR+Y3ZykPPOi5cOV7qC99X2a6ggtDU="
+      "WebSudoku.Shared.dll": "sha256-7lBDpLtJl74UbdLbEuzhbxw7gZmbvXye3TeXl\/7uxo0=",
+      "WebSudoku.Client.dll": "sha256-QhHAX00GjJ2FvNyr7QyHfynh9JeQELhzAo1wZuIibOY="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
-      "WebSudoku.Shared.pdb": "sha256-5o6hGFCVjTa7oT9yRfw++ubim\/YM4W04M3uzd0tCQXY=",
-      "WebSudoku.Client.pdb": "sha256-gsSfE\/JHa2\/JAt94ISK+yShC6Tj7POaplrzSns0ED3I="
+      "WebSudoku.Shared.pdb": "sha256-hU5xaYjdOt10wecwS5h4Tpvwk88\/2Yupavrd6OFTpgg=",
+      "WebSudoku.Client.pdb": "sha256-mpMNTEFkL5AJXtl+kkiAw3MK4vH1fiR9AMzafxyv9QQ="
     },
     "runtime": {
-      "dotnet.6.0.2.0c4ewytdwm.js": "sha256-wbTVn69TU0+WI83iB+kky8tf\/BjZdYJeM0rUP96ur\/c=",
+      "dotnet.6.0.2.wfo1n26iz2.js": "sha256-wbTVn69TU0+WI83iB+kky8tf\/BjZdYJeM0rUP96ur\/c=",
       "dotnet.timezones.blat": "sha256-9CBC8Dy2PSGOWOyYnxE7NSoyYzDDDcaexiBpkBhI80U=",
       "dotnet.wasm": "sha256-K3JNG2KmmxJjhVUWd8I1bhpCGQUbI\/ddIkZyC9nM4gw=",
       "icudt.dat": "sha256-Zuq0dWAsBm6\/2lSOsz7+H9PvFaRn61KIXHMMwXDfvyE=",
