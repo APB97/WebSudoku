@@ -1,6 +1,10 @@
 ﻿@page "/sudoku"
 @using WebSudoku.Shared
-@inject HttpClient Http
+@using System.Linq
+@inject Solver Solver
+@inject Blanker Blanker
+@inject Validator Validator
+@inject NavigationManager Navigation
 
 <PageTitle>Sudoku</PageTitle>
 
@@ -8,9 +12,9 @@
 {
     <p><em>Loading...</em></p>
 }
-else
+else if (!success)
 {
-    <table style="border:thick solid black; background-color: black; width:50%">
+    <table style="border:thick solid black; background-color: black; width:33%">
         <tbody>
             @for (int r = 0; r < 9; r++)
             {
@@ -20,7 +24,8 @@ else
                     int row = r, column = c;
                     string borderRight;
                     string borderBottom;
-                    @if (column == 2 || column == 5)
+                    string cellValue = string.Empty;
+                    if (column == 2 || column == 5)
                     {
                         borderRight = "border-right: thick solid black;";
                     }
@@ -28,7 +33,7 @@ else
                     {
                         borderRight = string.Empty;
                     }
-                    @if (row == 2 || row == 5)
+                    if (row == 2 || row == 5)
                     {
                         borderBottom = "border-bottom: thick solid black;";
                     }
@@ -36,8 +41,12 @@ else
                     {
                         borderBottom = string.Empty;
                     }
+                    if (board.Cells[row, column] != 0)
+                    {
+                        cellValue = board.Cells[row, column].ToString();
+                    }
                     <td style="@borderRight @borderBottom">
-                        <Cell OnValueChanged="(args) => OnCellChanged(row, column, args)"></Cell>
+                        <Cell ReadOnly="board.Predefined[row, column]" Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"></Cell>
                     </td>
                 }
                 </tr>
@@ -45,22 +54,78 @@ else
         </tbody>
     </table>
 }
+else
+{
+    <h1>Success</h1>
+    <button class="btn btn-primary" onclick="@(() => Navigation.NavigateTo("/sudoku", forceLoad: true))">Play again</button>
+}
 
 @code {
     public EventCallback<int> OnValueSet { get; set; }
 
     private Board board = new Board();
 
+    private int emptyCells = 0;
+
+    private bool success = false;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        CreateNewBoard();
+    }
+
+    protected void CreateNewBoard()
+    {
+        Board newBoard = new Board();
+        newBoard.Cells = Solver.Solve(newBoard.Cells, OptionOrder.Random);
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                newBoard.Predefined[i, j] = true;
+            }
+        }
+        Blanker.MakeBlanks(newBoard, 35);
+
+        foreach (var value in newBoard.Cells)
+        {
+            if (value == 0)
+            {
+                emptyCells++;
+            }
+        }
+
+        board = newBoard;
+    }
+
     protected void OnCellChanged(int row ,int column, ChangeEventArgs args)
     {
         var value = args.Value;
         if (value is string s && int.TryParse(s, out int number) && number >= 1 && number <= 9)
         {
+            if (board.Cells[row, column] == 0)
+            {
+                emptyCells--;
+            }
             board.Cells[row, column] = number;
         }
         else
         {
+            if (board.Cells[row, column] != 0)
+            {
+                emptyCells++;
+            }
             board.Cells[row, column] = 0;
+        }
+
+        if (emptyCells == 0)
+        {
+            if (Validator.IsValidBoard(board))
+            {
+                success = true;
+            }
         }
     }
 }
