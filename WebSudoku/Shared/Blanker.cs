@@ -28,9 +28,10 @@
             }
 
             if (!hasOneAndOnlySolution)
+            {
                 board.Cells[lastClearedCell.row, lastClearedCell.column] = lastClearedCellValue;
-                board.Predefined[lastClearedCell.row, lastClearedCell.column] = false;
-
+                board.Predefined[lastClearedCell.row, lastClearedCell.column] = true;
+            }
         }
 
         private (int row, int column) SelectPositionToBlank(Random random, List<(int row, int column)> busyCells)
