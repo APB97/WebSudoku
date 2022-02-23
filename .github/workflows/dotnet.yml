@@ -29,7 +29,7 @@ jobs:
       run: |
         dotnet publish --configuration Release
         mkdir ./public
-        cp WebSudoku/Client/bin/Release/net6.0/wwwroot ./public
+        cp -r WebSudoku/Client/bin/Release/net6.0/wwwroot ./public
     #- name: Upload a Build Artifact
       #uses: actions/upload-artifact@v2.3.1
       #with:
