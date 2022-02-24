@@ -161,7 +161,7 @@
       "url": "WebSudoku.Client.styles.css"
     },
     {
-      "hash": "sha256-w3fihPkInnGCqy+WqjBOEVcNHYf+e7lTGJ3+C1b49pk=",
+      "hash": "sha256-Nsb9Hbn\/F7La99RtJeOk9G9kVxFxliITNzpCLyuf\/B0=",
       "url": "css\/app.css"
     },
     {
@@ -229,5 +229,5 @@
       "url": "manifest.json"
     }
   ],
-  "version": "nE3ZukqZ"
+  "version": "\/afuoux7"
 };

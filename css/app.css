@@ -59,6 +59,18 @@ a, .btn-link {
         font-size: x-large;
     }
 }
+@media only screen and (orientation: landscape){
+    sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 50%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
 /* landscape orientation */
 @media only screen and (min-width : 375px) and (max-width : 667px) and (orientation : landscape) {
     .sudoku-table {
