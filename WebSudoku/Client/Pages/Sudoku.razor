@@ -17,7 +17,7 @@ else if (!success)
     <h4>Your time:
         <TimerDisplay OnTimePassed="Timer_OnTimePassed"/>
     </h4>
-    <table class="sudoku-table" style="border:thick solid black; background-color: black;">
+    <table class="sudoku-table" style="border-spacing: 0px; background-color: black;">
             @for (int r = 0; r < 9; r++)
             {
                 <tr>
@@ -29,7 +29,7 @@ else if (!success)
                     string cellValue = string.Empty;
                     if (column == 2 || column == 5)
                     {
-                        borderRight = "border-right: thick solid black;";
+                        borderRight = "border-right: medium solid black;";
                     }
                     else
                     {
@@ -37,7 +37,7 @@ else if (!success)
                     }
                     if (row == 2 || row == 5)
                     {
-                        borderBottom = "border-bottom: thick solid black;";
+                        borderBottom = "border-bottom: medium solid black;";
                     }
                     else
                     {

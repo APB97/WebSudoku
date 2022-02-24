@@ -47,6 +47,30 @@ a, .btn-link {
     }
 }
 
+@media only screen and (min-width: 1024px) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 70%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 50%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
 /* typical phone screen resolution */
 @media only screen and (max-width : 667px) {
     .sudoku-table {
@@ -109,7 +133,7 @@ a, .btn-link {
     }
 }
 /* landscape orientation */
-@media only screen and (min-width : 768px) and (max-width : 1024px) and (orientation : landscape) {
+@media only screen and (min-width : 768px) and (orientation : landscape) {
     .sudoku-table {
         border: thick solid black;
         background-color: black;
@@ -117,7 +141,7 @@ a, .btn-link {
     }
 
     .sudoku-input {
-        font-size: medium;
+        font-size: x-large;
     }
 }
 /* portrait orientation */
@@ -126,30 +150,6 @@ a, .btn-link {
         border: thick solid black;
         background-color: black;
         width: 100%;
-    }
-
-    .sudoku-input {
-        font-size: x-large;
-    }
-}
-
-@media only screen and (min-width: 1024px) {
-    .sudoku-table {
-        border: thick solid black;
-        background-color: black;
-        width: 70%;
-    }
-
-    .sudoku-input {
-        font-size: x-large;
-    }
-}
-
-@media only screen and (min-width: 1440px) {
-    .sudoku-table {
-        border: thick solid black;
-        background-color: black;
-        width: 50%;
     }
 
     .sudoku-input {
