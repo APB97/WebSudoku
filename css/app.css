@@ -34,6 +34,117 @@ a, .btn-link {
     color: red;
 }
 
+
+@media all {
+    .sudoku-table {
+        border: thin solid black;
+        background-color: black;
+        width: 100%;
+    }
+
+    .sudoku-input {
+        font-size: smaller;
+    }
+}
+
+/* typical phone screen resolution */
+@media only screen and (max-width : 667px) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 100%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+/* landscape orientation */
+@media only screen and (min-width : 375px) and (max-width : 667px) and (orientation : landscape) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 50%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+/* portrait orientation */
+@media only screen and (min-width : 375px) and (max-width : 667px) and (orientation : portrait) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 100%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
+/* typical tablet screen resolution */
+@media only screen and (max-width : 1024px) {
+    sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 100%;
+    }
+
+    .sudoku-input {
+        font-size: smaller;
+    }
+}
+/* landscape orientation */
+@media only screen and (min-width : 768px) and (max-width : 1024px) and (orientation : landscape) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 50%;
+    }
+
+    .sudoku-input {
+        font-size: medium;
+    }
+}
+/* portrait orientation */
+@media only screen and (min-width : 768px) and (max-width : 1024px) and (orientation : portrait) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 100%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 70%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 50%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
