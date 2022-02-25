@@ -70,7 +70,7 @@ a, .btn-link {
     }
 }
 
-@media (orientation: landscape){
+@media only screen and (orientation: landscape){
     .sudoku-table {
         border: thin solid black;
         background-color: black;
@@ -82,7 +82,7 @@ a, .btn-link {
     }
 }
 
-@media (orientation: portrait){
+@media only screen and (orientation: portrait){
     .sudoku-table {
         border: thin solid black;
         background-color: black;
