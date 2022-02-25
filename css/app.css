@@ -39,7 +39,7 @@ a, .btn-link {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
-        width: 100%;
+        width: 50%;
     }
 
     .sudoku-input {
