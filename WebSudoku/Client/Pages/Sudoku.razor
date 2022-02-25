@@ -110,7 +110,7 @@ else
         board = newBoard;
     }
 
-    protected void OnCellChanged(int row ,int column, ChangeEventArgs args)
+    protected void OnCellChanged(int row, int column, ChangeEventArgs args)
     {
         var value = args.Value;
         if (value is string s && int.TryParse(s, out int number) && number >= 1 && number <= 9)
