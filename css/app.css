@@ -70,8 +70,8 @@ a, .btn-link {
     }
 }
 
-@media orientation: landscape{
-    sudoku-table {
+@media (orientation: landscape){
+    .sudoku-table {
         border: thin solid black;
         background-color: black;
         width: 50%;
@@ -83,7 +83,7 @@ a, .btn-link {
 }
 
 @media (orientation: portrait){
-    sudoku-table {
+    .sudoku-table {
         border: thin solid black;
         background-color: black;
         width: 100%;
