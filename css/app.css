@@ -46,7 +46,7 @@ a, .btn-link {
         font-size: smaller;
     }
 
-@media only screen and (min-width: 1024px) {
+@media (min-width: 1024px) {
     .sudoku-table {
         border: thick solid black;
         background-color: black;
@@ -58,7 +58,7 @@ a, .btn-link {
     }
 }
 
-@media only screen and (min-width: 1440px) {
+@media (min-width: 1440px) {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
