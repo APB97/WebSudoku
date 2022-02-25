@@ -61,7 +61,7 @@ a, .btn-link {
 
 @media only screen and (min-width: 1440px) {
     .sudoku-table {
-        border: thick solid black;
+        border: thin solid black;
         background-color: black;
         width: 50%;
     }
@@ -74,7 +74,7 @@ a, .btn-link {
 /* typical phone screen resolution */
 @media only screen and (max-width : 667px) {
     .sudoku-table {
-        border: thick solid black;
+        border: thin solid black;
         background-color: black;
         width: 50%;
     }
@@ -85,7 +85,7 @@ a, .btn-link {
 }
 @media only screen and (orientation: landscape){
     sudoku-table {
-        border: thick solid black;
+        border: thin solid black;
         background-color: black;
         width: 50%;
     }
@@ -98,7 +98,7 @@ a, .btn-link {
 /* landscape orientation */
 @media only screen and (min-width : 375px) and (max-width : 667px) and (orientation : landscape) {
     .sudoku-table {
-        border: thick solid black;
+        border: thin solid black;
         background-color: black;
         width: 50%;
     }
@@ -123,7 +123,7 @@ a, .btn-link {
 /* typical tablet screen resolution */
 @media only screen and (max-width : 1024px) {
     sudoku-table {
-        border: thick solid black;
+        border: thin solid black;
         background-color: black;
         width: 50%;
     }
@@ -135,7 +135,7 @@ a, .btn-link {
 /* landscape orientation */
 @media only screen and (min-width : 768px) and (orientation : landscape) {
     .sudoku-table {
-        border: thick solid black;
+        border: thin solid black;
         background-color: black;
         width: 50%;
     }
