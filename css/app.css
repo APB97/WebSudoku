@@ -70,7 +70,7 @@ a, .btn-link {
     }
 }
 
-@media (orientation: landscape){
+@media orientation: landscape{
     sudoku-table {
         border: thin solid black;
         background-color: black;
