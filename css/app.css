@@ -67,7 +67,7 @@ a, .btn-link {
     }
 
     .sudoku-input {
-        font-size: x-large;
+        font-size: medium;
     }
 }
 
@@ -80,7 +80,7 @@ a, .btn-link {
     }
 
     .sudoku-input {
-        font-size: x-large;
+        font-size: medium;
     }
 }
 @media only screen and (orientation: landscape){
@@ -91,7 +91,7 @@ a, .btn-link {
     }
 
     .sudoku-input {
-        font-size: x-large;
+        font-size: medium;
     }
 }
 
@@ -104,7 +104,7 @@ a, .btn-link {
     }
 
     .sudoku-input {
-        font-size: x-large;
+        font-size: medium;
     }
 }
 /* portrait orientation */
