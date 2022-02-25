@@ -35,7 +35,7 @@ a, .btn-link {
 }
 
 
-
+@media all {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
@@ -45,7 +45,7 @@ a, .btn-link {
     .sudoku-input {
         font-size: smaller;
     }
-
+}
 @media (min-width: 1024px) {
     .sudoku-table {
         border: thick solid black;
@@ -82,7 +82,7 @@ a, .btn-link {
     }
 }
 
-@media only screen and (orientation: portrait){
+@media (orientation: portrait){
     sudoku-table {
         border: thin solid black;
         background-color: black;
