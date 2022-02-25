@@ -73,7 +73,31 @@ a, .btn-link {
 
 @media (min-width: 768px) and (max-width: 1024px) {
     .sudoku-table {
-        border: thick solid black;
+        border: thin solid black;
+        background-color: black;
+        width: 90%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1212px) {
+    .sudoku-table {
+        border: thin solid black;
+        background-color: black;
+        width: 90%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
+@media (min-width: 1212px) {
+    .sudoku-table {
+        border: thin solid black;
         background-color: black;
         width: 70%;
     }
@@ -83,7 +107,7 @@ a, .btn-link {
     }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1500px) {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
