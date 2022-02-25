@@ -47,30 +47,6 @@ a, .btn-link {
     }
 }
 
-@media (min-width: 1024px) {
-    .sudoku-table {
-        border: thick solid black;
-        background-color: black;
-        width: 70%;
-    }
-
-    .sudoku-input {
-        font-size: x-large;
-    }
-}
-
-@media (min-width: 1440px) {
-    .sudoku-table {
-        border: thin solid black;
-        background-color: black;
-        width: 50%;
-    }
-
-    .sudoku-input {
-        font-size: medium;
-    }
-}
-
 @media only screen and (orientation: landscape) {
     .sudoku-table {
         border: thin solid black;
@@ -92,6 +68,30 @@ a, .btn-link {
 
     .sudoku-input {
         font-size: larger;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .sudoku-table {
+        border: thick solid black;
+        background-color: black;
+        width: 70%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
+    }
+}
+
+@media (min-width: 1440px) {
+    .sudoku-table {
+        border: thin solid black;
+        background-color: black;
+        width: 50%;
+    }
+
+    .sudoku-input {
+        font-size: x-large;
     }
 }
 
