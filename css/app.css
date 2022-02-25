@@ -35,17 +35,16 @@ a, .btn-link {
 }
 
 
-@media all {
+
     .sudoku-table {
         border: thin solid black;
         background-color: black;
-        width: 50%;
+        width: 100%;
     }
 
     .sudoku-input {
         font-size: smaller;
     }
-}
 
 @media only screen and (min-width: 1024px) {
     .sudoku-table {
