@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-RXB2eP7RugYki1YOqcbYNbmDOxQDTvCFxSPlGF4WmCM=",
+      "hash": "sha256-Lbvgy5oD8ebjcw2t9+\/byqtQpR779GQ\/8gl+afNuH+8=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -149,7 +149,7 @@
       "url": "_framework\/System.Text.Json.dll"
     },
     {
-      "hash": "sha256-IEGO\/JzLLwzCNY\/tSugjXdPGZU3RO1OlOm1eCqgzI48=",
+      "hash": "sha256-v0UHs3VnHUX7\/LmSJH0bC1kTHcWUcWObYKGopUQRIcE=",
       "url": "_framework\/WebSudoku.Client.dll"
     },
     {
@@ -229,5 +229,5 @@
       "url": "manifest.json"
     }
   ],
-  "version": "\/YAkKhR0"
+  "version": "mEIBAL8M"
 };
