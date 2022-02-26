@@ -1,4 +1,4 @@
-﻿<input class="text-center sudoku-input" type="text" maxlength="1" readonly="@ReadOnly" value="@Value" style="position:relative; width:100%; padding: 0px; font-weight:@FontWeight; color:@Color; border: none; aspect-ratio:1/1" @onchange="OnValueChanged"/>
+﻿<input class="text-center sudoku-input" type="@InputType" maxlength="1" min="1" max="9" readonly="@ReadOnly" value="@Value" style="position:relative; width:100%; padding: 0px; font-weight:@FontWeight; color:@Color; border: none; aspect-ratio:1/1" @onchange="OnValueChanged"/>
 
 @code {
     [Parameter]
@@ -10,7 +10,12 @@
     [Parameter]
     public string Value { get; set; } = string.Empty;
 
+    [Parameter]
+    public bool IsMobileDevice { get; set; }
+
     protected string FontWeight => ReadOnly ? "bold" : "normal";
 
     protected string Color => ReadOnly ? "black" : "gray";
+
+    protected string InputType => IsMobileDevice ? "number" : "text";
 }

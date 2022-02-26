@@ -30,6 +30,12 @@
             history.pushState({ page: 1 }, "Web Sudoku", '/WebSudoku' + path)
         }
     </script>
+    <script>
+        function isMobileDevice() {
+            // RegExp
+            return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(navigator.userAgent);
+        }
+    </script>
 </body>
 
 </html>

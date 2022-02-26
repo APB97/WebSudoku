@@ -17,7 +17,8 @@
             List<(int row, int column)> busyCells = range0To9.Join(range0To9, _ => 0, _ => 0, (r, c) => (r, c)).ToList();
             bool hasOneAndOnlySolution = true;
             int lastClearedCellValue = 0;
-            for (int i = 0; i < targetAmount && hasOneAndOnlySolution; i++)
+            int attemptsToRemove = 4;
+            for (int i = 0; i < targetAmount && attemptsToRemove > 0; i++)
             {
                 var chosenOne = SelectPositionToBlank(random, busyCells);
                 lastClearedCell = chosenOne;
@@ -25,13 +26,16 @@
                 board.Cells[chosenOne.row, chosenOne.column] = 0;
                 board.Predefined[chosenOne.row, chosenOne.column] = false;
                 hasOneAndOnlySolution = HasOneAndOnlySolution(board.Cells);
+                
+                if (!hasOneAndOnlySolution)
+                {
+                    attemptsToRemove--;
+                    board.Cells[lastClearedCell.row, lastClearedCell.column] = lastClearedCellValue;
+                    board.Predefined[lastClearedCell.row, lastClearedCell.column] = true;
+                    busyCells.Add(lastClearedCell);
+                }
             }
 
-            if (!hasOneAndOnlySolution)
-            {
-                board.Cells[lastClearedCell.row, lastClearedCell.column] = lastClearedCellValue;
-                board.Predefined[lastClearedCell.row, lastClearedCell.column] = true;
-            }
         }
 
         private (int row, int column) SelectPositionToBlank(Random random, List<(int row, int column)> busyCells)

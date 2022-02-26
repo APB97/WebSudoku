@@ -34,7 +34,6 @@ a, .btn-link {
     color: red;
 }
 
-
 @media all {
     .sudoku-table {
         border: thin solid black;

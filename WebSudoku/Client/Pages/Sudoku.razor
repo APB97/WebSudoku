@@ -5,6 +5,7 @@
 @inject Blanker Blanker
 @inject Validator Validator
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
 
 <PageTitle>Sudoku</PageTitle>
 
@@ -48,7 +49,7 @@ else if (!success)
                         cellValue = board.Cells[row, column].ToString();
                     }
                     <td style="@borderRight @borderBottom">
-                        <Cell ReadOnly="board.Predefined[row, column]" Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"></Cell>
+                        <Cell IsMobileDevice="@IsMobile" ReadOnly="board.Predefined[row, column]" Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"></Cell>
                     </td>
                 }
                 </tr>
@@ -71,6 +72,8 @@ else
 
     private TimeSpan timePassed = TimeSpan.FromSeconds(0);
 
+    private bool IsMobile = false;
+
     protected void Timer_OnTimePassed(TimeSpan time)
     {
         if (!success)
@@ -79,9 +82,19 @@ else
         }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        base.OnInitialized();
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            IsMobile = await JS.InvokeAsync<bool>("isMobileDevice");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
 
         CreateNewBoard();
     }
