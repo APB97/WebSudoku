@@ -1,4 +1,5 @@
-﻿<span>@SpanToShow</span>
+﻿<text style="@Style">Your time: </text>
+<span style="@Style">@SpanToShow</span>
 
 @code {
     public TimeSpan SpanToShow { get; set; }
@@ -8,7 +9,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        
+
         timer = new Timer(async args => { 
             SpanToShow += TimeSpan.FromSeconds(1);
             StateHasChanged();
@@ -18,4 +19,9 @@
 
     [Parameter]
     public EventCallback<TimeSpan> OnTimePassed { get; set; }
+
+    [Parameter]
+    public bool Show { get; set; }
+
+    private string Style => Show ? string.Empty : "display: none;";
 }

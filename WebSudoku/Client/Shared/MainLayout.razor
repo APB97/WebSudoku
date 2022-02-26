@@ -1,26 +1,42 @@
 ﻿@inherits LayoutComponentBase
 
 @inject NavigationManager Nav
-
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            @if (Nav.Uri.EndsWith("sudoku/") || Nav.Uri.EndsWith("sudoku"))
-            {
-                <div class="justify-content-start" style="flex: auto;">
-                        <text>Your time: </text>
-                        <TimerDisplay/>
-                </div>
-            }
-            <a href="https://github.com/APB97/WebSudoku" target="_blank">Code</a>
+<CascadingValue Value=this>
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu />
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <main>
+            <div class="top-row px-4">
+                @if (Nav.Uri.EndsWith("sudoku/") || Nav.Uri.EndsWith("sudoku"))
+                {
+                    <div class="justify-content-start" style="flex: auto;">
+                            <TimerDisplay Show="@ShowTimerInLayout" @ref="LayoutTimer"/>
+                    </div>
+                }
+                <a href="https://github.com/APB97/WebSudoku" target="_blank">Code</a>
+            </div>
+
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
+    </div>
+</CascadingValue>
+
+@code {
+    private bool showTimerInLayout = false;
+
+    private TimerDisplay? LayoutTimer { get; set; }
+
+    public bool ShowTimerInLayout 
+    {
+        get => showTimerInLayout;
+        set
+        {
+            showTimerInLayout = value;
+            StateHasChanged();
+        }
+    }
+}

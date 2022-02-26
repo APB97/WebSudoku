@@ -15,9 +15,9 @@
 }
 else if (!success)
 {
-    <h4 class="display-var">Your time:
-        <TimerDisplay OnTimePassed="Timer_OnTimePassed"/>
-    </h4>
+    <p class="display-var">
+        <TimerDisplay OnTimePassed="Timer_OnTimePassed" Show="MainLayout.ShowTimerInLayout"/>
+    </p>
     <table class="sudoku-table" style="border-spacing: 0px; background-color: black;">
             @for (int r = 0; r < 9; r++)
             {
@@ -64,6 +64,9 @@ else
 }
 
 @code {
+    [CascadingParameter]
+    public MainLayout? MainLayout { get; set; }
+
     private Board board = new Board();
 
     private int emptyCells = 0;
@@ -110,7 +113,7 @@ else
                 newBoard.Predefined[i, j] = true;
             }
         }
-        Blanker.MakeBlanks(newBoard, 35);
+        Blanker.MakeBlanks(newBoard, 1);
 
         foreach (var value in newBoard.Cells)
         {
@@ -121,6 +124,10 @@ else
         }
 
         board = newBoard;
+        if (MainLayout != null)
+        {
+            MainLayout.ShowTimerInLayout = true;
+        }
     }
 
     protected void OnCellChanged(int row, int column, ChangeEventArgs args)
@@ -148,6 +155,10 @@ else
             if (Validator.IsValidBoard(board))
             {
                 success = true;
+                if (MainLayout != null)
+                {
+                    MainLayout.ShowTimerInLayout = false;
+                }
             }
         }
     }
