@@ -33,11 +33,11 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-V0qnlEWlkFB1hR1IN5n5cgeuBbllr0VaMclVPdnhNNQ=",
+      "hash": "sha256-uqqCEbEmcP\/U5IoZDPYDBrtXWXLS1RDpRorwN9gZHlI=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-nU5eiRF60Y0kbcxgcG5VMrq+3TR\/UfAXEVQSOfDSiU0=",
+      "hash": "sha256-XpbYyzUR1xKtXYfH4dx1P7vaTFYe0llAxBk00QH\/+W0=",
       "url": "_framework\/Microsoft.AspNetCore.Components.dll"
     },
     {
@@ -121,7 +121,7 @@
       "url": "_framework\/System.Net.Primitives.dll"
     },
     {
-      "hash": "sha256-ahGtQAZUuF5T0V2xMlo9FhSUlZq4didM8gUM4WdshqU=",
+      "hash": "sha256-OXDIqxmztjraNFq4HwpDQX+oURTUKdxXsEA1JV3zb+w=",
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
@@ -149,7 +149,7 @@
       "url": "_framework\/System.Text.Json.dll"
     },
     {
-      "hash": "sha256-NBL\/36pUaKD74Cmzl9+m0oGItPVmxifeMFWOv1NTRuM=",
+      "hash": "sha256-1PJYC+du07wj9rkETUxeWrIcg10JCpSgDLhb5dlzKCY=",
       "url": "_framework\/WebSudoku.Client.dll"
     },
     {
@@ -229,5 +229,5 @@
       "url": "manifest.json"
     }
   ],
-  "version": "9Vn5i\/yI"
+  "version": "lnJrnuFo"
 };
