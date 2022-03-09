@@ -9,7 +9,7 @@
             _neighbors = neighbors;
         }
 
-        public int[,] Solve(int[,] board, OptionOrder optionOrder)
+        public int[,] Solve(int[,] board, IOptionOrder<int> optionOrder)
         {
             int[,] solvedBoard = new int[9, 9];
             Array.Copy(board, solvedBoard, 81);
@@ -27,7 +27,7 @@
             return solvedBoard;
         }
 
-        private bool Fill(int[,] board, LinkedList<(int row, int column)> emptyCells, OptionOrder optionOrder)
+        private bool Fill(int[,] board, LinkedList<(int row, int column)> emptyCells, IOptionOrder<int> optionOrder)
         {
             var cell = emptyCells.First;
             emptyCells.RemoveFirst();
@@ -43,14 +43,8 @@
                 usedValues.Add(board[neighbour.row, neighbour.column]);
 
             IEnumerable<int> availableValues = Enumerable.Range(1, 9).Except(usedValues);
-            if (optionOrder == OptionOrder.Random)
-            {
-                availableValues = availableValues.OrderBy(_ => Random.Shared.NextDouble());
-            }
-            else if (optionOrder == OptionOrder.Reverse)
-            {
-                availableValues = availableValues.Reverse();
-            }
+            availableValues = optionOrder.Order(availableValues);
+
             foreach (int option in availableValues)
             {
                 board[cell.Value.row, cell.Value.column] = option;

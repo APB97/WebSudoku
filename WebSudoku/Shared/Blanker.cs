@@ -48,8 +48,8 @@
 
         public bool HasOneAndOnlySolution(int[,] board)
         {
-            int[,] solutionFromOne = _solver.Solve(board, OptionOrder.Default);
-            int[,] solutionFromNine = _solver.Solve(board, OptionOrder.Reverse);
+            int[,] solutionFromOne = _solver.Solve(board, new DefaultOptionOrder<int>());
+            int[,] solutionFromNine = _solver.Solve(board, new ReverseOptionOrder<int>());
 
             for (int i = 0; i < 9; i++)
                 for (int j = 0; j < 9; j++)
