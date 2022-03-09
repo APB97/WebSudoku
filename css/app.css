@@ -45,7 +45,6 @@ a, .btn-link {
 .sudoku-input {
     font-weight: normal;
     color: black;
-    text-indent: 16px;
     padding: 0px;
     position: relative;
     width: 100%;
@@ -55,7 +54,6 @@ a, .btn-link {
 
 .input-readonly {
     font-weight: bold;
-    text-indent: 0px;
 }
 
 .input-editable {
