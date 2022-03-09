@@ -25,30 +25,22 @@ else if (!success)
                 @for (int c = 0; c < 9; c++)
                 {
                     int row = r, column = c;
-                    string borderRight;
-                    string borderBottom;
+                    string borderRight = string.Empty;
+                    string borderBottom = string.Empty;
                     string cellValue = string.Empty;
                     if (column == 2 || column == 5)
                     {
-                        borderRight = "border-right: medium solid black;";
-                    }
-                    else
-                    {
-                        borderRight = string.Empty;
+                        borderRight = "border-right";
                     }
                     if (row == 2 || row == 5)
                     {
-                        borderBottom = "border-bottom: medium solid black;";
-                    }
-                    else
-                    {
-                        borderBottom = string.Empty;
+                        borderBottom = "border-bot";
                     }
                     if (board.Cells[row, column] != 0)
                     {
                         cellValue = board.Cells[row, column].ToString();
                     }
-                    <td style="@borderRight @borderBottom">
+                    <td class="@borderRight @borderBottom">
                         <Cell IsMobileDevice="@IsMobile" ReadOnly="board.Predefined[row, column]" Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"></Cell>
                     </td>
                 }
@@ -133,21 +125,24 @@ else
     protected void OnCellChanged(int row, int column, ChangeEventArgs args)
     {
         var value = args.Value;
-        if (value is string s && int.TryParse(s, out int number) && number >= 1 && number <= 9)
+        if (value is string s)
         {
-            if (board.Cells[row, column] == 0)
+            if (int.TryParse(s, out int number) && number >= 1 && number <= 9)
             {
-                emptyCells--;
+                if (board.Cells[row, column] == 0)
+                {
+                    emptyCells--;
+                }
+                board.Cells[row, column] = number;
             }
-            board.Cells[row, column] = number;
-        }
-        else
-        {
-            if (board.Cells[row, column] != 0)
+            else
             {
-                emptyCells++;
+                if (board.Cells[row, column] != 0)
+                {
+                    emptyCells++;
+                }
+                board.Cells[row, column] = 0;
             }
-            board.Cells[row, column] = 0;
         }
 
         if (emptyCells == 0)

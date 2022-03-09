@@ -34,6 +34,14 @@ a, .btn-link {
     color: red;
 }
 
+.border-right {
+    border-right: medium solid black;
+}
+
+.border-bot {
+    border-bottom: medium solid black;
+}
+
 @media all {
     .sudoku-table {
         border: thin solid black;
@@ -108,7 +116,7 @@ a, .btn-link {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
-        width: 90%;
+        width: 80%;
     }
 
     .sudoku-input {
@@ -124,7 +132,7 @@ a, .btn-link {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
-        width: 70%;
+        width: 65%;
     }
 
     .sudoku-input {
