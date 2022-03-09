@@ -15,10 +15,6 @@
 
     protected string AdditionalClass => ReadOnly ? "input-readonly" : "input-editable";
 
-    protected string FontWeight => ReadOnly ? "bold" : "normal";
-
-    protected string Color => ReadOnly ? "black" : "gray";
-
     protected string InputType => ReadOnly ? "text" : "number";
 
     protected int Indent => ReadOnly || IsMobileDevice ? 0 : 16;
