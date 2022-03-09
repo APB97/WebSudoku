@@ -32,11 +32,11 @@
       "System.Private.Runtime.InteropServices.JavaScript.dll": "sha256-HY2+e3GfJejIUbHo8GiN6j8zhN3YQJ\/6pphg7xhGsbc=",
       "System.Private.Uri.dll": "sha256-ZPlSzfT59anfmo24mKFmkrf1PQunYIoS4C4YjTeae+I=",
       "System.Runtime.CompilerServices.Unsafe.dll": "sha256-pboIs9f2VIFXqCFHxgzhAkwhq+Vjkbm4tbx1jlqlCAs=",
-      "System.Runtime.dll": "sha256-12xq75d3bqNbHuH4dPRroDblPn5JXhItGBm9qbCxSjA=",
+      "System.Runtime.dll": "sha256-YmMElYLdWmYgikiGfyNxE5NhEdDvHiuzkUZufgq6GEI=",
       "System.Text.Encodings.Web.dll": "sha256-2bylgJUiQjpqubbK7zSJaLR20rsotQrg2r0Z9\/Mj7AE=",
       "System.Text.Json.dll": "sha256-dAChizKNtsM9UdPWGH26oySUOaEBzW1fYsPOFbLXXCE=",
-      "WebSudoku.Client.dll": "sha256-gJyvlm3UvOW2YiUWJTYOxHn9CQJ4esH8K2uMfLZHCBg=",
-      "WebSudoku.Shared.dll": "sha256-j7qVxMagD\/W1wjDTIncsw+OOQNT4umDvxyR8SC7Bj1I="
+      "WebSudoku.Client.dll": "sha256-Hz+jpb1ZHj46kP\/Hs30MWOFmEYcb05aaIgkgxHHaxy8=",
+      "WebSudoku.Shared.dll": "sha256-\/kVrZIsxG4fjxo14X3iQ3dLCtrwhNNccZEPh9RD7vYU="
     },
     "extensions": null,
     "lazyAssembly": null,
