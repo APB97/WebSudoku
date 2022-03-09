@@ -42,16 +42,6 @@ a, .btn-link {
     border-bottom: medium solid black;
 }
 
-.input-readonly {
-    font-weight: bold;
-    text-indent: unset;
-}
-
-.input-editable {
-    color: gray;
-    font-size: smaller;
-}
-
 .sudoku-input {
     font-weight: normal;
     color: black;
@@ -61,6 +51,20 @@ a, .btn-link {
     width: 100%;
     border: none;
     aspect-ratio: 1/1;
+}
+
+.input-readonly {
+    font-weight: bold;
+    text-indent: 0px;
+}
+
+.input-editable {
+    color: gray;
+    font-size: smaller;
+}
+
+.sudoku-input-var {
+
 }
 
 @media all {
@@ -82,15 +86,8 @@ a, .btn-link {
         width: 50%;
     }
 
-    .input-editable {
-        color: gray;
+    .sudoku-input-var {
         font-size: medium;
-    }
-
-    .input-readonly {
-        font-weight: bold;
-        font-size: medium;
-        text-indent: unset;
     }
 
     .display-var {
@@ -105,15 +102,8 @@ a, .btn-link {
         width: 100%;
     }
 
-    .input-readonly {
-        font-weight: bold;
+    .sudoku-input-var {
         font-size: larger;
-        text-indent: unset;
-    }
-
-    .input-editable {
-        font-size: larger;
-        color: gray;
     }
 
     .display-var {
@@ -134,15 +124,8 @@ a, .btn-link {
         width: 90%;
     }
 
-    .input-readonly {
-        font-weight: bold;
+    .sudoku-input-var {
         font-size: x-large;
-        text-indent: unset;
-    }
-
-    .input-editable {
-        font-size: x-large;
-        color: gray;
     }
 
     .display-var {
@@ -157,15 +140,8 @@ a, .btn-link {
         width: 80%;
     }
 
-    .input-editable {
+    .sudoku-input-var {
         font-size: x-large;
-        color: gray;
-    }
-
-    .input-readonly {
-        font-weight: bold;
-        font-size: x-large;
-        text-indent: unset;
     }
 
     .display-var {
@@ -180,15 +156,8 @@ a, .btn-link {
         width: 65%;
     }
 
-    .input-editable {
+    .sudoku-input-var {
         font-size: x-large;
-        color: gray;
-    }
-
-    .input-readonly {
-        font-weight: bold;
-        font-size: x-large;
-        text-indent: unset;
     }
 
     .display-var {
@@ -203,15 +172,8 @@ a, .btn-link {
         width: 50%;
     }
 
-    .input-editable {
+    .sudoku-input-var {
         font-size: x-large;
-        color: gray;
-    }
-
-    .input-readonly {
-        font-weight: bold;
-        font-size: x-large;
-        text-indent: unset;
     }
 
     .display-var {
