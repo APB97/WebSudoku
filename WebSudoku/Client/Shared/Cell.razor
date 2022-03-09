@@ -1,4 +1,4 @@
-﻿<input role="status" class="text-center sudoku-input sudoku-input-var @AdditionalClass" type="@InputType" maxlength="1" min="1" max="9" readonly="@ReadOnly" value="@Value" @onchange="OnValueChanged"/>
+﻿<input role="status" class="text-center sudoku-input sudoku-input-var @AdditionalClass" type="@InputType" maxlength="1" min="1" max="9" readonly="@ReadOnly" value="@Value" style="text-indent: @(Indent)px;" @onchange="OnValueChanged"/>
 
 @code {
     [Parameter]
@@ -21,5 +21,5 @@
 
     protected string InputType => ReadOnly ? "text" : "number";
 
-    protected int Indent => ReadOnly ? 0 : 16;
+    protected int Indent => ReadOnly && !IsMobileDevice ? 0 : 16;
 }
