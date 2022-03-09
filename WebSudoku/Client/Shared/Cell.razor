@@ -1,4 +1,4 @@
-﻿<input role="status" class="text-center sudoku-input" type="@InputType" maxlength="1" min="1" max="9" readonly="@ReadOnly" value="@Value" style="position:relative; width:100%; padding: 0px; font-weight:@FontWeight; color:@Color; text-indent: @(Indent)px; border: none; aspect-ratio:1/1" @onchange="OnValueChanged"/>
+﻿<input role="status" class="text-center sudoku-input @AdditionalClass" type="@InputType" maxlength="1" min="1" max="9" readonly="@ReadOnly" value="@Value" @onchange="OnValueChanged"/>
 
 @code {
     [Parameter]
@@ -12,6 +12,8 @@
 
     [Parameter]
     public bool IsMobileDevice { get; set; }
+
+    protected string AdditionalClass => ReadOnly ? "input-readonly" : "input-editable";
 
     protected string FontWeight => ReadOnly ? "bold" : "normal";
 
