@@ -34,15 +34,44 @@ a, .btn-link {
     color: red;
 }
 
+.border-right {
+    border-right: medium solid black;
+}
+
+.border-bot {
+    border-bottom: medium solid black;
+}
+
+.sudoku-input {
+    font-weight: normal;
+    color: black;
+    text-indent: 16px;
+    padding: 0px;
+    position: relative;
+    width: 100%;
+    border: none;
+    aspect-ratio: 1/1;
+}
+
+.input-readonly {
+    font-weight: bold;
+    text-indent: 0px;
+}
+
+.input-editable {
+    color: gray;
+    font-size: smaller;
+}
+
+.sudoku-input-var {
+
+}
+
 @media all {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
         width: 100%;
-    }
-
-    .sudoku-input {
-        font-size: smaller;
     }
 
     .display-var {
@@ -57,7 +86,7 @@ a, .btn-link {
         width: 50%;
     }
 
-    .sudoku-input {
+    .sudoku-input-var {
         font-size: medium;
     }
 
@@ -73,7 +102,7 @@ a, .btn-link {
         width: 100%;
     }
 
-    .sudoku-input {
+    .sudoku-input-var {
         font-size: larger;
     }
 
@@ -95,7 +124,7 @@ a, .btn-link {
         width: 90%;
     }
 
-    .sudoku-input {
+    .sudoku-input-var {
         font-size: x-large;
     }
 
@@ -108,10 +137,10 @@ a, .btn-link {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
-        width: 90%;
+        width: 80%;
     }
 
-    .sudoku-input {
+    .sudoku-input-var {
         font-size: x-large;
     }
 
@@ -124,10 +153,10 @@ a, .btn-link {
     .sudoku-table {
         border: thin solid black;
         background-color: black;
-        width: 70%;
+        width: 65%;
     }
 
-    .sudoku-input {
+    .sudoku-input-var {
         font-size: x-large;
     }
 
@@ -143,7 +172,7 @@ a, .btn-link {
         width: 50%;
     }
 
-    .sudoku-input {
+    .sudoku-input-var {
         font-size: x-large;
     }
 
