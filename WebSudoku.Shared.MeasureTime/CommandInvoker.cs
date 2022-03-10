@@ -6,12 +6,27 @@ namespace WebSudoku.Shared.MeasureTime
     {
         private Dictionary<string, Func<Task>> _commands = new Dictionary<string, Func<Task>>()
         {
-            { "Solver.Solve", MeasureSolverSolve }
+            { "Solver.Solve", MeasureSolverSolve },
+            { "Validator.IsValidBoard", MeasureValidatorIsValidBoard }
         };
+
+        private static async Task MeasureValidatorIsValidBoard()
+        {
+            await Task.Run(() =>
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                var board = new Board();
+                var neignbors = new SudokuNeighbors();
+                var validator = new Validator(neignbors);
+                var result = validator.IsValidBoard(board);
+                stopwatch.Stop();
+                Console.WriteLine("Validation of empty board:");
+                Console.WriteLine(stopwatch.Elapsed);
+            });
+        }
 
         private static async Task MeasureSolverSolve()
         {
-
             await Task.Run(() =>
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
@@ -19,7 +34,7 @@ namespace WebSudoku.Shared.MeasureTime
                 var solver = new Solver(neighbors);
                 var solvedDefault = solver.Solve(new int[9, 9], new DefaultOptionOrder<int>());
                 stopwatch.Stop();
-                Console.WriteLine("Default order");
+                Console.WriteLine("Default order:");
                 Console.WriteLine(stopwatch.Elapsed);
             });
         }

@@ -33,10 +33,7 @@
                 return true;
             }
 
-            bool uniqueInSquare = _neighbors.WithinSquare(row, column).Count(cell => board.Cells[cell.Row, cell.Column] == value) == 1;
-            bool uniqueInRow = _neighbors.WithinRow(row).Count(cell => board.Cells[cell.Row, cell.Column] == value) == 1;
-            bool uniqueInColumn = _neighbors.WithinColumn(row).Count(cell => board.Cells[cell.Row, cell.Column] == value) == 1;
-            return uniqueInSquare && uniqueInRow && uniqueInColumn;
+            return _neighbors.CellNeighbors[row, column].Count(cell => board.Cells[cell.Row, cell.Column] == value) == 1;
         }
     }
 }
