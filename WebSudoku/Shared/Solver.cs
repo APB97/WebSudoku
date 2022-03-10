@@ -36,10 +36,10 @@
             {
                 return false;
             }
-            var neighbours = GetCellNeighbours(cell.Value);
+            var neighbors = _neighbors.CellNeighbors[cell.Value.row, cell.Value.column];
 
             var usedValues = new HashSet<int>();
-            foreach ((int row, int column) neighbour in neighbours)
+            foreach ((int row, int column) neighbour in neighbors)
                 usedValues.Add(board[neighbour.row, neighbour.column]);
 
             IEnumerable<int> availableValues = Enumerable.Range(1, 9).Except(usedValues);

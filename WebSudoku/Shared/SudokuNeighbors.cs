@@ -2,6 +2,22 @@
 {
     public class SudokuNeighbors
     {
+        public HashSet<CellPosition>[,] CellNeighbors { get; private set; }
+
+        public SudokuNeighbors()
+        {
+            CellNeighbors = new HashSet<CellPosition>[9, 9];
+            for (int row = 0; row < 9; row++)
+            {
+                for (int column = 0; column < 9; column++)
+                {
+                    CellNeighbors[row, column] = new HashSet<CellPosition>(WithinSquare(row, column)
+                        .Concat(WithinRow(row)
+                        .Concat(WithinColumn(column))));
+                }
+            }
+        }
+
         public IEnumerable<CellPosition> WithinSquare(int row, int column)
         {
             return Enumerable.Range(row / 3 * 3, 3)
