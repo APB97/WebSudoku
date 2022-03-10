@@ -58,15 +58,5 @@
             emptyCells.AddFirst(cell);
             return false;
         }
-
-        private IEnumerable<CellPosition> GetCellNeighbours((int row, int column) cell)
-        {
-            var (row, column) = cell;
-            IEnumerable<CellPosition> vertical = _neighbors.WithinRow(row);
-            IEnumerable<CellPosition> horizontal = _neighbors.WithinColumn(column);
-            IEnumerable<CellPosition> withinSquare = _neighbors.WithinSquare(row, column);
-            var neighbours = new HashSet<CellPosition>(vertical.Concat(horizontal).Concat(withinSquare));
-            return neighbours;
-        }
     }
 }
