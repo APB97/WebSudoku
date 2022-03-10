@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-pDKvNV9wHmjmZjhbXCzQVmPecTgQT0\/QR9ERdq4YLvw=",
+      "hash": "sha256-6VuD19VcXhRrZutYWPtRveCOR+kv0Eyj1hfU6y1rBg8=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -97,7 +97,7 @@
       "url": "_framework\/System.Collections.Concurrent.dll"
     },
     {
-      "hash": "sha256-TN5ijPDEccBm5WigTPSTib6e9UmReyM6xn+Ebtedjl8=",
+      "hash": "sha256-ZO4c3W3iO0ROXmPsdapTGIM\/\/RGGNxs\/KuEQ2nUTvuk=",
       "url": "_framework\/System.Collections.dll"
     },
     {
@@ -149,11 +149,11 @@
       "url": "_framework\/System.Text.Json.dll"
     },
     {
-      "hash": "sha256-Hz+jpb1ZHj46kP\/Hs30MWOFmEYcb05aaIgkgxHHaxy8=",
+      "hash": "sha256-uM+xHw9Lb1M5TMzNnN4SZvjoT6sT27GZZvDQePYuH8g=",
       "url": "_framework\/WebSudoku.Client.dll"
     },
     {
-      "hash": "sha256-\/kVrZIsxG4fjxo14X3iQ3dLCtrwhNNccZEPh9RD7vYU=",
+      "hash": "sha256-y4u\/si5cIWK23gEMn3QT7thYbr0N9FGgBD2xch9mLoA=",
       "url": "_framework\/WebSudoku.Shared.dll"
     },
     {
@@ -229,5 +229,5 @@
       "url": "manifest.json"
     }
   ],
-  "version": "737KsiUt"
+  "version": "5xLT+HC2"
 };
