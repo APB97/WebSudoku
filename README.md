@@ -6,7 +6,7 @@ Sudoku made with Blazor WebAssembly
 The following technologies are used in this project
 - .NET 6
 - C#
-- Blazor WebAseembly
+- Blazor WebAssembly
 - HTML
 - CSS
 - JavaScript
