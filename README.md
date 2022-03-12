@@ -22,4 +22,8 @@ To achieve that, the project uses Github Actions through [dotnet.yml](.github/wo
 Things that should be noted:
 - Deploying to Github Pages works because Blazor WebAssembly application is downloaded to and run on the client.
 - However it requires some specific changes to make routing somehow work:
-  - This includes adding some JavaScript code found in [index.html](WebSudoku/Client/wwwroot/index.html) and in [404.html](WebSudoku/Client/404.html).
+  - This includes adding some JavaScript code found in
+  [url-hash-to-local-url.js](WebSudoku/Client/wwwroot/js/url-hash-to-local-url.js) and
+  [redirect-from-error-through-hash.js](WebSudoku/Client/wwwroot/js/redirect-from-error-through-hash.js) and then referenced in
+  [index.html](WebSudoku/Client/wwwroot/index.html) and in
+  [404.html](WebSudoku/Client/404.html) respectively.
