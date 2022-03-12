@@ -11,7 +11,6 @@
 
         public void MakeBlanks(Board board, int targetAmount)
         {
-            Random random = new();
             (int row, int column) lastClearedCell = new();
             var range0To9 = Enumerable.Range(0, 9).ToArray();
             List<(int row, int column)> busyCells = range0To9.Join(range0To9, _ => 0, _ => 0, (r, c) => (r, c)).ToList();
@@ -20,7 +19,7 @@
             int attemptsToRemove = 4;
             for (int i = 0; i < targetAmount && attemptsToRemove > 0; i++)
             {
-                var chosenOne = SelectPositionToBlank(random, busyCells);
+                var chosenOne = busyCells.PopRandomElement();
                 lastClearedCell = chosenOne;
                 lastClearedCellValue = board.Cells[chosenOne.row, chosenOne.column];
                 board.Cells[chosenOne.row, chosenOne.column] = 0;
@@ -36,14 +35,6 @@
                 }
             }
 
-        }
-
-        private (int row, int column) SelectPositionToBlank(Random random, List<(int row, int column)> busyCells)
-        {
-            var index = random.Next(busyCells.Count);
-            var selectedPositionToBlank = busyCells[index];
-            busyCells.RemoveAt(index);
-            return selectedPositionToBlank;
         }
 
         public bool HasOneAndOnlySolution(int[,] board)
