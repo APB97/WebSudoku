@@ -11,8 +11,8 @@
 
         public void MakeBlanks(Board board, int targetAmount)
         {
-            Random random = new Random();
-            (int row, int column) lastClearedCell = new ValueTuple<int, int>();
+            Random random = new();
+            (int row, int column) lastClearedCell = new();
             var range0To9 = Enumerable.Range(0, 9).ToArray();
             List<(int row, int column)> busyCells = range0To9.Join(range0To9, _ => 0, _ => 0, (r, c) => (r, c)).ToList();
             bool hasOneAndOnlySolution = true;

@@ -4,7 +4,7 @@ namespace WebSudoku.Shared.MeasureTime
 {
     internal class CommandInvoker
     {
-        private Dictionary<string, Func<Task>> _commands = new Dictionary<string, Func<Task>>()
+        private readonly Dictionary<string, Func<Task>> _commands = new()
         {
             { "Solver.Solve", MeasureSolverSolve },
             { "Validator.IsValidBoard", MeasureValidatorIsValidBoard }
@@ -20,7 +20,7 @@ namespace WebSudoku.Shared.MeasureTime
                 var validator = new Validator(neignbors);
                 var result = validator.IsValidBoard(board);
                 stopwatch.Stop();
-                Console.WriteLine("Validation of empty board:");
+                Console.WriteLine("Validation of an empty board:");
                 Console.WriteLine(stopwatch.Elapsed);
             });
         }
@@ -68,7 +68,7 @@ namespace WebSudoku.Shared.MeasureTime
             }
         }
 
-        internal async Task<string> WaitForInput()
+        internal static async Task<string> WaitForInput()
         {
             return await Task.Run(() =>
             {
