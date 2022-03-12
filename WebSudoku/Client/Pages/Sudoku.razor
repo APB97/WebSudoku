@@ -16,7 +16,7 @@
 else if (!success)
 {
     <p class="display-var">
-        <TimerDisplay OnTimePassed="Timer_OnTimePassed" Show="MainLayout.ShowTimerInLayout"/>
+        <TimerDisplay OnTimePassed="Timer_OnTimePassed" Show="ShouldShowTimer"/>
     </p>
     <table class="sudoku-table" style="border-spacing: 0px; background-color: black;">
             @for (int r = 0; r < 9; r++)
@@ -68,6 +68,8 @@ else
     private TimeSpan timePassed = TimeSpan.FromSeconds(0);
 
     private bool IsMobile = false;
+
+    private bool ShouldShowTimer => MainLayout != null && MainLayout.ShowTimerInLayout;
 
     protected void Timer_OnTimePassed(TimeSpan time)
     {
