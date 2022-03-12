@@ -1,0 +1,1 @@
+﻿window.location.href = '/WebSudoku/#' + window.location.pathname.replace('/WebSudoku', '');
