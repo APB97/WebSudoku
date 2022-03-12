@@ -229,6 +229,10 @@
       "url": "js\/mobile-device-check.js"
     },
     {
+      "hash": "sha256-Eo6vIKdwhkT73IxNxG2IVlowobV1uA6Kff6j88TDeXQ=",
+      "url": "js\/redirect-from-error-through-hash.js"
+    },
+    {
       "hash": "sha256-zibMCNOJEjGmIg8nSSVQOZCe1uP1TEMbexg1v0NAyF0=",
       "url": "js\/url-hash-to-local-url.js"
     },
@@ -237,5 +241,5 @@
       "url": "manifest.json"
     }
   ],
-  "version": "6KeRotbs"
+  "version": "YqwUBILH"
 };
