@@ -24,18 +24,8 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
-    <script>
-        if (window.location.hash.length > 1) {
-            const path = window.location.hash.replace('#', '')
-            history.pushState({ page: 1 }, "Web Sudoku", '/WebSudoku' + path)
-        }
-    </script>
-    <script>
-        function isMobileDevice() {
-            // RegExp
-            return /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(navigator.userAgent);
-        }
-    </script>
+    <script src="js/url-hash-to-local-url.js"></script>
+    <script src="js//mobile-device-check.js"></script>
 </body>
 
 </html>

@@ -221,13 +221,21 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-pYvizxRA1AlCaJ1Z5ompUGQITI1zUoaRLZdExOebWoQ=",
+      "hash": "sha256-2xHpuhBh1uGRs1NrNuuDJL0r3WqCoCxEp4Ml43J1tp0=",
       "url": "index.html"
+    },
+    {
+      "hash": "sha256-UU8K9+Scchgm03Wf2Kr0sdDZO8rEYNi449Y9U3RLN5E=",
+      "url": "js\/mobile-device-check.js"
+    },
+    {
+      "hash": "sha256-zibMCNOJEjGmIg8nSSVQOZCe1uP1TEMbexg1v0NAyF0=",
+      "url": "js\/url-hash-to-local-url.js"
     },
     {
       "hash": "sha256-cgDWz6FDO2o+97ZCv5ahpusCoPekm6q2irrdRoLmMUs=",
       "url": "manifest.json"
     }
   ],
-  "version": "5xLT+HC2"
+  "version": "6KeRotbs"
 };
