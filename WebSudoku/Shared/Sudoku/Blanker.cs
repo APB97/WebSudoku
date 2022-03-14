@@ -1,4 +1,7 @@
-﻿namespace WebSudoku.Shared
+﻿using WebSudoku.Shared.Extensions;
+using WebSudoku.Shared.General;
+
+namespace WebSudoku.Shared.Sudoku
 {
     public class Blanker
     {
@@ -25,7 +28,7 @@
                 board.Cells[chosenOne.row, chosenOne.column] = 0;
                 board.Predefined[chosenOne.row, chosenOne.column] = false;
                 hasOneAndOnlySolution = HasOneAndOnlySolution(board.Cells);
-                
+
                 if (!hasOneAndOnlySolution)
                 {
                     attemptsToRemove--;

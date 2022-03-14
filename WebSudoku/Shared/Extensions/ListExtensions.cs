@@ -1,4 +1,4 @@
-﻿namespace WebSudoku.Shared
+﻿namespace WebSudoku.Shared.Extensions
 {
     public static class ListExtensions
     {

@@ -1,10 +1,10 @@
-﻿namespace WebSudoku.Shared
+﻿namespace WebSudoku.Shared.Sudoku
 {
-    public class SudokuNeighbors
+    public class Neighbors
     {
         public HashSet<CellPosition>[,] CellNeighbors { get; private set; }
 
-        public SudokuNeighbors()
+        public Neighbors()
         {
             CellNeighbors = new HashSet<CellPosition>[9, 9];
             for (int row = 0; row < 9; row++)

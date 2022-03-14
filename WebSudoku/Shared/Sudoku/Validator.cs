@@ -1,10 +1,10 @@
-﻿namespace WebSudoku.Shared
+﻿namespace WebSudoku.Shared.Sudoku
 {
     public class Validator
     {
-        private readonly SudokuNeighbors _neighbors;
+        private readonly Neighbors _neighbors;
 
-        public Validator(SudokuNeighbors neighbors)
+        public Validator(Neighbors neighbors)
         {
             _neighbors = neighbors;
         }

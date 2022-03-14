@@ -1,5 +1,4 @@
-﻿
-namespace WebSudoku.Shared
+﻿namespace WebSudoku.Shared.General
 {
     public interface IOptionOrder<T>
     {

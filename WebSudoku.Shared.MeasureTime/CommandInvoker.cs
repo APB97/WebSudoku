@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using WebSudoku.Shared.General;
+using WebSudoku.Shared.Sudoku;
 
 namespace WebSudoku.Shared.MeasureTime
 {
@@ -16,7 +18,7 @@ namespace WebSudoku.Shared.MeasureTime
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 var board = new Board();
-                var neignbors = new SudokuNeighbors();
+                var neignbors = new Neighbors();
                 var validator = new Validator(neignbors);
                 var result = validator.IsValidBoard(board);
                 stopwatch.Stop();
@@ -30,7 +32,7 @@ namespace WebSudoku.Shared.MeasureTime
             await Task.Run(() =>
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                var neighbors = new SudokuNeighbors();
+                var neighbors = new Neighbors();
                 var solver = new Solver(neighbors);
                 var solvedDefault = solver.Solve(new int[9, 9], new DefaultOptionOrder<int>());
                 stopwatch.Stop();

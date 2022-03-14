@@ -1,12 +1,12 @@
-﻿namespace WebSudoku.Shared
+﻿namespace WebSudoku.Shared.General
 {
-    public class ReverseOptionOrder<T> : IOptionOrder<T>
+    public class RandomOptionOrder<T> : IOptionOrder<T>
     {
         public IEnumerable<T> Order(IEnumerable<T> sequence)
         {
             if (sequence == null)
                 return Enumerable.Empty<T>();
-            return sequence.Reverse();
+            return sequence.OrderBy(_ => Random.Shared.NextDouble());
         }
     }
 }

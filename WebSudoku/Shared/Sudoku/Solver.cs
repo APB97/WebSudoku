@@ -1,10 +1,12 @@
-﻿namespace WebSudoku.Shared
+﻿using WebSudoku.Shared.General;
+
+namespace WebSudoku.Shared.Sudoku
 {
     public class Solver
     {
-        private readonly SudokuNeighbors _neighbors;
+        private readonly Neighbors _neighbors;
 
-        public Solver(SudokuNeighbors neighbors)
+        public Solver(Neighbors neighbors)
         {
             _neighbors = neighbors;
         }
@@ -31,7 +33,7 @@
         {
             var cell = emptyCells.First;
             emptyCells.RemoveFirst();
-            
+
             if (cell == null)
             {
                 return false;

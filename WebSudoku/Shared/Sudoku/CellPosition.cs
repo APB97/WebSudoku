@@ -1,4 +1,4 @@
-﻿namespace WebSudoku.Shared
+﻿namespace WebSudoku.Shared.Sudoku
 {
     public record struct CellPosition(int Row, int Column)
     {

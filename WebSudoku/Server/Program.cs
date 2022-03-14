@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
-using WebSudoku.Shared;
+using WebSudoku.Shared.Sudoku;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<SudokuNeighbors>();
+builder.Services.AddScoped<Neighbors>();
 builder.Services.AddScoped<Validator>();
 
 var app = builder.Build();
