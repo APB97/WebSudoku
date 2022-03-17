@@ -37,7 +37,6 @@ namespace WebSudoku.Shared.Sudoku
                     busyCells.Add(lastClearedCell);
                 }
             }
-
         }
 
         public bool HasOneAndOnlySolution(int[,] board)

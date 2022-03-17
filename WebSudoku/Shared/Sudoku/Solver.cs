@@ -16,7 +16,7 @@ namespace WebSudoku.Shared.Sudoku
             int[,] solvedBoard = new int[9, 9];
             Array.Copy(board, solvedBoard, 81);
 
-            var emptyCells = new LinkedList<(int row, int column)>();
+            var emptyCells = new LinkedList<CellPosition>();
             for (int i = 0; i < 9; i++)
                 for (int j = 0; j < 9; j++)
                     if (solvedBoard[i, j] == 0)
@@ -29,7 +29,7 @@ namespace WebSudoku.Shared.Sudoku
             return solvedBoard;
         }
 
-        private bool Fill(int[,] board, LinkedList<(int row, int column)> emptyCells, IOptionOrder<int> optionOrder)
+        private bool Fill(int[,] board, LinkedList<CellPosition> emptyCells, IOptionOrder<int> optionOrder)
         {
             var cell = emptyCells.First;
             emptyCells.RemoveFirst();
@@ -38,7 +38,7 @@ namespace WebSudoku.Shared.Sudoku
             {
                 return false;
             }
-            var neighbors = _neighbors.CellNeighbors[cell.Value.row, cell.Value.column];
+            var neighbors = _neighbors.CellNeighbors[cell.Value.Row, cell.Value.Column];
 
             var usedValues = new HashSet<int>();
             foreach ((int row, int column) neighbour in neighbors)
@@ -49,14 +49,14 @@ namespace WebSudoku.Shared.Sudoku
 
             foreach (int option in availableValues)
             {
-                board[cell.Value.row, cell.Value.column] = option;
+                board[cell.Value.Row, cell.Value.Column] = option;
                 if (emptyCells.Count == 0)
                     return true;
                 if (Fill(board, emptyCells, optionOrder))
                     return true;
             }
 
-            board[cell.Value.row, cell.Value.column] = 0;
+            board[cell.Value.Row, cell.Value.Column] = 0;
             emptyCells.AddFirst(cell);
             return false;
         }
