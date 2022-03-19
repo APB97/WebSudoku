@@ -37,8 +37,7 @@ namespace WebSudoku.Shared.Tests
             var columnPositions = Neighbors.WithinColumn(column);
 
             Assert.Equal(9, columnPositions.Count());
-            Action<int> isWithinRange0Through9 = row => Assert.Contains(row, Enumerable.Range(0, 9));
-            Assert.Collection(columnPositions.Select(position => position.Row), Enumerable.Repeat(isWithinRange0Through9, 9).ToArray());
+            Assert.Equal(columnPositions.Select(position => position.Row), Enumerable.Range(0, 9));
             Assert.All(columnPositions, position => Assert.Equal(column, position.Column));
         }
 
