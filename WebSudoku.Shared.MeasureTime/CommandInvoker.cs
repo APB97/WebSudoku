@@ -34,7 +34,7 @@ namespace WebSudoku.Shared.MeasureTime
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 var neighbors = new Neighbors();
                 var solver = new Solver(neighbors);
-                var solvedDefault = solver.Solve(new int[9, 9], new DefaultOptionOrder<int>());
+                var solvedDefault = solver.Solve(new int[9, 9], new DefaultOptionOrder<int>(), out _);
                 stopwatch.Stop();
                 Console.WriteLine("Default order:");
                 Console.WriteLine(stopwatch.Elapsed);

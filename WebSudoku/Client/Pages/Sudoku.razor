@@ -101,7 +101,7 @@ else
     protected void CreateNewBoard()
     {
         Board newBoard = new Board();
-        newBoard.Cells = Solver.Solve(newBoard.Cells, new RandomOptionOrder<int>());
+        newBoard.Cells = Solver.Solve(newBoard.Cells, new RandomOptionOrder<int>(), out _);
         for (int i = 0; i < 9; i++)
         {
             for (int j = 0; j < 9; j++)
