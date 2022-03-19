@@ -41,6 +41,18 @@ namespace WebSudoku.Shared.Tests
             Assert.All(columnPositions, position => Assert.Equal(column, position.Column));
         }
 
+
+        [Theory, MemberData(nameof(GetRange0Through9))]
+        public void Row_Has_9_Correct_cells(int row)
+        {
+            var rowPositions = Neighbors.WithinRow(row);
+            Action<int> isWithinRange0Through9 = row => Assert.Contains(row, Enumerable.Range(0, 9));
+
+            Assert.Equal(9, rowPositions.Count());
+            Assert.Equal(rowPositions.Select(position => position.Column), Enumerable.Range(0, 9));
+            Assert.All(rowPositions, position => Assert.Equal(row, position.Row));
+        }
+
         private static IEnumerable<object[]> GetCellPositions()
         {
             for (int row = 0; row < 9; row++)
