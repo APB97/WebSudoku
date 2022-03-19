@@ -11,6 +11,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<Neighbors>();
 builder.Services.AddScoped<Validator>();
 builder.Services.AddScoped<Solver>();
+builder.Services.AddScoped<CountingSolver>();
 builder.Services.AddScoped<Blanker>();
 
 await builder.Build().RunAsync();
