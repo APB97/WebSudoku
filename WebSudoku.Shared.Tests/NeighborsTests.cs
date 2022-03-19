@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebSudoku.Shared.Sudoku;
@@ -30,6 +31,17 @@ namespace WebSudoku.Shared.Tests
             Assert.All(squarePositions, position => Assert.Contains(position, validPositions));
         }
 
+        [Theory, MemberData(nameof(GetRange0Through9))]
+        public void Column_Has_9_Correct_Cells(int column)
+        {
+            var columnPositions = Neighbors.WithinColumn(column);
+
+            Assert.Equal(9, columnPositions.Count());
+            Action<int> isWithinRange0Through9 = row => Assert.Contains(row, Enumerable.Range(0, 9));
+            Assert.Collection(columnPositions.Select(position => position.Row), Enumerable.Repeat(isWithinRange0Through9, 9).ToArray());
+            Assert.All(columnPositions, position => Assert.Equal(column, position.Column));
+        }
+
         private static IEnumerable<object[]> GetCellPositions()
         {
             for (int row = 0; row < 9; row++)
@@ -39,6 +51,11 @@ namespace WebSudoku.Shared.Tests
                     yield return new object[] { row, column };
                 }
             }
+        }
+
+        private static IEnumerable<object[]> GetRange0Through9()
+        {
+            return Enumerable.Range(0, 9).Select(index => new object[] { index });
         }
 
         private static IEnumerable<object[]> GetSquarePositions()
