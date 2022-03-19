@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSudoku.Client", "WebSudo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSudoku.Shared", "WebSudoku\Shared\WebSudoku.Shared.csproj", "{355AFCCE-8E6F-4468-8509-CD11E491B7A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSudoku.Shared.MeasureTime", "WebSudoku.Shared.MeasureTime\WebSudoku.Shared.MeasureTime.csproj", "{280BA261-D406-4502-962E-A846F111D169}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSudoku.Shared.MeasureTime", "WebSudoku.Shared.MeasureTime\WebSudoku.Shared.MeasureTime.csproj", "{280BA261-D406-4502-962E-A846F111D169}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSudoku.Shared.Tests", "WebSudoku.Shared.Tests\WebSudoku.Shared.Tests.csproj", "{AD985F84-EF18-4C89-A341-AA4AD9361BDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{280BA261-D406-4502-962E-A846F111D169}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280BA261-D406-4502-962E-A846F111D169}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280BA261-D406-4502-962E-A846F111D169}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD985F84-EF18-4C89-A341-AA4AD9361BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD985F84-EF18-4C89-A341-AA4AD9361BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD985F84-EF18-4C89-A341-AA4AD9361BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD985F84-EF18-4C89-A341-AA4AD9361BDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
