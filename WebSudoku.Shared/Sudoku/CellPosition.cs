@@ -1,5 +1,6 @@
 ﻿namespace WebSudoku.Shared.Sudoku
 {
+    [Serializable]
     public record struct CellPosition(int Row, int Column)
     {
         public static implicit operator (int row, int column)(CellPosition value)

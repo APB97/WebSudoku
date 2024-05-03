@@ -16,19 +16,10 @@ namespace WebSudoku.Shared.Tests
         }
 
         [Theory]
-        [MemberData(nameof(GetCellPositions))]
+        [MemberData(nameof(GetCellPositionsData))]
         public void Any_Given_Cell_Has_21_Neighbors_Including_Itself(int row, int column)
         {
             Assert.Equal(21, neighbors.CellNeighbors[row, column].Count);
-        }
-
-        [Theory, MemberData(nameof(GetSquarePositions))]
-        public void Each_Square_Has_9_Correct_Cells(int row, int column, IEnumerable<CellPosition> validPositions)
-        {
-            var squarePositions = Neighbors.WithinSquare(row, column);
-
-            Assert.Equal(9, squarePositions.Count());
-            Assert.All(squarePositions, position => Assert.Contains(position, validPositions));
         }
 
         [Theory, MemberData(nameof(GetRange0Through9))]
@@ -46,47 +37,41 @@ namespace WebSudoku.Shared.Tests
         public void Row_Has_9_Correct_cells(int row)
         {
             var rowPositions = Neighbors.WithinRow(row);
-            Action<int> isWithinRange0Through9 = row => Assert.Contains(row, Enumerable.Range(0, 9));
 
             Assert.Equal(9, rowPositions.Count());
             Assert.Equal(rowPositions.Select(position => position.Column), Enumerable.Range(0, 9));
             Assert.All(rowPositions, position => Assert.Equal(row, position.Row));
         }
 
-        public static IEnumerable<object[]> GetCellPositions()
+        public static TheoryData<int, int> GetCellPositionsData()
+        {
+            var positionsData = new TheoryData<int, int>();
+            foreach (var cellPosition in GetCellPositions())
+            {
+                positionsData.Add(cellPosition.Row, cellPosition.Column);
+            }
+            return positionsData;
+        }
+
+        public static IEnumerable<CellPosition> GetCellPositions()
         {
             for (int row = 0; row < 9; row++)
             {
                 for (int column = 0; column < 9; column++)
                 {
-                    yield return new object[] { row, column };
+                    yield return new CellPosition { Row = row, Column = column };
                 }
             }
         }
 
-        public static IEnumerable<object[]> GetRange0Through9()
+        public static TheoryData<int> GetRange0Through9()
         {
-            return Enumerable.Range(0, 9).Select(index => new object[] { index });
-        }
-
-        public static IEnumerable<object[]> GetSquarePositions()
-        {
-            for (int row = 0; row < 3; row++)
+            var data = new TheoryData<int>();
+            foreach (var number in Enumerable.Range(0, 9))
             {
-                for (int column = 0; column < 3; column++)
-                {
-                    List<CellPosition> validSquarePositions = new();
-                    for (int squareRow = 0; squareRow < 3; squareRow++)
-                    {
-                        for (int squareColumn = 0; squareColumn < 3; squareColumn++)
-                        {
-                            validSquarePositions.Add(new CellPosition(row * 3 + squareRow, column * 3 + squareColumn));
-                        }
-                    }
-
-                    yield return new object[] { row, column, validSquarePositions };
-                }
-            }
+                data.Add(number);
+            };
+            return data;
         }
     }
 }

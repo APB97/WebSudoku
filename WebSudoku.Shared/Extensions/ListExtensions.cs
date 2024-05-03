@@ -4,15 +4,9 @@
     {
         public static T PopRandomElement<T>(this List<T> list, Random? random = null)
         {
-            if (list == null)
-            {
-                throw new ArgumentNullException(nameof(list));
-            }
+            ArgumentNullException.ThrowIfNull(list);
 
-            if (random == null)
-            {
-                random = Random.Shared;
-            }
+            random ??= Random.Shared;
 
             var index = random.Next(list.Count);
             var selectedElement = list[index];
