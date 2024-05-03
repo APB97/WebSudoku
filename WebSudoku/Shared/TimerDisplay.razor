@@ -10,7 +10,8 @@
     {
         await base.OnInitializedAsync();
 
-        timer = new Timer(async args => { 
+        timer = new Timer(async args =>
+        {
             SpanToShow += TimeSpan.FromSeconds(1);
             StateHasChanged();
             await OnTimePassed.InvokeAsync(SpanToShow);

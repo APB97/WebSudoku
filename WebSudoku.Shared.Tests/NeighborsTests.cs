@@ -53,7 +53,7 @@ namespace WebSudoku.Shared.Tests
             Assert.All(rowPositions, position => Assert.Equal(row, position.Row));
         }
 
-        private static IEnumerable<object[]> GetCellPositions()
+        public static IEnumerable<object[]> GetCellPositions()
         {
             for (int row = 0; row < 9; row++)
             {
@@ -64,12 +64,12 @@ namespace WebSudoku.Shared.Tests
             }
         }
 
-        private static IEnumerable<object[]> GetRange0Through9()
+        public static IEnumerable<object[]> GetRange0Through9()
         {
             return Enumerable.Range(0, 9).Select(index => new object[] { index });
         }
 
-        private static IEnumerable<object[]> GetSquarePositions()
+        public static IEnumerable<object[]> GetSquarePositions()
         {
             for (int row = 0; row < 3; row++)
             {
