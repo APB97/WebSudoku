@@ -9,6 +9,24 @@
             _neighbors = neighbors;
         }
 
+        public List<CellPosition> GetInvalidCells(Board board)
+        {
+            var invalidCells = new List<CellPosition>();
+            
+            for (int row = 0; row < 9; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    if (!board.Predefined[row, col] && !IsValid(board, (row, col)))
+                    {
+                        invalidCells.Add((row, col));
+                    }
+                }
+            }
+
+            return invalidCells;
+        }
+
         public bool IsValidBoard(Board board)
         {
             for (int row = 0; row < 9; row++)

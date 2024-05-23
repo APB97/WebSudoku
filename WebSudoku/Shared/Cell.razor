@@ -1,6 +1,16 @@
-﻿<input role="status" class="text-center sudoku-input sudoku-input-var @AdditionalClass" type="@InputType" maxlength="1" min="1" max="9" readonly="@ReadOnly" value="@Value" style="text-indent: @(Indent)px;" @onchange="OnValueChanged"/>
+﻿@if (ReadOnly)
+{
+    <input class="text-center sudoku-input sudoku-input-var @AdditionalClass" style="background-color: white; align-content: center" readonly="readonly" value="@Value" />
+}
+else
+{
+    <InputText TValue="string" Value="@Value" ValueChanged="v => OnChange(new ChangeEventArgs { Value = v })" ValueExpression="() => Value" class="@($"text-center sudoku-input sudoku-input-var {AdditionalClass}")" style="@($"text-indent: {Indent}px;{(HighlightColor != null ? $"background-color: {HighlightColor}" : string.Empty)}")" />
+}
 
 @code {
+    [Parameter]
+    public string? HighlightColor { get; set; } = null;
+
     [Parameter]
     public EventCallback<ChangeEventArgs> OnValueChanged { get; set; }
 
@@ -17,5 +27,20 @@
 
     protected string InputType => ReadOnly ? "text" : "number";
 
-    protected int Indent => ReadOnly || IsMobileDevice ? 0 : 16;
+    protected int Indent = 0;
+
+    private async Task OnChange(ChangeEventArgs args)
+    {
+        if (args.Value is string text && int.TryParse(text, out var number) && number >= 1 && number <= 9)
+        {
+            await OnValueChanged.InvokeAsync(new ChangeEventArgs { Value = number });
+        }
+        else
+        {
+            Value = string.Empty;
+            await OnValueChanged.InvokeAsync(new ChangeEventArgs { Value = null });
+        }
+        HighlightColor = null;
+        StateHasChanged();
+    }
 }
