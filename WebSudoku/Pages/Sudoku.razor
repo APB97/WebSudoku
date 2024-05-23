@@ -3,6 +3,7 @@
 @using WebSudoku.Shared
 @using WebSudoku.Shared.General
 @using WebSudoku.Shared.Sudoku
+
 @inject Solver Solver
 @inject Blanker Blanker
 @inject Validator Validator
@@ -18,82 +19,60 @@
 else if (!success)
 {
     <button class="btn btn-secondary" @onclick="() => InvalidCells = Validator.GetInvalidCells(board)">Show invalid cells</button>
-    <p class="display-var">
-        <TimerDisplay OnTimePassed="Timer_OnTimePassed" Show="ShouldShowTimer"/>
-    </p>
+    <TimerDisplay @ref="timer" />
     <table class="sudoku-table" style="border-spacing: 0px; background-color: black;">
-            @for (int r = 0; r < 9; r++)
+        @for (int r = 0; r < 9; r++)
+        {
+            <tr>
+            @for (int c = 0; c < 9; c++)
             {
-                <tr>
-                @for (int c = 0; c < 9; c++)
+                int row = r, column = c;
+                string borderRight = string.Empty;
+                string borderBottom = string.Empty;
+                string cellValue = string.Empty;
+                if (column == 2 || column == 5)
                 {
-                    int row = r, column = c;
-                    string borderRight = string.Empty;
-                    string borderBottom = string.Empty;
-                    string cellValue = string.Empty;
-                    if (column == 2 || column == 5)
-                    {
-                        borderRight = "border-right";
-                    }
-                    if (row == 2 || row == 5)
-                    {
-                        borderBottom = "border-bot";
-                    }
-                    if (board.Cells[row, column] != 0)
-                    {
-                        cellValue = board.Cells[row, column].ToString();
-                    }
-                    <td class="@borderRight @borderBottom">
-                        <Cell IsMobileDevice="@IsMobile" ReadOnly="board.Predefined[row, column]" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
-                            Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)" />
-                    </td>
+                    borderRight = "border-right";
                 }
-                </tr>
+                if (row == 2 || row == 5)
+                {
+                    borderBottom = "border-bot";
+                }
+                if (board.Cells[row, column] != 0)
+                {
+                    cellValue = board.Cells[row, column].ToString();
+                }
+                <td class="@borderRight @borderBottom">
+                    <Cell ReadOnly="board.Predefined[row, column]" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
+                        Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)" />
+                </td>
             }
-    </table>
+            </tr>
+        }
+</table>
 }
 else
 {
     <h1>Success</h1>
-    <p>You finished with time @timePassed.</p>
+    @if (timePassed.HasValue)
+    {
+        <p>You finished with time @timePassed.</p>
+    }
     <button class="btn btn-primary" @onclick="CreateNewBoard">Play again</button>
 }
 
 @code {
-    [CascadingParameter]
-    public MainLayout? MainLayout { get; set; }
-
     private Board board = new Board();
 
     private HashSet<CellPosition> emptyCells = new HashSet<CellPosition>();
 
     private bool success = false;
 
-    private TimeSpan timePassed = TimeSpan.FromSeconds(0);
-
-    private bool IsMobile = false;
-
-    private bool ShouldShowTimer => MainLayout != null && MainLayout.ShowTimerInLayout;
+    private TimeSpan? timePassed;
 
     private List<CellPosition> InvalidCells = new List<CellPosition>();
 
-    protected void Timer_OnTimePassed(TimeSpan time)
-    {
-        if (!success)
-        {
-            timePassed = time;
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            IsMobile = await JS.InvokeAsync<bool>("isMobileDevice");
-        }
-    }
+    private TimerDisplay? timer;
 
     protected override async Task OnInitializedAsync()
     {
@@ -130,10 +109,6 @@ else
         }
 
         board = newBoard;
-        if (MainLayout != null)
-        {
-            MainLayout.ShowTimerInLayout = true;
-        }
     }
 
     protected void OnCellChanged(int row, int column, ChangeEventArgs args)
@@ -156,10 +131,7 @@ else
             if (Validator.IsValidBoard(board))
             {
                 success = true;
-                if (MainLayout != null)
-                {
-                    MainLayout.ShowTimerInLayout = false;
-                }
+                timePassed = timer?.SpanToShow;
             }
         }
     }

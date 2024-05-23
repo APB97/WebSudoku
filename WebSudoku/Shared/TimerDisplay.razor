@@ -1,8 +1,8 @@
-﻿<text style="@Style">Your time: </text>
-<span style="@Style">@SpanToShow</span>
+﻿<span>Your time: </span>
+<span>@SpanToShow</span>
 
 @code {
-    public TimeSpan SpanToShow { get; set; }
+    public TimeSpan SpanToShow { get; private set; }
 
     protected Timer? timer;
 
@@ -20,9 +20,4 @@
 
     [Parameter]
     public EventCallback<TimeSpan> OnTimePassed { get; set; }
-
-    [Parameter]
-    public bool Show { get; set; }
-
-    private string Style => Show ? string.Empty : "display: none;";
 }

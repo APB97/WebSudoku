@@ -1,10 +1,13 @@
 ﻿@if (ReadOnly)
 {
-    <input class="text-center sudoku-input sudoku-input-var @AdditionalClass" style="background-color: white; align-content: center" readonly="readonly" value="@Value" />
+    <input class="text-center sudoku-input sudoku-input-var input-readonly" style="background-color: white; align-content: center" readonly="readonly" value="@Value" />
 }
 else
 {
-    <InputText TValue="string" Value="@Value" ValueChanged="v => OnChange(new ChangeEventArgs { Value = v })" ValueExpression="() => Value" class="@($"text-center sudoku-input sudoku-input-var {AdditionalClass}")" style="@($"text-indent: {Indent}px;{(HighlightColor != null ? $"background-color: {HighlightColor}" : string.Empty)}")" />
+    <InputText TValue="string" Value="@Value" ValueChanged="v => OnChange(new ChangeEventArgs { Value = v })" ValueExpression="() => Value"
+        class="text-center sudoku-input sudoku-input-var input-editable"
+        style="@(HighlightColor != null ? $"background-color: {HighlightColor}" : string.Empty)"
+        @onblur="() => OnChange(new ChangeEventArgs{ Value = Value })" />
 }
 
 @code {
@@ -19,15 +22,6 @@ else
 
     [Parameter]
     public string Value { get; set; } = string.Empty;
-
-    [Parameter]
-    public bool IsMobileDevice { get; set; }
-
-    protected string AdditionalClass => ReadOnly ? "input-readonly" : "input-editable";
-
-    protected string InputType => ReadOnly ? "text" : "number";
-
-    protected int Indent = 0;
 
     private async Task OnChange(ChangeEventArgs args)
     {
