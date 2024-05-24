@@ -18,8 +18,8 @@ namespace WebSudoku.Shared.MeasureTime
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 var board = new Board();
-                var neignbors = new Neighbors();
-                var validator = new Validator(neignbors);
+                var neighbors = new Neighbors();
+                var validator = new Validator(neighbors);
                 var result = validator.IsValidBoard(board);
                 stopwatch.Stop();
                 Console.WriteLine("Validation of an empty board:");

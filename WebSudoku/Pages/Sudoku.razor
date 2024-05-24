@@ -4,7 +4,7 @@
 @using WebSudoku.Shared.General
 @using WebSudoku.Shared.Sudoku
 
-@inject Solver Solver
+@inject CountingSolver Solver
 @inject Blanker Blanker
 @inject Validator Validator
 @inject NavigationManager Navigation
@@ -18,7 +18,7 @@
 }
 else if (!success)
 {
-    <button class="btn btn-secondary" @onclick="() => InvalidCells = Validator.GetInvalidCells(board)">Show invalid cells</button>
+    <button class="btn btn-secondary" @onclick="() => InvalidCells = board.GetInvalidCells(Validator)">Show invalid cells</button>
     <TimerDisplay @ref="timer" />
     <table class="sudoku-table" style="border-spacing: 0px; background-color: black;">
         @for (int r = 0; r < 9; r++)
@@ -38,12 +38,13 @@ else if (!success)
                 {
                     borderBottom = "border-bot";
                 }
-                if (board.Cells[row, column] != 0)
+                var value = board.GetValueAt((row, column));
+                if (value != 0)
                 {
-                    cellValue = board.Cells[row, column].ToString();
+                    cellValue = value.ToString();
                 }
                 <td class="@borderRight @borderBottom">
-                    <Cell ReadOnly="board.Predefined[row, column]" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
+                    <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
                         Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)" />
                 </td>
             }
@@ -64,8 +65,6 @@ else
 @code {
     private Board board = new Board();
 
-    private HashSet<CellPosition> emptyCells = new HashSet<CellPosition>();
-
     private bool success = false;
 
     private TimeSpan? timePassed;
@@ -84,31 +83,7 @@ else
     protected void CreateNewBoard()
     {
         success = false;
-        emptyCells.Clear();
-        Board newBoard = new Board();
-
-        newBoard.Cells = Solver.Solve(newBoard.Cells, new RandomOptionOrder<int>(), out _);
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                newBoard.Predefined[i, j] = true;
-            }
-        }
-        Blanker.MakeBlanks(newBoard, 35);
-
-        for (int row = 0; row < 9; row++)
-        {
-            for (int column = 0; column < 9; column++)
-            {
-                if (newBoard.Cells[row, column] == 0)
-                {
-                    emptyCells.Add((row, column));
-                }
-            }
-        }
-
-        board = newBoard;
+        board = new Board(Solver, new RandomOptionOrder<int>(), Blanker, 35);
     }
 
     protected void OnCellChanged(int row, int column, ChangeEventArgs args)
@@ -117,22 +92,17 @@ else
 
         if (args.Value is null)
         {
-            board.Cells[row, column] = 0;
-            emptyCells.Add((row, column));
+            board.ClearCell((row, column));
         }
         else if (args.Value is int number)
         {
-            board.Cells[row, column] = number;
-            emptyCells.Remove((row, column));
+            board.FillCell((row, column), number);
         }
 
-        if (emptyCells.Count == 0)
+        if (board.EmptyCells.Count == 0 && Validator.IsValidBoard(board))
         {
-            if (Validator.IsValidBoard(board))
-            {
-                success = true;
-                timePassed = timer?.SpanToShow;
-            }
+            success = true;
+            timePassed = timer?.SpanToShow;
         }
     }
 }
