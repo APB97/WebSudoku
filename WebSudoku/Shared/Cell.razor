@@ -1,12 +1,12 @@
 ﻿@if (ReadOnly)
 {
-    <input class="text-center sudoku-input sudoku-input-var input-readonly" style="background-color: white; align-content: center" readonly="readonly" value="@Value" 
+    <input class="text-center sudoku-input input-readonly" style="background-color: white; align-content: center" readonly="readonly" value="@Value" 
         @onkeydown="OnKeyDown" />
 }
 else
 {
     <InputText TValue="string" Value="@Value" ValueChanged="v => OnChange(new ChangeEventArgs { Value = v })" ValueExpression="() => Value"
-        class="text-center sudoku-input sudoku-input-var input-editable"
+        class="text-center sudoku-input input-editable"
         style="@(HighlightColor != null ? $"background-color: {HighlightColor}" : string.Empty)"
         @onblur="() => OnChange(new ChangeEventArgs{ Value = Value })"
         @onkeydown="OnKeyDown" />

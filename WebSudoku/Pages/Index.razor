@@ -1,11 +1,41 @@
 ﻿@page "/"
 @page "/rules"
 
-<PageTitle>Web Sudoku - rules</PageTitle>
+<PageTitle>Web Sudoku - features and rules</PageTitle>
 
 <h1>Web Sudoku</h1>
 
-<p>Use the navigation menu to start playing.</p>
+<p>To start playing use the navigation menu or press the button below.</p>
+
+<a class="btn btn-success" href="sudoku">Start playing</a>
+
+<h3>Features</h3>
+
+<ul>
+    <li>
+        <strong class="text-decoration-underline">Printing</strong>: You can print the sudoku board with ability to adjust the following options:
+        <ul>
+            <li>
+                <b>Print filled values</b> - if checked,
+                this option will include user-filled cell values in the printed version.
+                This option must be checked for option: <b>Print highlighted errors</b> to be available.
+            </li>
+            <li>
+                <b>Print highlighted errors</b> - if checked,
+                and given that You've used the <b>Show invalid cells</b> button to highlight conflicting cell values,
+                this option will include highlighting of errors in the printed version.
+            </li>
+        </ul>
+    </li>
+    <li>
+        <strong class="text-decoration-underline">Validation</strong>: You can use <b>Show invalid cells</b> button to highlight cell values conflicting with sudoku rules.
+        Highlight is cleared after leaving highlighted cell.
+    </li>
+    <li>
+        <strong class="text-decoration-underline">Navigation</strong>: You can navigate cells within the sudoku board using arrow keys.
+        Target cell will have its value selected.
+    </li>
+</ul>
 
 <h3>Sudoku rules</h3>
 

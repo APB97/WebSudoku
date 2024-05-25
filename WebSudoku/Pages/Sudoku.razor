@@ -24,23 +24,9 @@
                     @for (int c = 0; c < 9; c++)
                     {
                         int row = r, column = c;
-                        string borderRight = string.Empty;
-                        string borderBottom = string.Empty;
-                        string cellValue = string.Empty;
-                        if (column == 2 || column == 5)
-                        {
-                            borderRight = "border-right";
-                        }
-                        if (row == 2 || row == 5)
-                        {
-                            borderBottom = "border-bot";
-                        }
                         var value = board.GetValueAt((row, column));
-                        if (value != 0)
-                        {
-                            cellValue = value.ToString();
-                        }
-                        <td class="@borderRight @borderBottom">
+                        string cellValue = value != 0 ? value.ToString() : string.Empty;
+                        <td>
                             <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
                                 Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"
                                 OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)" />
@@ -58,21 +44,24 @@
 
             @if (showPrintSettings)
             {
-                <p><b>Print settings</b></p> 
-                <InputCheckbox @bind-Value="printHighlightedErrors"></InputCheckbox>
-                <label @onclick="() => printHighlightedErrors = !printHighlightedErrors" class="user-select-none">Print highlighted errors</label>
-            
-                <br />
+                <p><b>Print settings</b></p>
 
                 <InputCheckbox @bind-Value="printFilledValues"></InputCheckbox>
                 <label @onclick="() => printFilledValues = !printFilledValues" class="user-select-none">Print filled values</label>
+
+                <br />
+                @if (printFilledValues)
+                {
+                    <InputCheckbox @bind-Value="printHighlightedErrors"></InputCheckbox>
+                    <label @onclick="() => printHighlightedErrors = !printHighlightedErrors" class="user-select-none">Print highlighted errors</label>
+                }
             }
         </div>
     </div>
 
     <HeadContent>
         <style>
-            @if (printHighlightedErrors == false)
+            @if (printHighlightedErrors == false || printFilledValues == false)
             {
                 <text>
                 @@media print {
@@ -176,7 +165,6 @@ else
 
     private async Task Focus(int row, int column)
     {
-        Console.WriteLine($"{row}, {column}");
         await JS.InvokeVoidAsync("focusCell", row, column);
     }
 }

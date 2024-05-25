@@ -36,209 +36,6 @@ a, .btn-link {
     color: red;
 }
 
-.border-right {
-    border-right: medium solid black !important;
-}
-
-.border-bot {
-    border-bottom: medium solid black !important;
-}
-
-.sudoku-input {
-    font-weight: normal;
-    color: black;
-    padding: 0px;
-    position: relative;
-    width: 100%;
-    border: none;
-    aspect-ratio: 1/1;
-}
-
-.input-readonly {
-    font-weight: bold;
-}
-
-.input-editable {
-    color: gray;
-    font-size: smaller;
-}
-
-.sudoku-input-var {
-}
-
-.sudoku-table > tbody > tr > td, .sudoku-table > tr > td {
-    border: thin solid black;
-}
-
-@media all {
-    .div-main {
-        flex: 0 0 auto;
-        width: 74%;
-    }
-
-    .div-options {
-        flex: 0 0 auto;
-        width: 26%;
-    }
-
-    .flex-direction-var {
-        flex-direction: row;
-    }
-
-    .sudoku-table {
-        border: thin solid black;
-        width: 100%;
-    }
-
-    .display-var {
-        display: none;
-    }
-}
-
-@media only screen and (orientation: landscape) {
-    .sudoku-table {
-        border: thin solid black;
-        width: 50%;
-    }
-
-    .sudoku-input-var {
-        font-size: medium;
-    }
-
-    .display-var {
-        display: none;
-    }
-}
-
-@media only screen and (orientation: portrait) {
-    .div-main {
-        flex: 0 0 auto;
-        width: 100%;
-    }
-
-    .div-options {
-        flex: 0 0 auto;
-        width: 100%;
-    }
-
-    .flex-direction-var {
-        flex-direction: column;
-    }
-
-    .sudoku-table {
-        border: thin solid black;
-        width: 100%;
-    }
-
-    .sudoku-input-var {
-        font-size: larger;
-    }
-
-    .display-var {
-        display: none;
-    }
-}
-
-@media (max-width : 640px) and (orientation : portrait) {
-    .display-var {
-        display: block;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-    .div-main {
-        flex: 0 0 auto;
-        width: 100%;
-    }
-
-    .div-options {
-        flex: 0 0 auto;
-        width: 100%;
-    }
-
-    .flex-direction-var {
-        flex-direction: column;
-    }
-
-    .sudoku-table {
-        border: thin solid black;
-        width: 100%;
-    }
-
-    .sudoku-input-var {
-        font-size: x-large;
-    }
-
-    .display-var {
-        display: none;
-    }
-}
-
-@media (min-width: 1024px) and (max-width: 1212px) {
-    .sudoku-table {
-        border: thin solid black;
-        width: 100%;
-    }
-
-    .sudoku-input-var {
-        font-size: x-large;
-    }
-
-    .display-var {
-        display: none;
-    }
-}
-
-@media (min-width: 1212px) {
-    .div-main {
-        flex: 0 0 auto;
-        width: 67%;
-    }
-
-    .div-options {
-        flex: 0 0 auto;
-        width: 33%;
-    }
-
-    .sudoku-table {
-        border: thin solid black;
-        width: 100%;
-    }
-
-    .sudoku-input-var {
-        font-size: x-large;
-    }
-
-    .display-var {
-        display: none;
-    }
-}
-
-@media (min-width: 1500px) {
-    .div-main {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-
-    .div-options {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-
-    .sudoku-table {
-        border: thin solid black;
-        width: 100%;
-    }
-
-    .sudoku-input-var {
-        font-size: x-large;
-    }
-
-    .display-var {
-        display: none;
-    }
-}
-
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -313,6 +110,25 @@ button.btn-purple {
 button.btn-purple:hover {
     color: white;
     background-color: rgba(64, 64, 200, 0.75);
+}
+
+.sudoku-input {
+    font-weight: normal;
+    color: black;
+    padding: 0px;
+    position: relative;
+    width: 100%;
+    border: none;
+    aspect-ratio: 1/1;
+}
+
+.input-readonly {
+    font-weight: bold;
+}
+
+.input-editable {
+    color: gray;
+    font-size: smaller;
 }
 
 @media print {

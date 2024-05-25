@@ -1,0 +1,170 @@
+﻿.sudoku-table > tbody > tr > td, .sudoku-table > tr > td {
+    border: thin solid black;
+}
+
+.sudoku-table > tbody > tr:nth-child(3n) > td, .sudoku-table > tr:nth-child(3n) > td {
+    border-bottom: medium solid black !important;
+} 
+
+.sudoku-table > tbody > tr:last-child > td, .sudoku-table > tr:last-child > td {
+    border-bottom: unset !important;
+}
+
+.sudoku-table > tbody > tr > td:nth-child(3n), .sudoku-table > tr > td:nth-child(3n) {
+    border-right: medium solid black !important;
+}
+
+.sudoku-table > tbody > tr > td:last-child, .sudoku-table > tr > td:last-child {
+    border-right: unset !important;
+}
+
+@media all {
+    .div-main {
+        flex: 0 0 auto;
+        width: 74%;
+    }
+
+    .div-options {
+        flex: 0 0 auto;
+        width: 26%;
+    }
+
+    .flex-direction-var {
+        flex-direction: row;
+    }
+
+    .sudoku-table {
+        border: thin solid black;
+        width: 100%;
+    }
+
+    .display-var {
+        display: none;
+    }
+}
+
+@media only screen and (orientation: landscape) {
+    .sudoku-table {
+        border: thin solid black;
+        width: 50%;
+        font-size: medium;
+    }
+
+    .display-var {
+        display: none;
+    }
+}
+
+@media only screen and (orientation: portrait) {
+    .div-main {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .div-options {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .flex-direction-var {
+        flex-direction: column;
+    }
+
+    .sudoku-table {
+        border: thin solid black;
+        width: 100%;
+        font-size: larger;
+    }
+
+    .display-var {
+        display: none;
+    }
+}
+
+@media (max-width : 640px) and (orientation : portrait) {
+    .display-var {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .div-main {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .div-options {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .flex-direction-var {
+        flex-direction: column;
+    }
+
+    .sudoku-table {
+        border: thin solid black;
+        width: 100%;
+        font-size: x-large;
+    }
+
+    .display-var {
+        display: none;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1212px) {
+    .sudoku-table {
+        border: thin solid black;
+        width: 100%;
+        font-size: x-large;
+    }
+
+    .display-var {
+        display: none;
+    }
+}
+
+@media (min-width: 1212px) {
+    .div-main {
+        flex: 0 0 auto;
+        width: 67%;
+    }
+
+    .div-options {
+        flex: 0 0 auto;
+        width: 33%;
+    }
+
+    .sudoku-table {
+        border: thin solid black;
+        width: 100%;
+        font-size: x-large;
+    }
+
+    .display-var {
+        display: none;
+    }
+}
+
+@media (min-width: 1500px) {
+    .div-main {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+
+    .div-options {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+
+    .sudoku-table {
+        border: thin solid black;
+        width: 100%;
+        font-size: x-large;
+    }
+
+    .display-var {
+        display: none;
+    }
+}
