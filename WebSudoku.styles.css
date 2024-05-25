@@ -76,6 +76,16 @@ main[b-834vkyk4rs] {
         padding-right: 1.5rem !important;
     }
 }
+
+@media print {
+    .sidebar[b-834vkyk4rs]{
+        display: none !important;
+    }
+
+    .top-row[b-834vkyk4rs]{
+        display: none !important;
+    }
+}
 /* /Layout/NavMenu.razor.rz.scp.css */
 .navbar-toggler[b-z3xvy1gwk2] {
     background-color: rgba(255, 255, 255, 0.1);
