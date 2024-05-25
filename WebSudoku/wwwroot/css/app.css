@@ -37,11 +37,11 @@ a, .btn-link {
 }
 
 .border-right {
-    border-right: medium solid black;
+    border-right: medium solid black !important;
 }
 
 .border-bot {
-    border-bottom: medium solid black;
+    border-bottom: medium solid black !important;
 }
 
 .sudoku-input {
@@ -66,6 +66,10 @@ a, .btn-link {
 .sudoku-input-var {
 }
 
+.sudoku-table > tbody > tr > td, .sudoku-table > tr > td {
+    border: thin solid black;
+}
+
 @media all {
     .div-main {
         flex: 0 0 auto;
@@ -83,7 +87,6 @@ a, .btn-link {
 
     .sudoku-table {
         border: thin solid black;
-        background-color: black;
         width: 100%;
     }
 
@@ -95,7 +98,6 @@ a, .btn-link {
 @media only screen and (orientation: landscape) {
     .sudoku-table {
         border: thin solid black;
-        background-color: black;
         width: 50%;
     }
 
@@ -125,7 +127,6 @@ a, .btn-link {
 
     .sudoku-table {
         border: thin solid black;
-        background-color: black;
         width: 100%;
     }
 
@@ -161,7 +162,6 @@ a, .btn-link {
 
     .sudoku-table {
         border: thin solid black;
-        background-color: black;
         width: 100%;
     }
 
@@ -177,7 +177,6 @@ a, .btn-link {
 @media (min-width: 1024px) and (max-width: 1212px) {
     .sudoku-table {
         border: thin solid black;
-        background-color: black;
         width: 100%;
     }
 
@@ -203,7 +202,6 @@ a, .btn-link {
 
     .sudoku-table {
         border: thin solid black;
-        background-color: black;
         width: 100%;
     }
 
@@ -229,7 +227,6 @@ a, .btn-link {
 
     .sudoku-table {
         border: thin solid black;
-        background-color: black;
         width: 100%;
     }
 
@@ -319,10 +316,6 @@ button.btn-purple:hover {
 }
 
 @media print {
-    button, button + span, button + span + span, input[type=checkbox], label {
-        display: none !important;
-    }
-
     .hide-in-print {
         display: none !important;
     }

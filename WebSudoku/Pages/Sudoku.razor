@@ -17,7 +17,7 @@
     <div class="d-flex flex-direction-var">
         <div class="div-main">
             <TimerDisplay @ref="timer" />
-            <table class="sudoku-table" style="border-spacing: 0px; background-color: black;">
+            <table class="sudoku-table" style="border-spacing: 0px;">
                 @for (int r = 0; r < 9; r++)
                 {
                     <tr>
@@ -42,21 +42,22 @@
                         }
                         <td class="@borderRight @borderBottom">
                             <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
-                                Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)" />
+                                Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"
+                                OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)" />
                         </td>
                     }
                     </tr>
                 }
             </table>
-
+        </div>
+    
+        <div class="div-options hide-in-print" style="padding: 4px;">
             <button class="btn btn-secondary" @onclick="() => InvalidCells = board.GetInvalidCells(Validator)">Show invalid cells</button>
             <button class="btn btn-purple" onclick="print()">Print</button>
             <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? "Hide" : "Show") print settings</button>
-        </div>
-    
-        @if (showPrintSettings)
-        {
-            <div class="div-options hide-in-print" style="padding: 4px;">
+
+            @if (showPrintSettings)
+            {
                 <p><b>Print settings</b></p> 
                 <InputCheckbox @bind-Value="printHighlightedErrors"></InputCheckbox>
                 <label @onclick="() => printHighlightedErrors = !printHighlightedErrors" class="user-select-none">Print highlighted errors</label>
@@ -65,8 +66,8 @@
 
                 <InputCheckbox @bind-Value="printFilledValues"></InputCheckbox>
                 <label @onclick="() => printFilledValues = !printFilledValues" class="user-select-none">Print filled values</label>
-            </div>
-        }
+            }
+        </div>
     </div>
 
     <HeadContent>
@@ -152,5 +153,30 @@ else
             success = true;
             timePassed = timer?.SpanToShow;
         }
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column)
+    {
+        switch (args.Code)
+        {
+            case KeyCodes.ArrowLeft:
+                await Focus(row, column == 1 ? 9 : column - 1);
+                break;
+            case KeyCodes.ArrowRight:
+                await Focus(row, column == 9 ? 1 : column + 1);
+                break;
+            case KeyCodes.ArrowUp:
+                await Focus(row == 1 ? 9 : row - 1, column);
+                break;
+            case KeyCodes.ArrowDown:
+                await Focus(row == 9 ? 1 : row + 1, column);
+                break;
+        }
+    }
+
+    private async Task Focus(int row, int column)
+    {
+        Console.WriteLine($"{row}, {column}");
+        await JS.InvokeVoidAsync("focusCell", row, column);
     }
 }
