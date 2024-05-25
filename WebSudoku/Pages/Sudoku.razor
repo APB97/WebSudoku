@@ -12,45 +12,87 @@
 
 <PageTitle>WebSudoku - sudoku</PageTitle>
 
-@if (board == null)
+@if (!success)
 {
-    <p><em>Loading...</em></p>
-}
-else if (!success)
-{
-    <button class="btn btn-secondary" @onclick="() => InvalidCells = board.GetInvalidCells(Validator)">Show invalid cells</button>
-    <TimerDisplay @ref="timer" />
-    <table class="sudoku-table" style="border-spacing: 0px; background-color: black;">
-        @for (int r = 0; r < 9; r++)
+    <div class="d-flex flex-direction-var">
+        <div class="div-main">
+            <TimerDisplay @ref="timer" />
+            <table class="sudoku-table" style="border-spacing: 0px; background-color: black;">
+                @for (int r = 0; r < 9; r++)
+                {
+                    <tr>
+                    @for (int c = 0; c < 9; c++)
+                    {
+                        int row = r, column = c;
+                        string borderRight = string.Empty;
+                        string borderBottom = string.Empty;
+                        string cellValue = string.Empty;
+                        if (column == 2 || column == 5)
+                        {
+                            borderRight = "border-right";
+                        }
+                        if (row == 2 || row == 5)
+                        {
+                            borderBottom = "border-bot";
+                        }
+                        var value = board.GetValueAt((row, column));
+                        if (value != 0)
+                        {
+                            cellValue = value.ToString();
+                        }
+                        <td class="@borderRight @borderBottom">
+                            <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
+                                Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)" />
+                        </td>
+                    }
+                    </tr>
+                }
+            </table>
+
+            <button class="btn btn-secondary" @onclick="() => InvalidCells = board.GetInvalidCells(Validator)">Show invalid cells</button>
+            <button class="btn btn-purple" onclick="print()">Print</button>
+            <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? "Hide" : "Show") print settings</button>
+        </div>
+    
+        @if (showPrintSettings)
         {
-            <tr>
-            @for (int c = 0; c < 9; c++)
-            {
-                int row = r, column = c;
-                string borderRight = string.Empty;
-                string borderBottom = string.Empty;
-                string cellValue = string.Empty;
-                if (column == 2 || column == 5)
-                {
-                    borderRight = "border-right";
-                }
-                if (row == 2 || row == 5)
-                {
-                    borderBottom = "border-bot";
-                }
-                var value = board.GetValueAt((row, column));
-                if (value != 0)
-                {
-                    cellValue = value.ToString();
-                }
-                <td class="@borderRight @borderBottom">
-                    <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
-                        Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)" />
-                </td>
-            }
-            </tr>
+            <div class="div-options hide-in-print" style="padding: 4px;">
+                <p><b>Print settings</b></p> 
+                <InputCheckbox @bind-Value="printHighlightedErrors"></InputCheckbox>
+                <label @onclick="() => printHighlightedErrors = !printHighlightedErrors" class="user-select-none">Print highlighted errors</label>
+            
+                <br />
+
+                <InputCheckbox @bind-Value="printFilledValues"></InputCheckbox>
+                <label @onclick="() => printFilledValues = !printFilledValues" class="user-select-none">Print filled values</label>
+            </div>
         }
-</table>
+    </div>
+
+    <HeadContent>
+        <style>
+            @if (printHighlightedErrors == false)
+            {
+                <text>
+                @@media print {
+                    .sudoku-input-var.input-editable {
+                        background-color: white !important;
+                    }
+                }
+                </text>
+            }
+            @if (printFilledValues == false)
+            {
+                <text>
+                @@media print {
+                    .sudoku-input-var.input-editable {
+                        color: transparent !important;
+                    }
+                }
+                </text>
+            }
+        </style>
+    </HeadContent>
 }
 else
 {
@@ -72,6 +114,12 @@ else
     private List<CellPosition> InvalidCells = new List<CellPosition>();
 
     private TimerDisplay? timer;
+
+    private bool showPrintSettings;
+
+    private bool printHighlightedErrors;
+
+    private bool printFilledValues;
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,23 +1,32 @@
-﻿<span>Your time: </span>
-<span>@SpanToShow</span>
+﻿<span class="hide-in-print">Your time: </span>
+<span class="hide-in-print">@SpanToShow</span>
 
 @code {
+    [Parameter]
+    public EventCallback<TimeSpan> OnTimePassed { get; set; }
+
     public TimeSpan SpanToShow { get; private set; }
 
-    protected Timer? timer;
+    protected PeriodicTimer? timer;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        timer = new Timer(async args =>
+        using (timer = new PeriodicTimer(TimeSpan.FromSeconds(1)))
         {
+            await TimerLoop();
+        }
+    }
+
+    protected async Task TimerLoop(CancellationToken cancellationToken = default)
+    {
+        while (timer != null)
+        {
+            await timer.WaitForNextTickAsync(cancellationToken);
             SpanToShow += TimeSpan.FromSeconds(1);
             StateHasChanged();
             await OnTimePassed.InvokeAsync(SpanToShow);
-        }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+        }
     }
-
-    [Parameter]
-    public EventCallback<TimeSpan> OnTimePassed { get; set; }
 }
