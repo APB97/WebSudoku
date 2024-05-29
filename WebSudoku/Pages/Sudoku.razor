@@ -2,6 +2,7 @@
 @using System.Linq
 @using WebSudoku.Shared
 @using WebSudoku.Shared.General
+@using WebSudoku.Shared.Serialization
 @using WebSudoku.Shared.Sudoku
 
 @inject CountingSolver Solver
@@ -18,10 +19,10 @@
         <div class="div-main">
             <TimerDisplay @ref="timer" />
             <table class="sudoku-table" style="border-spacing: 0px;">
-                @for (int r = 0; r < 9; r++)
+                @for (int r = 0; r < Board.BoardSize; r++)
                 {
                     <tr>
-                    @for (int c = 0; c < 9; c++)
+                    @for (int c = 0; c < Board.BoardSize; c++)
                     {
                         int row = r, column = c;
                         var value = board.GetValueAt((row, column));
@@ -38,6 +39,8 @@
         </div>
     
         <div class="div-options hide-in-print" style="padding: 4px;">
+            <button class="btn btn-primary" @onclick="Save">Save</button>
+            <button class="btn btn-primary" @onclick="Load">Load</button>
             <button class="btn btn-secondary" @onclick="() => InvalidCells = board.GetInvalidCells(Validator)">Show invalid cells</button>
             <button class="btn btn-purple" onclick="print()">Print</button>
             <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? "Hide" : "Show") print settings</button>
@@ -65,7 +68,7 @@
             {
                 <text>
                 @@media print {
-                    .sudoku-input-var.input-editable {
+                    .input-editable {
                         background-color: white !important;
                     }
                 }
@@ -75,7 +78,7 @@
             {
                 <text>
                 @@media print {
-                    .sudoku-input-var.input-editable {
+                    .input-editable {
                         color: transparent !important;
                     }
                 }
@@ -96,8 +99,14 @@ else
 
 @code {
     private Board board = new Board();
+    private const string SudokuStateKey = "sudokuState";
+    private const string TimerStateKey = "timerState";
+    private const int TargetBlanks = 35;
+    private const int AttemptsToRemove = 4;
 
     private bool success = false;
+
+    private TimeSpan time;
 
     private TimeSpan? timePassed;
 
@@ -111,17 +120,50 @@ else
 
     private bool printFilledValues;
 
+    private LocalStorage? localStorage;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        localStorage = new LocalStorage(JS);
 
         CreateNewBoard();
+    }
+
+    private async Task Save()
+    {
+        if (localStorage == null) return;
+
+        await localStorage.SetItem(SudokuStateKey, BoardSerializer.SerializeToJson(board));
+        await localStorage.SetItem(TimerStateKey, timer?.SpanToShow.ToString());
+    }
+
+    private async Task Load()
+    {
+        if (localStorage == null) return;
+
+        var jsonState = await localStorage.GetItem(SudokuStateKey);
+        if (jsonState != null)
+        {
+            var loadedBoard = BoardSerializer.DeserializeFromJson(jsonState, Solver);
+            if (loadedBoard != null)
+            {
+                board = loadedBoard;
+                InvalidCells.Clear();
+            }
+        }
+
+        var jsonTimer = await localStorage.GetItem(TimerStateKey);
+        if (timer != null && jsonTimer != null && TimeSpan.TryParse(jsonTimer, out var loadedTimer))
+        {
+            timer.SetTime(loadedTimer);
+        }
     }
 
     protected void CreateNewBoard()
     {
         success = false;
-        board = new Board(Solver, new RandomOptionOrder<int>(), Blanker, 35);
+        board = new Board(Solver, new RandomOptionOrder<int>(), Blanker, TargetBlanks, AttemptsToRemove);
     }
 
     protected void OnCellChanged(int row, int column, ChangeEventArgs args)

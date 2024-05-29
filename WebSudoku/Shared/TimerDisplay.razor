@@ -29,4 +29,10 @@
             await OnTimePassed.InvokeAsync(SpanToShow);
         }
     }
+
+    public void SetTime(TimeSpan time)
+    {
+        SpanToShow = time;
+        StateHasChanged();
+    }
 }

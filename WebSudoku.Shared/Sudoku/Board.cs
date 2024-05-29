@@ -4,8 +4,9 @@ namespace WebSudoku.Shared.Sudoku
 {
     public class Board
     {
-        private readonly Solver? solver;
-
+        private const string InvalidDimensions = "Invalid dimensions";
+        public const int BoardSize = 9;
+        private const int TotalCells = BoardSize * BoardSize;
         private readonly HashSet<CellPosition> emptyCells = [];
         
         public IReadOnlySet<CellPosition> EmptyCells => emptyCells;
@@ -15,45 +16,69 @@ namespace WebSudoku.Shared.Sudoku
 
         public Board()
         {
-            cells = new int[9, 9];
-            predefined = new bool[9, 9];
+            cells = new int[BoardSize, BoardSize];
+            predefined = new bool[BoardSize, BoardSize];
         }
 
         public Board(Solver solver, IOptionOrder<int> optionOrder)
         {
-            this.solver = solver;
-
-            cells = new int[9, 9];
-            predefined = new bool[9, 9];
+            cells = new int[BoardSize, BoardSize];
+            predefined = new bool[BoardSize, BoardSize];
 
             cells = solver.Solve(cells, optionOrder, out _);
             MarkAllAsPredefined();
         }
 
+        public Board(BoardState state)
+        {
+            ThrowIfInvalidDimensions(state.Cells, nameof(state.Cells));
+            ThrowIfInvalidDimensions(state.Predefined, nameof(state.Predefined));
+
+            cells = new int[BoardSize, BoardSize];
+            predefined = new bool[BoardSize, BoardSize];
+
+            for (int row = 0; row < BoardSize; row++)
+            {
+                for (int column = 0; column < BoardSize; column++)
+                {
+                    var index = row * BoardSize + column;
+                    cells[row, column] = state.Cells[index];
+                    predefined[row, column] = state.Predefined[index];
+                }
+            }
+
+            DetermineEmptyCells();
+        }
+
+        public static void ThrowIfInvalidDimensions(Array array, string? paramName)
+        {
+            if (array.Rank != 1 || array.GetLength(0) != TotalCells) throw new ArgumentException(InvalidDimensions, paramName ?? nameof(array));
+        }
+
         private void MarkAllAsPredefined()
         {
-            for (int row = 0; row < 9; row++)
+            for (int row = 0; row < BoardSize; row++)
             {
-                for (int column = 0; column < 9; column++)
+                for (int column = 0; column < BoardSize; column++)
                 {
                     predefined[row, column] = true;
                 }
             }
         }
 
-        public Board(Solver solver, IOptionOrder<int> optionOrder, Blanker blanker, int targetBlanks)
+        public Board(Solver solver, IOptionOrder<int> optionOrder, Blanker blanker, int targetBlanks, int attemptsToRemove)
             : this(solver, optionOrder)
         {
-            blanker.MakeBlanks(this, targetBlanks);
+            blanker.MakeBlanks(this, targetBlanks, attemptsToRemove);
             DetermineEmptyCells();
         }
 
         private void DetermineEmptyCells()
         {
             emptyCells.Clear();
-            for (int row = 0; row < 9; row++)
+            for (int row = 0; row < BoardSize; row++)
             {
-                for (int col = 0; col < 9; col++)
+                for (int col = 0; col < BoardSize; col++)
                 {
                     if (cells[row, col] == 0)
                     {
@@ -105,9 +130,9 @@ namespace WebSudoku.Shared.Sudoku
         {
             var invalidCells = new List<CellPosition>();
 
-            for (int row = 0; row < 9; row++)
+            for (int row = 0; row < BoardSize; row++)
             {
-                for (int col = 0; col < 9; col++)
+                for (int col = 0; col < BoardSize; col++)
                 {
                     if (!predefined[row, col] && !validator.IsValid(this, (row, col)))
                     {
@@ -119,7 +144,7 @@ namespace WebSudoku.Shared.Sudoku
             return invalidCells;
         }
 
-        public bool HasOneAndOnlySolution()
+        public bool HasOneAndOnlySolution(Solver solver)
         {
             if (solver == null)
             {
@@ -128,6 +153,22 @@ namespace WebSudoku.Shared.Sudoku
 
             _ = solver.Solve(cells, new DefaultOptionOrder<int>(), out int solutionCount);
             return solutionCount == 1;
+        }
+
+        public BoardState GetState()
+        {
+            int[] cellValuesFlattened = new int[TotalCells];
+            bool[] predefinedValuesFlattened = new bool[TotalCells];
+            for (int row = 0; row < BoardSize; row++)
+            {
+                for (int column = 0; column < BoardSize; column++)
+                {
+                    var index = row * BoardSize + column;
+                    cellValuesFlattened[index] = cells[row, column];
+                    predefinedValuesFlattened[index] = predefined[row, column];
+                }
+            }
+            return new BoardState(cellValuesFlattened, predefinedValuesFlattened);
         }
     }
 }
