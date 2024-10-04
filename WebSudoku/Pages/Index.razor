@@ -62,6 +62,6 @@
     {
         var destination = await JS.InvokeAsync<string>("sessionStorage.getItem", "destination");
         if (destination == null) return;
-        Navigation.NavigateTo(destination);
+        Navigation.NavigateTo("WebSudoku" + destination);
     }
 }
