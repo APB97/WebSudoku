@@ -56,13 +56,3 @@
         You start a game with a board where some of the cells have been assigned a digit that cannot be changed. Your should fill the board according to the rules.
     </li>
 </ul>
-
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-        if (!Navigation.BaseUri.Contains(Navigation.Uri))
-        {
-            await JS.InvokeVoidAsync("redirect");
-        }
-    }
-}
