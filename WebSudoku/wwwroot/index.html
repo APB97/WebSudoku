@@ -33,7 +33,7 @@
         if (indexOfHash >= 0) {
             var hash = document.location.href.substr(indexOfHash);
             var destination = document.location.href.replace(hash, '');
-            destination = destination.substr(0, destination.lastIndexOf('/')) + hash.replace('#', '').replace('/', '');
+            destination = destination.substr(0, destination.lastIndexOf('/')) + hash.replace('#', '').replace(/\/*/, '');
             document.location.assign(document.location.href.replace(/[#]/, ''));
         }
     </script>
