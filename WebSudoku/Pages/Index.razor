@@ -60,7 +60,7 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        if (Navigation.Uri != Navigation.BaseUri)
+        if (!Navigation.BaseUri.Contains(Navigation.Uri))
         {
             await JS.InvokeVoidAsync("redirect");
         }
