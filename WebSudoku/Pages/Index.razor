@@ -63,6 +63,6 @@
         var destination = await JS.InvokeAsync<string>("sessionStorage.getItem", "destination");
         await JS.InvokeVoidAsync("sessionStorage.removeItem", "destination");
         if (destination == null) return;
-        Navigation.NavigateTo(destination.SubString(1));
+        Navigation.NavigateTo(destination.Substring(1));
     }
 }
