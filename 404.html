@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+</head>
+<body>
+    <script>
+        let lastslash = document.location.href.lastIndexOf('/');
+        let end = document.location.href.substr(lastslash);
+        document.location.assign(document.location.href.substring(0, lastslash)+ '#' + end);
+    </script>
+</body>
+</html>
