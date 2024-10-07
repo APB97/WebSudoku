@@ -162,7 +162,7 @@ main[b-834vkyk4rs] {
 }
 /* /Pages/Sudoku.razor.rz.scp.css */
 .sudoku-table > tbody > tr > td[b-245jprxzxn], .sudoku-table > tr > td[b-245jprxzxn] {
-    border: thin solid black;
+    border: 2px solid black;
 }
 
 .sudoku-table > tbody > tr:nth-child(3n) > td[b-245jprxzxn], .sudoku-table > tr:nth-child(3n) > td[b-245jprxzxn] {
@@ -170,7 +170,7 @@ main[b-834vkyk4rs] {
 } 
 
 .sudoku-table > tbody > tr:last-child > td[b-245jprxzxn], .sudoku-table > tr:last-child > td[b-245jprxzxn] {
-    border-bottom: unset !important;
+    border-bottom: 2px solid black !important;
 }
 
 .sudoku-table > tbody > tr > td:nth-child(3n)[b-245jprxzxn], .sudoku-table > tr > td:nth-child(3n)[b-245jprxzxn] {
@@ -178,7 +178,7 @@ main[b-834vkyk4rs] {
 }
 
 .sudoku-table > tbody > tr > td:last-child[b-245jprxzxn], .sudoku-table > tr > td:last-child[b-245jprxzxn] {
-    border-right: unset !important;
+    border-right: 2px solid black !important;
 }
 
 @media all {
