@@ -132,8 +132,7 @@ else
     {
         if (localStorage == null) return;
 
-        await localStorage.SetItem(SudokuStateKey, BoardSerializer.SerializeToJson(board));
-        await localStorage.SetItem(TimerStateKey, timer?.SpanToShow.ToString());
+        await localStorage.SetItem(SudokuStateKey, BoardSerializer.SerializeToJson(board, timer?.SpanToShow, GameStateVersion.Current));
     }
 
     private async Task Load()
@@ -143,18 +142,30 @@ else
         var jsonState = await localStorage.GetItem(SudokuStateKey);
         if (jsonState != null)
         {
-            var loadedBoard = BoardSerializer.DeserializeFromJson(jsonState, Solver);
-            if (loadedBoard != null)
+            // Load V2 save
+            var loadedBoard = BoardSerializer.DeserializeFromJson(jsonState, out var loadedTimer);
+            if (loadedBoard != null && loadedTimer.HasValue)
             {
                 board = loadedBoard;
+                timer?.SetTime(loadedTimer.Value);
                 InvalidCells.Clear();
             }
-        }
+            else
+            {
+                // Load V1 save
+                var board = BoardSerializer.DeserializeFromJson(jsonState);
+                if (board != null)
+                {
+                    board = loadedBoard;
+                    InvalidCells.Clear();
+                }
 
-        var jsonTimer = await localStorage.GetItem(TimerStateKey);
-        if (timer != null && jsonTimer != null && TimeSpan.TryParse(jsonTimer, out var loadedTimer))
-        {
-            timer.SetTime(loadedTimer);
+                var jsonTimer = await localStorage.GetItem(TimerStateKey);
+                if (timer != null && jsonTimer != null && TimeSpan.TryParse(jsonTimer, out var loadedTimerOnly))
+                {
+                    timer.SetTime(loadedTimerOnly);
+                }
+            }
         }
     }
 
