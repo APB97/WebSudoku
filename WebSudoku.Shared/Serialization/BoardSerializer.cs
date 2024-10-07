@@ -10,11 +10,19 @@ namespace WebSudoku.Shared.Serialization
             return new Board(JsonSerializer.Deserialize<BoardState>(json));
         }
 
-        public static Board DeserializeFromJson(string json, out TimeSpan? timer)
+        public static Board? DeserializeFromJson(string json, out TimeSpan? timer)
         {
-            GameState gameState = JsonSerializer.Deserialize<GameState>(json);
-            timer = gameState.Timer;
-            return new Board(gameState.Board);
+            timer = null;
+            try
+            {
+                GameState gameState = JsonSerializer.Deserialize<GameState>(json);
+                timer = gameState.Timer;
+                return new Board(gameState.Board);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static string SerializeToJson(Board board)
