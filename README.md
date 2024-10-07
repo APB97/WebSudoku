@@ -1,5 +1,13 @@
-# WebSudoku
+# Web Sudoku
 Sudoku made with Blazor WebAssembly
+
+## Description
+
+This Blazor WebAssembly application includes features like:
+- Navigation with arrow keys
+- Save and Load
+- Validation for highlighting invalid cell values
+- Printing of sudoku board with adjustable settings for printing already filled values and highlighted errors
 
 ## Technologies used
 

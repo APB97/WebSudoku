@@ -1,5 +1,6 @@
 ﻿@page "/"
 @page "/rules"
+@using WebSudoku.Extensions
 
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
@@ -60,9 +61,6 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        var destination = await JS.InvokeAsync<string>("sessionStorage.getItem", "destination");
-        await JS.InvokeVoidAsync("sessionStorage.removeItem", "destination");
-        if (destination == null) return;
-        Navigation.NavigateTo(destination.Substring(1));
+        await Navigation.NavigateToStoredDestinationIfAnyAsync(JS);
     }
 }

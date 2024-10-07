@@ -11,7 +11,7 @@
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
 
-<PageTitle>WebSudoku - sudoku</PageTitle>
+<PageTitle>Web Sudoku - sudoku</PageTitle>
 
 @if (!success)
 {
@@ -63,28 +63,26 @@
     </div>
 
     <HeadContent>
-        <style>
             @if (printHighlightedErrors == false || printFilledValues == false)
             {
-                <text>
-                @@media print {
-                    .input-editable {
-                        background-color: white !important;
+                <style>
+                    @@media print {
+                        .input-editable {
+                            background-color: white !important;
+                        }
                     }
-                }
-                </text>
+                </style>
             }
             @if (printFilledValues == false)
             {
-                <text>
-                @@media print {
-                    .input-editable {
-                        color: transparent !important;
+                <style>
+                    @@media print {
+                        .input-editable {
+                            color: transparent !important;
+                        }
                     }
-                }
-                </text>
+                </style>
             }
-        </style>
     </HeadContent>
 }
 else
