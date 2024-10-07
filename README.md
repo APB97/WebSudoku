@@ -9,6 +9,8 @@ This Blazor WebAssembly application includes features like:
 - Validation for highlighting invalid cell values
 - Printing of sudoku board with adjustable settings for printing already filled values and highlighted errors
 
+![screenshot with sudoku board](images/Screenshot%20-%20sudoku.png)
+
 ## Technologies used
 
 The following technologies are used in this project
