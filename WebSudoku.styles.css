@@ -166,7 +166,7 @@ main[b-834vkyk4rs] {
 }
 
 .sudoku-table > tbody > tr:nth-child(3n) > td[b-245jprxzxn], .sudoku-table > tr:nth-child(3n) > td[b-245jprxzxn] {
-    border-bottom: medium solid black !important;
+    border-bottom: 4px solid black !important;
 } 
 
 .sudoku-table > tbody > tr:last-child > td[b-245jprxzxn], .sudoku-table > tr:last-child > td[b-245jprxzxn] {
@@ -174,7 +174,7 @@ main[b-834vkyk4rs] {
 }
 
 .sudoku-table > tbody > tr > td:nth-child(3n)[b-245jprxzxn], .sudoku-table > tr > td:nth-child(3n)[b-245jprxzxn] {
-    border-right: medium solid black !important;
+    border-right: 4px solid black !important;
 }
 
 .sudoku-table > tbody > tr > td:last-child[b-245jprxzxn], .sudoku-table > tr > td:last-child[b-245jprxzxn] {
