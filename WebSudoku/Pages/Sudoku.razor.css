@@ -1,5 +1,5 @@
 ﻿.sudoku-table > tbody > tr > td, .sudoku-table > tr > td {
-    border: thin solid black;
+    border: 2px solid black;
 }
 
 .sudoku-table > tbody > tr:nth-child(3n) > td, .sudoku-table > tr:nth-child(3n) > td {
@@ -7,7 +7,7 @@
 } 
 
 .sudoku-table > tbody > tr:last-child > td, .sudoku-table > tr:last-child > td {
-    border-bottom: unset !important;
+    border-bottom: 2px solid black !important;
 }
 
 .sudoku-table > tbody > tr > td:nth-child(3n), .sudoku-table > tr > td:nth-child(3n) {
@@ -15,7 +15,7 @@
 }
 
 .sudoku-table > tbody > tr > td:last-child, .sudoku-table > tr > td:last-child {
-    border-right: unset !important;
+    border-right: 2px solid black !important;
 }
 
 @media all {
