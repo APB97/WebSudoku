@@ -153,10 +153,10 @@ else
             else
             {
                 // Load V1 save
-                var board = BoardSerializer.DeserializeFromJson(jsonState);
-                if (board != null)
+                var v1board = BoardSerializer.DeserializeFromJson(jsonState);
+                if (v1board != null)
                 {
-                    board = loadedBoard;
+                    board = v1board;
                     InvalidCells.Clear();
                 }
 
