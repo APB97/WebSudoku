@@ -5,10 +5,11 @@
 }
 else
 {
-    <InputText TValue="string" Value="@Value" ValueChanged="v => OnChange(new ChangeEventArgs { Value = v })" ValueExpression="() => Value"
+    <InputText Value="@Value" ValueChanged="OnChange" ValueExpression="() => Value" @onfocus="OnFocus"
         class="text-center sudoku-input input-editable"
+        type="@type"
         style="@(HighlightColor != null ? $"background-color: {HighlightColor}" : string.Empty)"
-        @onblur="() => OnChange(new ChangeEventArgs{ Value = Value })"
+        @onblur="OnBlur"
         @onkeydown="OnKeyDown" />
 }
 
@@ -25,12 +26,14 @@ else
     [Parameter]
     public string Value { get; set; } = string.Empty;
 
+    private string type = "text";
+
     [Parameter]
     public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
 
-    private async Task OnChange(ChangeEventArgs args)
+    private async Task OnChange(string value)
     {
-        if (args.Value is string text && int.TryParse(text, out var number) && number >= 1 && number <= 9)
+        if (value is string text && int.TryParse(text, out var number) && number >= 1 && number <= 9)
         {
             await OnValueChanged.InvokeAsync(new ChangeEventArgs { Value = number });
         }
@@ -41,5 +44,16 @@ else
         }
         HighlightColor = null;
         StateHasChanged();
+    }
+
+    private async Task OnBlur()
+    {
+        await OnChange(Value);
+        type = "text";
+    }
+
+    private void OnFocus()
+    {
+        type = "number";
     }
 }
