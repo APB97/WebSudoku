@@ -8,8 +8,9 @@ This Blazor WebAssembly application includes features like:
 - Save and Load
 - Validation for highlighting invalid cell values
 - Printing of sudoku board with adjustable settings for printing already filled values and highlighted errors
+- Timer showing time spent on sudoku board
 
-![screenshot with sudoku board](images/Screenshot%20-%20sudoku.png)
+![Screenshot - sudoku board](https://github.com/user-attachments/assets/68eca74d-6ba5-4596-8d90-e6dea4554692)
 
 ## Technologies used
 
