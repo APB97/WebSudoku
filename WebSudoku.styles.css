@@ -191,6 +191,15 @@ main[b-834vkyk4rs] {
         width: 50%;
         word-break: break-word;
         word-wrap: break-word;
+        display: grid;
+        justify-items: stretch;
+        margin: auto;
+        margin-top: 12pt;
+        padding: 2pt;
+    }
+
+    .div-options > button[b-245jprxzxn] {
+        margin: 2pt;
     }
 
     .flex-direction-var[b-245jprxzxn] {
@@ -228,11 +237,11 @@ main[b-834vkyk4rs] {
 
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
     .div-main[b-245jprxzxn] {
-        width: 60%;
+        width: 50%;
     }
 
     .div-options[b-245jprxzxn] {
-        width: 40%;
+        width: 50%;
     }
 
     .sudoku-table[b-245jprxzxn] {
