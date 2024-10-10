@@ -52,14 +52,16 @@
             {
                 <p><b>Print settings</b></p>
 
-                <InputCheckbox @bind-Value="printFilledValues"></InputCheckbox>
-                <label @onclick="() => printFilledValues = !printFilledValues" class="user-select-none">Print filled values</label>
-
-                <br />
+                <div class="d-flex">
+                    <InputCheckbox @bind-Value="printFilledValues"></InputCheckbox>
+                    <label @onclick="() => printFilledValues = !printFilledValues" class="user-select-none">Print filled values</label>
+                </div>
                 @if (printFilledValues)
                 {
-                    <InputCheckbox @bind-Value="printHighlightedErrors"></InputCheckbox>
-                    <label @onclick="() => printHighlightedErrors = !printHighlightedErrors" class="user-select-none">Print highlighted errors</label>
+                    <div class="d-flex">
+                        <InputCheckbox @bind-Value="printHighlightedErrors"></InputCheckbox>
+                        <label @onclick="() => printHighlightedErrors = !printHighlightedErrors" class="user-select-none">Print highlighted errors</label>
+                    </div>
                 }
             }
         </div>
