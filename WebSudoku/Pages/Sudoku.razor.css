@@ -47,6 +47,10 @@
         width: 50%;
     }
 
+    .div-options {
+        width: 50%;
+    }
+
     .sudoku-table {
         border: thin solid black;
         font-size: medium;
@@ -60,6 +64,10 @@
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
     .div-main {
         width: 75%;
+    }
+
+    .div-options {
+        width: 25%;
     }
 
     .sudoku-table {
