@@ -21,12 +21,11 @@
 @media all {
     .div-main {
         flex: 0 0 auto;
-        width: 74%;
     }
 
     .div-options {
         flex: 0 0 auto;
-        width: 26%;
+        width: 50%;
     }
 
     .flex-direction-var {
@@ -44,9 +43,12 @@
 }
 
 @media only screen and (orientation: landscape) {
+    .div-main {
+        width: 50%;
+    }
+
     .sudoku-table {
         border: thin solid black;
-        width: 50%;
         font-size: medium;
     }
 
@@ -55,8 +57,24 @@
     }
 }
 
-@media only screen and (orientation: portrait) {
+@media only screen and (orientation: landscape) and (max-width: 1024px) {
     .div-main {
+        width: 75%;
+    }
+
+    .sudoku-table {
+        border: thin solid black;
+        font-size: medium;
+    }
+
+    .display-var {
+        display: none;
+    }
+}
+
+
+@media only screen and (orientation: portrait) {
+   .div-main {
         flex: 0 0 auto;
         width: 100%;
     }
@@ -73,7 +91,6 @@
     .sudoku-table {
         border: thin solid black;
         width: 100%;
-        font-size: larger;
     }
 
     .display-var {
@@ -90,22 +107,21 @@
 @media (min-width: 768px) and (max-width: 1024px) {
     .div-main {
         flex: 0 0 auto;
-        width: 100%;
+        width: 50%;
     }
 
     .div-options {
         flex: 0 0 auto;
-        width: 100%;
+        width: 50%;
     }
 
     .flex-direction-var {
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .sudoku-table {
         border: thin solid black;
         width: 100%;
-        font-size: x-large;
     }
 
     .display-var {
@@ -126,16 +142,6 @@
 }
 
 @media (min-width: 1212px) {
-    .div-main {
-        flex: 0 0 auto;
-        width: 67%;
-    }
-
-    .div-options {
-        flex: 0 0 auto;
-        width: 33%;
-    }
-
     .sudoku-table {
         border: thin solid black;
         width: 100%;
@@ -148,16 +154,6 @@
 }
 
 @media (min-width: 1500px) {
-    .div-main {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-
-    .div-options {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-
     .sudoku-table {
         border: thin solid black;
         width: 100%;
