@@ -65,11 +65,11 @@
 
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
     .div-main {
-        width: 75%;
+        width: 60%;
     }
 
     .div-options {
-        width: 25%;
+        width: 40%;
     }
 
     .sudoku-table {
