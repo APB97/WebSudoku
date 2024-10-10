@@ -210,6 +210,10 @@ main[b-834vkyk4rs] {
         width: 50%;
     }
 
+    .div-options[b-245jprxzxn] {
+        width: 50%;
+    }
+
     .sudoku-table[b-245jprxzxn] {
         border: thin solid black;
         font-size: medium;
@@ -223,6 +227,10 @@ main[b-834vkyk4rs] {
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
     .div-main[b-245jprxzxn] {
         width: 75%;
+    }
+
+    .div-options[b-245jprxzxn] {
+        width: 25%;
     }
 
     .sudoku-table[b-245jprxzxn] {
