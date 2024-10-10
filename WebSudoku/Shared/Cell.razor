@@ -31,6 +31,9 @@ else
     [Parameter]
     public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
 
+    [Parameter]
+    public bool SwitchTypeOnFocus { get; set; } = true;
+
     private async Task OnChange(string value)
     {
         if (value is string text && int.TryParse(text, out var number) && number >= 1 && number <= 9)
@@ -49,11 +52,14 @@ else
     private async Task OnBlur()
     {
         await OnChange(Value);
+        if (!SwitchTypeOnFocus) return;
         type = "text";
     }
 
-    private void OnFocus()
+    private async void OnFocus()
     {
+        await OnChange(Value);
+        if (!SwitchTypeOnFocus) return;
         type = "number";
     }
 }

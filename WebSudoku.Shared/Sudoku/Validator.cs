@@ -27,13 +27,22 @@
         public bool IsValid(Board board, CellPosition position)
         {
             var (row, column) = position;
-            int value = board.GetValueAt((row, column));
+            int value = board.GetValueAt(position);
             if (value == 0)
             {
                 return true;
             }
 
-            return _neighbors.CellNeighbors[row, column].Count(cell => board.GetValueAt((cell.Row, cell.Column)) == value) == 1;
+            return _neighbors.CellNeighbors[row, column].Count(cell => board.GetValueAt(cell) == value) == 1;
+        }
+
+        public IEnumerable<CellPosition> ConflictingCells(Board board, CellPosition editedPosition)
+        {
+            var (row, column) = editedPosition;
+            int value = board.GetValueAt(editedPosition);
+            if (value == 0) return [];
+
+            return _neighbors.CellNeighbors[row, column].Where(cell => cell != editedPosition && board.GetValueAt(cell) == value);
         }
     }
 }

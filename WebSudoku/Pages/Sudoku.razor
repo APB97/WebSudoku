@@ -30,7 +30,8 @@
                         <td>
                             <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
                                 Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"
-                                OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)" />
+                                OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
+                                SwitchTypeOnFocus="!isFirefox"/>
                         </td>
                     }
                     </tr>
@@ -118,10 +119,20 @@ else
 
     private LocalStorage? localStorage;
 
+    private DotNetObjectReference<Sudoku>? thisComponentRef;
+
+    private bool isFirefox;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         localStorage = new LocalStorage(JS);
+        thisComponentRef = DotNetObjectReference.Create(this);
+        var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Sudoku.razor.js");
+        if (module != null)
+        {
+            isFirefox = await module.InvokeAsync<bool>("isFirefox");
+        }
 
         CreateNewBoard();
     }
@@ -175,15 +186,17 @@ else
 
     protected void OnCellChanged(int row, int column, ChangeEventArgs args)
     {
-        InvalidCells.Remove((row, column));
-
         if (args.Value is null)
         {
             board.ClearCell((row, column));
+            InvalidCells.Remove((row, column));
+            InvalidCells.RemoveAll(cell => Validator.IsValid(board, cell));
         }
         else if (args.Value is int number)
         {
             board.FillCell((row, column), number);
+            InvalidCells.RemoveAll(cell => Validator.IsValid(board, cell));
+            InvalidCells.AddRange(Validator.ConflictingCells(board, (row, column)));
         }
 
         if (board.EmptyCells.Count == 0 && Validator.IsValidBoard(board))
