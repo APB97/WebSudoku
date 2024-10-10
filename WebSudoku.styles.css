@@ -184,12 +184,11 @@ main[b-834vkyk4rs] {
 @media all {
     .div-main[b-245jprxzxn] {
         flex: 0 0 auto;
-        width: 74%;
     }
 
     .div-options[b-245jprxzxn] {
         flex: 0 0 auto;
-        width: 26%;
+        width: 50%;
     }
 
     .flex-direction-var[b-245jprxzxn] {
@@ -207,9 +206,12 @@ main[b-834vkyk4rs] {
 }
 
 @media only screen and (orientation: landscape) {
+    .div-main[b-245jprxzxn] {
+        width: 50%;
+    }
+
     .sudoku-table[b-245jprxzxn] {
         border: thin solid black;
-        width: 50%;
         font-size: medium;
     }
 
@@ -218,8 +220,24 @@ main[b-834vkyk4rs] {
     }
 }
 
-@media only screen and (orientation: portrait) {
+@media only screen and (orientation: landscape) and (max-width: 1024px) {
     .div-main[b-245jprxzxn] {
+        width: 75%;
+    }
+
+    .sudoku-table[b-245jprxzxn] {
+        border: thin solid black;
+        font-size: medium;
+    }
+
+    .display-var[b-245jprxzxn] {
+        display: none;
+    }
+}
+
+
+@media only screen and (orientation: portrait) {
+   .div-main[b-245jprxzxn] {
         flex: 0 0 auto;
         width: 100%;
     }
@@ -236,7 +254,6 @@ main[b-834vkyk4rs] {
     .sudoku-table[b-245jprxzxn] {
         border: thin solid black;
         width: 100%;
-        font-size: larger;
     }
 
     .display-var[b-245jprxzxn] {
@@ -253,22 +270,21 @@ main[b-834vkyk4rs] {
 @media (min-width: 768px) and (max-width: 1024px) {
     .div-main[b-245jprxzxn] {
         flex: 0 0 auto;
-        width: 100%;
+        width: 50%;
     }
 
     .div-options[b-245jprxzxn] {
         flex: 0 0 auto;
-        width: 100%;
+        width: 50%;
     }
 
     .flex-direction-var[b-245jprxzxn] {
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .sudoku-table[b-245jprxzxn] {
         border: thin solid black;
         width: 100%;
-        font-size: x-large;
     }
 
     .display-var[b-245jprxzxn] {
@@ -289,16 +305,6 @@ main[b-834vkyk4rs] {
 }
 
 @media (min-width: 1212px) {
-    .div-main[b-245jprxzxn] {
-        flex: 0 0 auto;
-        width: 67%;
-    }
-
-    .div-options[b-245jprxzxn] {
-        flex: 0 0 auto;
-        width: 33%;
-    }
-
     .sudoku-table[b-245jprxzxn] {
         border: thin solid black;
         width: 100%;
@@ -311,16 +317,6 @@ main[b-834vkyk4rs] {
 }
 
 @media (min-width: 1500px) {
-    .div-main[b-245jprxzxn] {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-
-    .div-options[b-245jprxzxn] {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-
     .sudoku-table[b-245jprxzxn] {
         border: thin solid black;
         width: 100%;
