@@ -28,6 +28,15 @@
         width: 50%;
         word-break: break-word;
         word-wrap: break-word;
+        display: grid;
+        justify-items: stretch;
+        margin: auto;
+        margin-top: 12pt;
+        padding: 2pt;
+    }
+
+    .div-options > button {
+        margin: 2pt;
     }
 
     .flex-direction-var {
@@ -65,11 +74,11 @@
 
 @media only screen and (orientation: landscape) and (max-width: 1024px) {
     .div-main {
-        width: 60%;
+        width: 50%;
     }
 
     .div-options {
-        width: 40%;
+        width: 50%;
     }
 
     .sudoku-table {
