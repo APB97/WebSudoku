@@ -26,6 +26,8 @@
     .div-options {
         flex: 0 0 auto;
         width: 50%;
+        word-break: break-word;
+        word-wrap: break-word;
     }
 
     .flex-direction-var {
