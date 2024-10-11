@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "WebSudoku",
   "resources": {
-    "hash": "sha256-Os6O9qBFSUEFqR3/gLo9/4kygvcyjINxcXgYWZJSzN0=",
+    "hash": "sha256-LZo0FghCbzhuJhVUn/mwhV9QOH+04DPzUlGmLF2V130=",
     "jsModuleNative": {
       "dotnet.native.8.0.10.4xsnm8lwn6.js": "sha256-QVxMlY7ohmjgde/bZMA0dlWDAeuUP+tEfkiSdg4DFcE="
     },
@@ -56,8 +56,8 @@
       "System.Text.RegularExpressions.wasm": "sha256-jOXHeQGxYgoiX8kfuXmM8pdDxV74D+IHq+znvu9UKmA=",
       "System.Threading.wasm": "sha256-942pSKu/NRclDZZvbRxDycMEL2PUdLwiP0/0qw8+lJY=",
       "System.wasm": "sha256-sH9OCj7JF+EjOteWJIPR1TDeb2POsT3uyJpKHPmvz2A=",
-      "WebSudoku.Shared.wasm": "sha256-+zMrKgMTqUXMAsR14fzn5LDbT/Ok6g6IPpgqvuBEcT8=",
-      "WebSudoku.wasm": "sha256-Tbxmw9kvW2fRiuLQZOFkohOt0dyXY9dbXEF9OsyQojo="
+      "WebSudoku.Shared.wasm": "sha256-xJJ76h/q0veS1rxR3bL9OONkAB4GUL7gDXDf/V25Ujc=",
+      "WebSudoku.wasm": "sha256-jpoaYQR3thcTFWj6qkBcL0MFWLidQ4BfegYsaUKNI8E="
     }
   },
   "cacheBootResources": true,
