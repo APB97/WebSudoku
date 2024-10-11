@@ -8,3 +8,8 @@ export function focusCell(row, column) {
     cell.focus();
     cell.select();
 }
+
+export function blurCell(row, column) {
+    let cell = document.querySelector(`table.sudoku-table > tr:nth-child(${row}) > td:nth-child(${column}) > input`);
+    cell.blur();
+}

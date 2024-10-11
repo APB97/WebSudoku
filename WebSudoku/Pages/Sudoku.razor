@@ -203,6 +203,7 @@ else
 
     private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column)
     {
+        await Blur(row, column);
         switch (args.Code)
         {
             case KeyCodes.ArrowLeft:
@@ -224,6 +225,12 @@ else
     {
         if (module is null) return;
         await module.InvokeVoidAsync("focusCell", row, column);
+    }
+
+    private async Task Blur(int row, int column)
+    {
+        if (module is null) return;
+        await module.InvokeVoidAsync("blurCell", row, column);
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
