@@ -127,8 +127,15 @@ button.btn-purple:hover {
 }
 
 .input-editable {
+    --cell-editable-text-color: transparent;
+    --cell-error-highlight: transparent;
     color: gray;
+    background-color: white;
     font-size: smaller;
+}
+
+.input-editable.error-highlight {
+    background-color: rgb(255, 95, 95);
 }
 
 @media print {
@@ -138,5 +145,10 @@ button.btn-purple:hover {
 
     .div-main{
         width: 100% !important;
+    }
+
+    .input-editable {
+        color: var(--cell-editable-text-color) !important;
+        background-color: var(--cell-error-highlight) !important;
     }
 }
