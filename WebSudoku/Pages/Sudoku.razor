@@ -24,18 +24,18 @@
                 @for (int r = 0; r < Board.BoardSize; r++)
                 {
                     <tr>
-                    @for (int c = 0; c < Board.BoardSize; c++)
-                    {
-                        int row = r, column = c;
-                        var value = board.GetValueAt((row, column));
-                        string cellValue = value != 0 ? value.ToString() : string.Empty;
-                        <td>
-                            <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
-                                Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"
-                                OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
-                                SwitchTypeOnFocus="!isFirefox"/>
-                        </td>
-                    }
+                        @for (int c = 0; c < Board.BoardSize; c++)
+                        {
+                            int row = r, column = c;
+                            var value = board.GetValueAt((row, column));
+                            string cellValue = value != 0 ? value.ToString() : string.Empty;
+                            <td>
+                                <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
+                                    Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"
+                                    OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
+                                    SwitchTypeOnFocus="!isFirefox"/>
+                            </td>
+                        }
                     </tr>
                 }
             </table>
@@ -44,7 +44,6 @@
         <div class="div-options hide-in-print">
             <button class="btn btn-primary" @onclick="Save">Save</button>
             <button class="btn btn-primary" @onclick="Load">Load</button>
-            <button class="btn btn-secondary" @onclick="() => InvalidCells = board.GetInvalidCells(Validator)">Show invalid cells</button>
             <button class="btn btn-purple" onclick="print()">Print</button>
             <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? "Hide" : "Show") print settings</button>
 
