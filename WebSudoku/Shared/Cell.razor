@@ -6,9 +6,8 @@
 else
 {
     <InputText Value="@Value" ValueChanged="OnChange" ValueExpression="() => Value" @onfocus="OnFocus"
-        class="text-center sudoku-input input-editable"
+        class="@($"{HighlightColor ?? string.Empty} text-center sudoku-input input-editable")"
         type="@type"
-        style="@(HighlightColor != null ? $"background-color: {HighlightColor}" : string.Empty)"
         @onblur="OnBlur"
         @onkeydown="OnKeyDown" />
 }
@@ -46,7 +45,6 @@ else
             await OnValueChanged.InvokeAsync(new ChangeEventArgs { Value = null });
         }
         HighlightColor = null;
-        StateHasChanged();
     }
 
     private async Task OnBlur()
@@ -58,7 +56,6 @@ else
 
     private async void OnFocus()
     {
-        await OnChange(Value);
         if (!SwitchTypeOnFocus) return;
         type = "number";
     }

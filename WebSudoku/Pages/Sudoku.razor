@@ -30,7 +30,7 @@
                             var value = board.GetValueAt((row, column));
                             string cellValue = value != 0 ? value.ToString() : string.Empty;
                             <td>
-                                <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "rgb(255, 95, 95)" : null)"
+                                <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
                                     Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"
                                     OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
                                     SwitchTypeOnFocus="!isFirefox"/>
@@ -66,28 +66,22 @@
         </div>
     </div>
 
-    <HeadContent>
-            @if (printHighlightedErrors == false || printFilledValues == false)
-            {
-                <style>
-                    @@media print {
-                        .input-editable {
-                            background-color: white !important;
-                        }
-                    }
-                </style>
+    @if (printHighlightedErrors && printFilledValues)
+    {
+        <style>
+            .input-editable.error-highlight {
+                --cell-error-highlight: rgb(255, 95, 95) !important;
             }
-            @if (printFilledValues == false)
-            {
-                <style>
-                    @@media print {
-                        .input-editable {
-                            color: transparent !important;
-                        }
-                    }
-                </style>
+        </style>
+    }
+    @if (printFilledValues)
+    {
+        <style>
+            .input-editable {
+                --cell-editable-text-color: gray !important;
             }
-    </HeadContent>
+        </style>
+    }
 }
 else
 {
