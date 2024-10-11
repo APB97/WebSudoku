@@ -3,12 +3,16 @@
 
 <div class="page">
     <div class="sidebar hide-in-print">
-        <NavMenu />
+        <NavMenu @ref="navMenu" />
     </div>
 
     <main>
-        <article class="content px-4">
+        <article class="content px-4" @onclick="() => navMenu?.CollapseNavMenu()">
             @Body
         </article>
     </main>
 </div>
+
+@code {
+    private NavMenu? navMenu;
+}
