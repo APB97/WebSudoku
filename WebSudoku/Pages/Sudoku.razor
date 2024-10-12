@@ -251,19 +251,6 @@ else
         }
     }
 
-    private async Task SelectAsync(int row, int column)
-    {
-        if (module is null) return;
-        try
-        {
-            await module.InvokeVoidAsync("selectCell", row, column);
-        }
-        catch
-        {
-            Console.WriteLine("missing selectCell");
-        }
-    }
-
     private async Task FocusAsync(int row, int column)
     {
         if (module is null) return;

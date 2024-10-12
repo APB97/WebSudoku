@@ -32,6 +32,9 @@ else
     [Parameter]
     public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
 
+    /// <summary>
+    /// If true, input type changes between 'text' and 'number' on gaining and losing focus. Can be set to show numeric keyboard on mobile.
+    /// </summary>
     [Parameter]
     public bool SwitchTypeOnFocus { get; set; } = true;
 

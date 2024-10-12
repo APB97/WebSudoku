@@ -12,8 +12,3 @@ export function blurCell(row, column) {
     let cell = document.querySelector(`table.sudoku-table > tr:nth-child(${row}) > td:nth-child(${column}) > input`);
     cell.blur();
 }
-
-export function selectCell(row, column) {
-    let cell = document.querySelector(`table.sudoku-table > tr:nth-child(${row}) > td:nth-child(${column}) > input`);
-    cell.select();
-}
