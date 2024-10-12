@@ -5,7 +5,7 @@
 }
 else
 {
-    <InputText maxlength="1" Value="@Value" ValueChanged="OnChange" ValueExpression="() => Value" @onfocus="OnFocus"
+    <InputText maxlength="1" min="0" max="9" Value="@Value" ValueChanged="OnChange" ValueExpression="() => Value" @onfocus="OnFocus"
         class="@($"{HighlightColor ?? string.Empty} text-center sudoku-input input-editable")"
         type="@type"
         @onblur="OnBlur"
