@@ -26,6 +26,7 @@
                     <tr>
                         @for (int c = 0; c < Board.BoardSize; c++)
                         {
+                            // these local variables are needed to cache position of Cell on the board
                             int row = r, column = c;
                             var value = board.GetValueAt((row, column));
                             string cellValue = value != 0 ? value.ToString() : string.Empty;
@@ -46,43 +47,9 @@
             <button class="btn btn-primary" @onclick="Save">Save</button>
             <button class="btn btn-primary" @onclick="Load">Load</button>
             <button class="btn btn-purple" onclick="print()">Print</button>
-            <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? "Hide" : "Show") print settings</button>
-
-            @if (showPrintSettings)
-            {
-                <p><b>Print settings</b></p>
-
-                <div class="d-flex">
-                    <InputCheckbox @bind-Value="printFilledValues"></InputCheckbox>
-                    <label @onclick="() => printFilledValues = !printFilledValues" class="user-select-none">Print filled values</label>
-                </div>
-                @if (printFilledValues)
-                {
-                    <div class="d-flex">
-                        <InputCheckbox @bind-Value="printHighlightedErrors"></InputCheckbox>
-                        <label @onclick="() => printHighlightedErrors = !printHighlightedErrors" class="user-select-none">Print highlighted errors</label>
-                    </div>
-                }
-            }
+            <PrintSettings />
         </div>
     </div>
-
-    @if (printHighlightedErrors && printFilledValues)
-    {
-        <style>
-            .input-editable.error-highlight {
-                --cell-error-highlight: rgb(255, 95, 95) !important;
-            }
-        </style>
-    }
-    @if (printFilledValues)
-    {
-        <style>
-            .input-editable {
-                --cell-editable-text-color: gray !important;
-            }
-        </style>
-    }
 }
 else
 {
@@ -108,12 +75,6 @@ else
     private List<CellPosition> InvalidCells = new List<CellPosition>();
 
     private TimerDisplay? timer;
-
-    private bool showPrintSettings;
-
-    private bool printHighlightedErrors;
-
-    private bool printFilledValues;
 
     private LocalStorage? localStorage;
 

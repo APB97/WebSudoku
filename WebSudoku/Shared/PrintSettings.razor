@@ -1,0 +1,78 @@
+﻿@inject IJSRuntime JS
+
+<button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? "Hide" : "Show") print settings</button>
+
+@if (showPrintSettings)
+{
+    <h6><b>Print settings</b></h6>
+
+    <div class="d-flex">
+        <InputCheckbox Value="printFilledValues" ValueExpression="() => printFilledValues" ValueChanged="PrintFilledValuesChanged" />
+        <label @onclick="() => PrintFilledValuesChanged(!printFilledValues)" class="user-select-none">Print filled values</label>
+    </div>
+    @if (printFilledValues)
+    {
+        <div class="d-flex">
+            <InputCheckbox Value="printHighlightedErrors" ValueExpression="() => printHighlightedErrors" ValueChanged="PrintHighlightedErrorsChanged" />
+            <label @onclick="() => PrintHighlightedErrorsChanged(!printHighlightedErrors)" class="user-select-none">Print highlighted errors</label>
+        </div>
+    }
+}
+
+@if (printHighlightedErrors && printFilledValues)
+{
+    <style>
+        .input-editable.error-highlight {
+            --cell-error-highlight: rgb(255, 95, 95) !important;
+        }
+    </style>
+}
+@if (printFilledValues)
+{
+    <style>
+        .input-editable {
+            --cell-editable-text-color: gray !important;
+        }
+    </style>
+}
+
+@code {
+    private bool showPrintSettings;
+
+    private bool printHighlightedErrors;
+
+    private bool printFilledValues;
+
+    private IJSObjectReference? module;
+
+    protected override async Task OnInitializedAsync()
+    {
+        module = await JS.InvokeAsync<IJSObjectReference>("import", "./Shared/PrintSettings.razor.js");
+
+        await LoadSetting(v => printFilledValues = v, nameof(printFilledValues));
+        await LoadSetting(v => printHighlightedErrors = v, nameof(printHighlightedErrors));
+    }
+
+    private async Task LoadSetting(Action<bool> setting, string key)
+    {
+        if (module is null) return;
+        var value = await module.InvokeAsync<string>("getSetting", key);
+
+        if (value is null || !bool.TryParse(value, out var result)) return;
+        setting.Invoke(result);
+    }
+
+    private async Task PrintFilledValuesChanged(bool toggle)
+    {
+        printFilledValues = toggle;
+        if (module is null) return;
+        await module.InvokeVoidAsync("setSetting", nameof(printFilledValues), toggle);
+    }
+
+    private async Task PrintHighlightedErrorsChanged(bool toggle)
+    {
+        printHighlightedErrors = toggle;
+        if (module is null) return;
+        await module.InvokeVoidAsync("setSetting", nameof(printHighlightedErrors), toggle);
+    }
+}
