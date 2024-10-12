@@ -30,7 +30,7 @@
                             var value = board.GetValueAt((row, column));
                             string cellValue = value != 0 ? value.ToString() : string.Empty;
                             <td>
-                                <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
+                                <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightClass="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
                                     Value="@cellValue"
                                     OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1, cells[row, column])"
                                     SwitchTypeOnFocus="isMobile"

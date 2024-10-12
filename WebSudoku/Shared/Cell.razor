@@ -6,7 +6,7 @@
 else
 {
     <InputText maxlength="1" min="0" max="9" Value="@Value" ValueChanged="OnChange" ValueExpression="() => Value" @onfocus="OnFocus"
-        class="@($"{HighlightColor ?? string.Empty} text-center sudoku-input input-editable")"
+        class="@($"{HighlightClass ?? string.Empty} text-center sudoku-input input-editable")"
         type="@type"
         @onblur="OnBlur"
         @onkeydown="OnKeyDown"
@@ -15,11 +15,11 @@ else
 }
 
 @code {
-    [Parameter]
-    public string? HighlightColor { get; set; } = null;
+    public const string InputTypeText = "text";
+    public const string InputTypeNumber = "number";
 
     [Parameter]
-    public EventCallback<ChangeEventArgs> OnValueChanged { get; set; }
+    public string? HighlightClass { get; set; } = null;
 
     [Parameter]
     public bool ReadOnly { get; set; }
@@ -27,7 +27,7 @@ else
     [Parameter]
     public string Value { get; set; } = string.Empty;
 
-    private string type = "text";
+    private string type = InputTypeText;
 
     [Parameter]
     public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
@@ -41,10 +41,6 @@ else
         {
             Value = value;
         }
-        else if (value.Length >= 2)
-        {
-            Value = value.Substring(1);
-        }
         else
         {
             Value = string.Empty;
@@ -55,12 +51,12 @@ else
     {
         OnChange(Value);
         if (!SwitchTypeOnFocus) return;
-        type = "text";
+        type = InputTypeText;
     }
 
     private void OnFocus()
     {
         if (!SwitchTypeOnFocus) return;
-        type = "number";
+        type = InputTypeNumber;
     }
 }
