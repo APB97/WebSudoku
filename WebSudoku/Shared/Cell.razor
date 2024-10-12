@@ -9,7 +9,9 @@ else
         class="@($"{HighlightColor ?? string.Empty} text-center sudoku-input input-editable")"
         type="@type"
         @onblur="OnBlur"
-        @onkeydown="OnKeyDown" />
+        @onkeydown="OnKeyDown"
+        oninput="this.value = this.value.length > 1 ? this.value.substr(0, 1) : this.value"
+        />
 }
 
 @code {
@@ -33,22 +35,25 @@ else
     [Parameter]
     public bool SwitchTypeOnFocus { get; set; } = true;
 
-    private async Task OnChange(string value)
+    public void OnChange(string value)
     {
-        if (value is string text && int.TryParse(text, out var number) && number >= 1 && number <= 9)
+        if (int.TryParse(value, out var number) && number >= 1 && number <= 9)
         {
-            await OnValueChanged.InvokeAsync(new ChangeEventArgs { Value = number });
+            Value = value;
+        }
+        else if (value.Length >= 2)
+        {
+            Value = value.Substring(1);
         }
         else
         {
             Value = string.Empty;
-            await OnValueChanged.InvokeAsync(new ChangeEventArgs { Value = null });
         }
-        HighlightColor = null;
     }
 
     private void OnBlur()
     {
+        OnChange(Value);
         if (!SwitchTypeOnFocus) return;
         type = "text";
     }

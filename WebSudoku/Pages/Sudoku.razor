@@ -31,7 +31,7 @@
                             string cellValue = value != 0 ? value.ToString() : string.Empty;
                             <td>
                                 <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
-                                    Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"
+                                    Value="@cellValue"
                                     OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1, cells[row, column])"
                                     SwitchTypeOnFocus="isMobile"
                                     />
@@ -190,15 +190,6 @@ else
         board = new Board(Solver, new RandomOptionOrder<int>(), Blanker, TargetBlanks, AttemptsToRemove);
     }
 
-    protected void OnCellChanged(int row, int column, ChangeEventArgs args)
-    {
-        if (board.EmptyCells.Count == 0 && Validator.IsValidBoard(board))
-        {
-            success = true;
-            timePassed = timer?.SpanToShow;
-        }
-    }
-
     private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column, Cell currentCell)
     {
         if (args.AltKey || args.ShiftKey || args.MetaKey || args.CtrlKey) return;
@@ -230,9 +221,9 @@ else
 
         if (board.IsPredefined((row - 1, column - 1))) return;
 
-        if (int.TryParse(args.Key, out var number))
+        if (int.TryParse(args.Key, out var number) && number >= 1 && number <= 9)
         {
-            await UpdateCellAsync(row, column, currentCell, number);
+            UpdateCellAsync(row, column, currentCell, number);
             CheckForWinCondition();
         }
         else
@@ -244,14 +235,10 @@ else
         }
     }
 
-    private async Task UpdateCellAsync(int row, int column, Cell currentCell, int number)
+    private void UpdateCellAsync(int row, int column, Cell currentCell, int number)
     {
-        await SelectAsync(row, column);
-
-        await currentCell.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(currentCell.Value), string.Empty } }));
         board.FillCell((row - 1, column - 1), number);
-        await currentCell.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(currentCell.Value), number.ToString() } }));
-
+        currentCell.OnChange(number.ToString());
         InvalidCells = board.GetInvalidCells(Validator);
     }
 
@@ -267,7 +254,14 @@ else
     private async Task SelectAsync(int row, int column)
     {
         if (module is null) return;
-        await module.InvokeVoidAsync("selectCell", row, column);
+        try
+        {
+            await module.InvokeVoidAsync("selectCell", row, column);
+        }
+        catch
+        {
+            Console.WriteLine("missing selectCell");
+        }
     }
 
     private async Task FocusAsync(int row, int column)
