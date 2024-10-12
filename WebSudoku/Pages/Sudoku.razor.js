@@ -1,6 +1,5 @@
-﻿export function isFirefox()
-{
-    return /firefox/i.test(navigator.userAgent) && !/mobile/i.test(navigator.userAgent);
+﻿export function isMobile() {
+    return /android|ios|mobile|phone/i.test(navigator.userAgent);
 }
 
 export function focusCell(row, column) {
@@ -12,4 +11,9 @@ export function focusCell(row, column) {
 export function blurCell(row, column) {
     let cell = document.querySelector(`table.sudoku-table > tr:nth-child(${row}) > td:nth-child(${column}) > input`);
     cell.blur();
+}
+
+export function selectCell(row, column) {
+    let cell = document.querySelector(`table.sudoku-table > tr:nth-child(${row}) > td:nth-child(${column}) > input`);
+    cell.select();
 }

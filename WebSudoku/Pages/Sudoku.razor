@@ -30,10 +30,11 @@
                             var value = board.GetValueAt((row, column));
                             string cellValue = value != 0 ? value.ToString() : string.Empty;
                             <td>
-                                <Cell ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
+                                <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightColor="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
                                     Value="@cellValue" OnValueChanged="(args) => OnCellChanged(row, column, args)"
-                                    OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
-                                    SwitchTypeOnFocus="!isFirefox"/>
+                                    OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1, cells[row, column])"
+                                    SwitchTypeOnFocus="isMobile"
+                                    />
                             </td>
                         }
                     </tr>
@@ -118,7 +119,9 @@ else
 
     private IJSObjectReference? module;
 
-    private bool isFirefox;
+    private bool isMobile;
+
+    private Cell[,] cells = new Cell[Board.BoardSize, Board.BoardSize];
 
     protected override async Task OnInitializedAsync()
     {
@@ -127,7 +130,14 @@ else
         module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Sudoku.razor.js");
         if (module != null)
         {
-            isFirefox = await module.InvokeAsync<bool>("isFirefox");
+            try
+            {
+                isMobile = await module.InvokeAsync<bool>("isMobile");
+            }
+            catch
+            {
+                isMobile = false;
+            }
         }
 
         CreateNewBoard();
@@ -153,7 +163,7 @@ else
             {
                 board = loadedBoard;
                 timer?.SetTime(loadedTimer.Value);
-                InvalidCells.Clear();
+                InvalidCells = board.GetInvalidCells(Validator);
             }
             else
             {
@@ -162,7 +172,7 @@ else
                 if (v1board != null)
                 {
                     board = v1board;
-                    InvalidCells.Clear();
+                    InvalidCells = board.GetInvalidCells(Validator);
                 }
 
                 var jsonTimer = await localStorage.GetItem(TimerStateKey);
@@ -182,18 +192,6 @@ else
 
     protected void OnCellChanged(int row, int column, ChangeEventArgs args)
     {
-        if (args.Value is null)
-        {
-            board.ClearCell((row, column));
-            InvalidCells.Remove((row, column));
-            InvalidCells.RemoveAll(cell => Validator.IsValid(board, cell));
-        }
-        else if (args.Value is int number && number != board.GetValueAt((row, column)))
-        {
-            board.FillCell((row, column), number);
-            InvalidCells = board.GetInvalidCells(Validator);
-        }
-
         if (board.EmptyCells.Count == 0 && Validator.IsValidBoard(board))
         {
             success = true;
@@ -201,33 +199,84 @@ else
         }
     }
 
-    private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column)
+    private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column, Cell currentCell)
     {
-        await Blur(row, column);
+        if (args.AltKey || args.ShiftKey || args.MetaKey || args.CtrlKey) return;
         switch (args.Code)
         {
             case KeyCodes.ArrowLeft:
-                await Focus(row, column == 1 ? 9 : column - 1);
-                break;
+                await BlurAsync(row, column);
+                await FocusAsync(row, column == 1 ? 9 : column - 1);
+                return;
             case KeyCodes.ArrowRight:
-                await Focus(row, column == 9 ? 1 : column + 1);
-                break;
+                await BlurAsync(row, column);
+                await FocusAsync(row, column == 9 ? 1 : column + 1);
+                return;
             case KeyCodes.ArrowUp:
-                await Focus(row == 1 ? 9 : row - 1, column);
-                break;
+                await BlurAsync(row, column);
+                await FocusAsync(row == 1 ? 9 : row - 1, column);
+                return;
             case KeyCodes.ArrowDown:
-                await Focus(row == 9 ? 1 : row + 1, column);
-                break;
+                await BlurAsync(row, column);
+                await FocusAsync(row == 9 ? 1 : row + 1, column);
+                return;
+            case KeyCodes.CapsLock:
+            case KeyCodes.Tab:
+            case KeyCodes.Enter:
+            case KeyCodes.Backspace:
+            case KeyCodes.Delete:
+                return;
+        }
+
+        if (board.IsPredefined((row - 1, column - 1))) return;
+
+        if (int.TryParse(args.Key, out var number))
+        {
+            await UpdateCellAsync(row, column, currentCell, number);
+            CheckForWinCondition();
+        }
+        else
+        {
+            await currentCell.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(currentCell.Value), string.Empty } }));
+            board.ClearCell((row - 1, column - 1));
+            InvalidCells.Remove((row - 1, column - 1));
+            InvalidCells.RemoveAll(cell => Validator.IsValid(board, cell));
         }
     }
 
-    private async Task Focus(int row, int column)
+    private async Task UpdateCellAsync(int row, int column, Cell currentCell, int number)
+    {
+        await SelectAsync(row, column);
+
+        await currentCell.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(currentCell.Value), string.Empty } }));
+        board.FillCell((row - 1, column - 1), number);
+        await currentCell.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(currentCell.Value), number.ToString() } }));
+
+        InvalidCells = board.GetInvalidCells(Validator);
+    }
+
+    private void CheckForWinCondition()
+    {
+        if (board.EmptyCells.Count == 0 && Validator.IsValidBoard(board))
+        {
+            success = true;
+            timePassed = timer?.SpanToShow;
+        }
+    }
+
+    private async Task SelectAsync(int row, int column)
+    {
+        if (module is null) return;
+        await module.InvokeVoidAsync("selectCell", row, column);
+    }
+
+    private async Task FocusAsync(int row, int column)
     {
         if (module is null) return;
         await module.InvokeVoidAsync("focusCell", row, column);
     }
 
-    private async Task Blur(int row, int column)
+    private async Task BlurAsync(int row, int column)
     {
         if (module is null) return;
         await module.InvokeVoidAsync("blurCell", row, column);
