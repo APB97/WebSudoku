@@ -148,6 +148,26 @@ main[b-834vkyk4rs] {
         overflow-y: auto;
     }
 }
+/* /Pages/PrintMultiple.razor.rz.scp.css */
+.sudoku-table > tbody > tr > td[b-9u40iigr4e], .sudoku-table > tr > td[b-9u40iigr4e] {
+    border: 2px solid black;
+}
+
+.sudoku-table > tbody > tr:nth-child(3n) > td[b-9u40iigr4e], .sudoku-table > tr:nth-child(3n) > td[b-9u40iigr4e] {
+    border-bottom: 4px solid black !important;
+}
+
+.sudoku-table > tbody > tr:last-child > td[b-9u40iigr4e], .sudoku-table > tr:last-child > td[b-9u40iigr4e] {
+    border-bottom: 2px solid black !important;
+}
+
+.sudoku-table > tbody > tr > td:nth-child(3n)[b-9u40iigr4e], .sudoku-table > tr > td:nth-child(3n)[b-9u40iigr4e] {
+    border-right: 4px solid black !important;
+}
+
+.sudoku-table > tbody > tr > td:last-child[b-9u40iigr4e], .sudoku-table > tr > td:last-child[b-9u40iigr4e] {
+    border-right: 2px solid black !important;
+}
 /* /Pages/Sudoku.razor.rz.scp.css */
 .sudoku-table > tbody > tr > td[b-245jprxzxn], .sudoku-table > tr > td[b-245jprxzxn] {
     border: 2px solid black;
