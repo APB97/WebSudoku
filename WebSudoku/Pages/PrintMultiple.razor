@@ -1,0 +1,70 @@
+﻿@page "/printMultiple"
+
+@using WebSudoku.Shared
+@using WebSudoku.Shared.General
+@using WebSudoku.Shared.Sudoku
+
+@inject CountingSolver Solver
+@inject Blanker Blanker
+@inject Validator Validator
+
+<div class="hide-in-print">
+    <button class="btn btn-danger" @onclick="boards.Clear">Clear all</button>
+    <button class="btn btn-primary" @onclick="() => GenerateBoards(2)">Prepare 2 sudokus</button>
+    <button class="btn btn-secondary" @onclick="() => GenerateBoards(4)">Prepare 4 sudokus</button>
+    <button class="btn btn-primary" @onclick="() => GenerateBoards(8)">Prepare 8 sudokus</button>
+    <button class="btn btn-secondary" onclick="print()">Print</button>
+</div>
+
+@if (generating)
+{
+    <div class="border border-2 border-info">Generating additional sudokus...</div>
+}
+
+<div class="d-flex flex-wrap">
+    @foreach (var board in boards)
+    {
+        <div class="p-2" style="break-inside: avoid-page; width: 50%;">
+            <table class="sudoku-table" style="border-spacing: 0px;">
+                @for (int r = 0; r < Board.BoardSize; r++)
+                {
+                    <tr>
+                        @for (int c = 0; c < Board.BoardSize; c++)
+                        {
+                            // these local variables are needed to cache position of Cell on the board
+                            int row = r, column = c;
+                            var value = board.GetValueAt((row, column));
+                            string cellValue = value != 0 ? value.ToString() : string.Empty;
+                            <td>
+                                <Cell ReadOnly="true" HighlightClass="@null"
+                                    Value="@cellValue"
+                                    SwitchTypeOnFocus="false"
+                                    />
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+    private List<Board> boards = [];
+
+    private bool generating;
+
+    private async Task GenerateBoards(int amount)
+    {
+        generating = true;
+        await Task.Run(() =>
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                boards.Add(new Board(Solver, new RandomOptionOrder<int>(), Blanker, 40, 64));
+            }
+            generating = false;
+            StateHasChanged();
+        });
+    }
+}
