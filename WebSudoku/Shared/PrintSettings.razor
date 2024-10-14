@@ -47,7 +47,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        module = await JS.InvokeAsync<IJSObjectReference>("import", "./Shared/PrintSettings.razor.js");
+        module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/utilities.js");
 
         await LoadSetting(v => printFilledValues = v, nameof(printFilledValues));
         await LoadSetting(v => printHighlightedErrors = v, nameof(printHighlightedErrors));

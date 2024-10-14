@@ -15,7 +15,7 @@
 <div class="hide-in-print">
     <button class="btn btn-danger" @onclick="boards.Clear">Clear all</button>
     <label for="width">Board width [%]</label>
-    <InputSelect id="width" @bind-Value="boardWidthPercentage">
+    <InputSelect id="width" TValue="float" Value="boardWidthPercentage" ValueExpression="() => boardWidthPercentage" ValueChanged="UpdateBoardWidth">
         <option value="33,3333">33%</option>
         <option value="50">50%</option>
         <option value="100">100%</option>
@@ -71,6 +71,16 @@
     protected override async Task OnInitializedAsync()
     {
         utilities = await JS.InvokeAsync<IJSObjectReference>("import", "./js/utilities.js");
+        var setting = await utilities.InvokeAsync<string>("getSetting", "printMultiple_boardWidthPercentage");
+        if (!float.TryParse(setting, out var result)) return;
+        boardWidthPercentage = result;
+    }
+
+    private async Task UpdateBoardWidth(float width)
+    {
+        boardWidthPercentage = width;
+        if (utilities is null) return;
+        await utilities.InvokeVoidAsync("setSetting", "printMultiple_boardWidthPercentage", width);
     }
 
     private async Task GenerateBoards(int amount)
