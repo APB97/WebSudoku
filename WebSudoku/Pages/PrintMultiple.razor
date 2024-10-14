@@ -5,9 +5,12 @@
 @using WebSudoku.Shared.General
 @using WebSudoku.Shared.Sudoku
 
+@implements IAsyncDisposable
+
 @inject CountingSolver Solver
 @inject Blanker Blanker
 @inject Validator Validator
+@inject IJSRuntime JS
 
 <div class="hide-in-print">
     <button class="btn btn-danger" @onclick="boards.Clear">Clear all</button>
@@ -63,17 +66,44 @@
 
     private float boardWidthPercentage = 100;
 
+    private IJSObjectReference? utilities;
+
+    protected override async Task OnInitializedAsync()
+    {
+        utilities = await JS.InvokeAsync<IJSObjectReference>("import", "./js/utilities.js");
+    }
+
     private async Task GenerateBoards(int amount)
     {
         generating = true;
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
-            for (int i = 0; i < amount; i++)
+            try
             {
-                boards.Add(new Board(Solver, new RandomOptionOrder<int>(), Blanker, 40, 64));
+                for (int i = 0; i < amount; i++)
+                {
+                    generating = true;
+                    boards.Add(new Board(Solver, new RandomOptionOrder<int>(), Blanker, 40, 64));
+                }
             }
-            generating = false;
+            catch (Exception ex)
+            {
+                if (utilities is not null)
+                {
+                    await utilities.InvokeVoidAsync("alert", ex.Message);
+                }
+            }
+            finally
+            {
+                generating = false;
+            }
             StateHasChanged();
         });
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (utilities is null) return;
+        await utilities.DisposeAsync();
     }
 }

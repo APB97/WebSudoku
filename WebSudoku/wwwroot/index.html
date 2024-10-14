@@ -21,24 +21,13 @@
         <div class="loading-progress-text"></div>
     </div>
 
-    <div id="blazor-error-ui">
+    <div id="blazor-error-ui" class="hide-in-print">
         An unhandled error has occurred.
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="js/sudoku-cell-focus.js"></script>
-    <script>
-        function redirect() {
-            var indexOfHash = document.location.href.indexOf('#');
-            if (indexOfHash >= 0) {
-                var hash = document.location.href.substr(indexOfHash);
-                var destination = document.location.href.replace(hash, '');
-                destination = destination + hash.replace('#', '').replace(/\/*/, '');
-                document.location.replace(destination);
-            }
-        }
-    </script>
 </body>
 
 </html>
