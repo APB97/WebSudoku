@@ -1,5 +1,6 @@
 ﻿@page "/printMultiple"
 
+@using System.Globalization
 @using WebSudoku.Shared
 @using WebSudoku.Shared.General
 @using WebSudoku.Shared.Sudoku
@@ -10,6 +11,12 @@
 
 <div class="hide-in-print">
     <button class="btn btn-danger" @onclick="boards.Clear">Clear all</button>
+    <label for="width">Board width [%]</label>
+    <InputSelect id="width" @bind-Value="boardWidthPercentage">
+        <option value="33,3333">33%</option>
+        <option value="50">50%</option>
+        <option value="100">100%</option>
+    </InputSelect>
     <button class="btn btn-primary" @onclick="() => GenerateBoards(2)">Prepare 2 sudokus</button>
     <button class="btn btn-secondary" @onclick="() => GenerateBoards(4)">Prepare 4 sudokus</button>
     <button class="btn btn-primary" @onclick="() => GenerateBoards(8)">Prepare 8 sudokus</button>
@@ -24,7 +31,7 @@
 <div class="d-flex flex-wrap">
     @foreach (var board in boards)
     {
-        <div class="p-2" style="break-inside: avoid-page; width: 50%;">
+        <div class="p-2" style="break-inside: avoid-page; width: @boardWidthPercentage.ToString(CultureInfo.InvariantCulture)%;">
             <table class="sudoku-table" style="border-spacing: 0px;">
                 @for (int r = 0; r < Board.BoardSize; r++)
                 {
@@ -53,6 +60,8 @@
     private List<Board> boards = [];
 
     private bool generating;
+
+    private float boardWidthPercentage = 100;
 
     private async Task GenerateBoards(int amount)
     {
