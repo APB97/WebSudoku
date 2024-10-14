@@ -6,6 +6,7 @@ namespace WebSudoku.Extensions
     {
         private const string AlertFunction = "alert";
         private const string SetSettingFunction = "setSetting";
+        private const string GetSettingFunction = "getSetting";
 
         /// <summary>
         /// Show simple alert message
@@ -32,7 +33,7 @@ namespace WebSudoku.Extensions
         /// <param name="utilitiesModule">JavaScript Module "./js/utilities.js"</param>
         public static async Task<T?> GetSetting<T>(this IJSObjectReference utilitiesModule, string key)
         {
-            return await utilitiesModule.InvokeAsync<T>(SetSettingFunction, key);
+            return await utilitiesModule.InvokeAsync<T>(GetSettingFunction, key);
         }
     }
 }
