@@ -73,7 +73,7 @@
     {
         utilities = await JS.InvokeAsync<IJSObjectReference>("import", "./js/utilities.js");
         var setting = await utilities.GetSetting<string>("printMultiple_boardWidthPercentage");
-        if (!float.TryParse(setting, out var result)) return;
+        if (!float.TryParse(setting, CultureInfo.InvariantCulture, out var result)) return;
         boardWidthPercentage = result;
     }
 
