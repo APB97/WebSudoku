@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime JS
+﻿@using WebSudoku.Extensions
+@inject IJSRuntime JS
 
 <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? "Hide" : "Show") print settings</button>
 
@@ -56,7 +57,7 @@
     private async Task LoadSetting(Action<bool> setting, string key)
     {
         if (module is null) return;
-        var value = await module.InvokeAsync<string>("getSetting", key);
+        var value = await module.GetSetting<string>(key);
 
         if (value is null || !bool.TryParse(value, out var result)) return;
         setting.Invoke(result);
@@ -66,13 +67,13 @@
     {
         printFilledValues = toggle;
         if (module is null) return;
-        await module.InvokeVoidAsync("setSetting", nameof(printFilledValues), toggle);
+        await module.SetSetting(nameof(printFilledValues), toggle);
     }
 
     private async Task PrintHighlightedErrorsChanged(bool toggle)
     {
         printHighlightedErrors = toggle;
         if (module is null) return;
-        await module.InvokeVoidAsync("setSetting", nameof(printHighlightedErrors), toggle);
+        await module.SetSetting(nameof(printHighlightedErrors), toggle);
     }
 }
