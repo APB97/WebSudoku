@@ -38,6 +38,14 @@ else
     [Parameter]
     public bool SwitchTypeOnFocus { get; set; } = true;
 
+    [Parameter]
+    public string DefaultType { get; set; } = InputTypeText;
+
+    protected override void OnInitialized()
+    {
+        type = DefaultType;
+    }
+
     public void OnChange(string value)
     {
         if (int.TryParse(value, out var number) && number >= 1 && number <= 9)
@@ -54,7 +62,7 @@ else
     {
         OnChange(Value);
         if (!SwitchTypeOnFocus) return;
-        type = InputTypeText;
+        type = DefaultType;
     }
 
     private void OnFocus()

@@ -35,6 +35,7 @@
                                     Value="@cellValue"
                                     OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1, cells[row, column])"
                                     SwitchTypeOnFocus="isMobile"
+                                    DefaultType="@(isFirefox && isMobile ? Cell.InputTypeNumber : Cell.InputTypeText)"
                                     />
                             </td>
                         }
@@ -82,6 +83,8 @@ else
 
     private bool isMobile;
 
+    private bool isFirefox;
+
     private Cell[,] cells = new Cell[Board.BoardSize, Board.BoardSize];
 
     protected override async Task OnInitializedAsync()
@@ -94,10 +97,12 @@ else
             try
             {
                 isMobile = await module.InvokeAsync<bool>("isMobile");
+                isFirefox = await module.InvokeAsync<bool>("isFirefox");
             }
             catch
             {
                 isMobile = false;
+                isFirefox = false;
             }
         }
 
