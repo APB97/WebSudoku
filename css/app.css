@@ -1,6 +1,13 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    min-height: 100%;
+    --page-bg-color: rgb(30, 30, 30);
+    --page-fg-color: white;
+    background-color: var(--page-bg-color);
+    color: var(--page-fg-color);
+}
+
+input {
+    --cell-editable-text-color: rgb(168, 168, 186);
 }
 
 h1:focus {
@@ -115,7 +122,6 @@ button.btn-purple:hover {
 
 .sudoku-input {
     font-weight: normal;
-    color: black;
     padding: 0px;
     position: relative;
     width: 100%;
@@ -128,10 +134,8 @@ button.btn-purple:hover {
 }
 
 .input-editable {
-    --cell-editable-text-color: transparent;
     --cell-error-highlight: transparent;
-    color: gray;
-    background-color: white;
+    color: var(--cell-editable-text-color) !important;
     font-size: smaller;
 }
 
@@ -140,6 +144,10 @@ button.btn-purple:hover {
 }
 
 @media print {
+    html, body {
+        background-color: white;
+    }
+
     .hide-in-print {
         display: none !important;
     }
@@ -148,8 +156,20 @@ button.btn-purple:hover {
         width: 100% !important;
     }
 
+    .input-readonly {
+        color: black !important;
+        background-color: white !important;
+    }
+
     .input-editable {
-        color: var(--cell-editable-text-color) !important;
+        --cell-editable-text-color: transparent;
         background-color: var(--cell-error-highlight) !important;
     }
+}
+
+input {
+    --input-fg-color: white;
+    color: var(--input-fg-color);
+    --input-bg-color: rgb(55, 55, 55);
+    background-color: var(--input-bg-color);
 }
