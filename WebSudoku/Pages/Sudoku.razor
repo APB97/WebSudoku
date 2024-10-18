@@ -179,10 +179,23 @@ else
                 return;
             case KeyCodes.CapsLock:
             case KeyCodes.Tab:
-            case KeyCodes.Enter:
             case KeyCodes.Backspace:
             case KeyCodes.Delete:
                 return;
+            case KeyCodes.Enter:
+                await BlurAsync(row, column);
+                column++;
+                if (column > 9)
+                {
+                    column -= 9;
+                    row++;
+                    if (row > 9)
+                    {
+                        row -= 9;
+                    }
+                }
+                await FocusAsync(row, column);
+            return;
         }
 
         if (board.IsPredefined((row - 1, column - 1))) return;
