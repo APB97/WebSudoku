@@ -4,11 +4,12 @@ Sudoku made with Blazor WebAssembly
 ## Description
 
 This Blazor WebAssembly application includes features like:
-- Navigation with arrow keys
+- Navigation with arrow keys allowing to move between first and last cell in a row or a column by wrapping around
 - Save and Load
-- Validation for highlighting invalid cell values
-- Printing of sudoku board with adjustable settings for printing already filled values and highlighted errors
-- Timer showing time spent on sudoku board
+- Automatic validation with sudoku rules for highlighting invalid cell values while entering values
+- Printing of current sudoku board with adjustable settings for printing already filled values and highlighted errors
+- Printing mulitple sudoku boards, adjustable by 2, 4 or 8 additional sudoku boards at once
+- Timer showing time spent on sudoku board that is saved and loaded along with board state
 
 ![Screenshot - sudoku board](https://github.com/user-attachments/assets/68eca74d-6ba5-4596-8d90-e6dea4554692)
 
