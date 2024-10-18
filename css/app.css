@@ -7,7 +7,7 @@ html, body {
 }
 
 input {
-    --cell-editable-text-color: rgb(168, 168, 186);
+    --cell-editable-text-color: rgb(168, 168, 168);
 }
 
 h1:focus {
