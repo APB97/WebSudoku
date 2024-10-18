@@ -32,4 +32,8 @@
     <ProjectReference Include="..\WebSudoku.Shared\WebSudoku.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

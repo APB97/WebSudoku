@@ -23,16 +23,20 @@
 @if (printHighlightedErrors && printFilledValues)
 {
     <style>
-        .input-editable.error-highlight {
-            --cell-error-highlight: rgb(255, 95, 95) !important;
+        @@media print{
+            .input-editable.error-highlight {
+                --cell-error-highlight: rgb(255, 95, 95) !important;
+            }
         }
     </style>
 }
 @if (printFilledValues)
 {
     <style>
-        .input-editable {
-            --cell-editable-text-color: gray !important;
+        @@media print {
+            .input-editable {
+                --cell-editable-text-color: gray !important;
+            }
         }
     </style>
 }

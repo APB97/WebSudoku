@@ -1,18 +1,65 @@
 ﻿@using WebSudoku.Shared
 @inherits LayoutComponentBase
+@implements IAsyncDisposable
 
-<div class="page">
-    <div class="sidebar hide-in-print d-flex flex-column">
-        <NavMenu @ref="navMenu" />
+@inject IJSRuntime JS
+
+@if (LayoutMode == "Light")
+{
+    <style>
+        * {
+            --page-bg-color: white !important;
+            --page-fg-color: black !important;
+            --tags-bg-color: linear-gradient(transparent 60%, purple) !important;
+            --code-color: #5e00ef !important;
+            --input-bg-color: white !important;
+            --input-fg-color: black !important;
+            --link-color: #0068ff !important;
+            --cell-editable-text-color: lightgray;
+        }
+    </style>
+}
+
+<CascadingValue Value="this">
+    <div class="page">
+        <div class="sidebar hide-in-print d-flex flex-column">
+            <NavMenu @ref="navMenu" />
+        </div>
+
+        <main>
+            <article class="content px-4" @onclick="() => navMenu?.CollapseNavMenu()">
+                @Body
+            </article>
+        </main>
     </div>
-
-    <main>
-        <article class="content px-4" @onclick="() => navMenu?.CollapseNavMenu()">
-            @Body
-        </article>
-    </main>
-</div>
+</CascadingValue>
 
 @code {
     private NavMenu? navMenu;
+
+    private IJSObjectReference? utilitiesModule;
+
+    public string LayoutMode { get; private set; } = "Dark";
+
+    protected override async Task OnInitializedAsync()
+    {
+        utilitiesModule = await JS.InvokeAsync<IJSObjectReference>("import", "./js/utilities.js");
+        var mode = await utilitiesModule.GetSetting<string>("LayoutMode");
+        if (mode is null) return;
+        LayoutMode = mode;
+    }
+
+    public void ToggleLayoutMode()
+    {
+        LayoutMode = LayoutMode == "Dark" ? "Light" : "Dark";
+        StateHasChanged();
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (utilitiesModule is not null)
+        {
+            await utilitiesModule.DisposeAsync();
+        }
+    }
 }

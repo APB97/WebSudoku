@@ -1,6 +1,20 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/WebSudoku">Web Sudoku</a>
+        <a class="navbar-brand" href="/WebSudoku">APB97</a>
+        <button style="border: none; background-color: transparent; padding: 0;" @onclick="() => Layout.ToggleLayoutMode()">
+            @if (Layout.LayoutMode == "Light")
+            {
+                <div onclick="localStorage.setItem('LayoutMode', 'Dark')">
+                    <img style="height: 2rem; filter: invert(0.95);" src="/images/dark.svg" />
+                </div>
+            }
+            else
+            {
+                <div onclick="localStorage.setItem('LayoutMode', 'Light')">
+                    <img style="height: 2rem; filter: invert(0.95);" src="/images/light.svg" />
+                </div>
+            }
+        </button>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -37,6 +51,9 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    public required MainLayout Layout { get; set; }
+
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
