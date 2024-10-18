@@ -9,6 +9,10 @@ main[b-834vkyk4rs] {
     flex: 1;
 }
 
+.page[b-834vkyk4rs] {
+    min-height: 100vh;
+}
+
 .sidebar[b-834vkyk4rs] {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }
@@ -54,7 +58,7 @@ main[b-834vkyk4rs] {
 
     .sidebar[b-834vkyk4rs] {
         width: 250px;
-        height: 100vh;
+        max-height: 100vh;
         position: sticky;
         top: 0;
     }
