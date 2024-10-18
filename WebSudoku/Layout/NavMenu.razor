@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/WebSudoku">APB97</a>
+        <a class="navbar-brand" href="https://apb97.github.io">APB97</a>
         <button style="border: none; background-color: transparent; padding: 0;" @onclick="() => Layout.ToggleLayoutMode()">
             @if (Layout.LayoutMode == "Light")
             {
@@ -23,11 +23,6 @@
 
 <div style="overflow-y: auto;" class="@NavMenuCssClass" @onclick="CollapseNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
-                Home
-            </NavLink>
-        </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="rules" Match="NavLinkMatch.All">
                 Sudoku Rules
