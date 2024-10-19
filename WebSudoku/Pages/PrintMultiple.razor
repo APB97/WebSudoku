@@ -44,13 +44,11 @@
                     <tr>
                         @for (int c = 0; c < Board.BoardSize; c++)
                         {
-                            // these local variables are needed to cache position of Cell on the board
-                            int row = r, column = c;
-                            var value = board.GetValueAt((row, column));
-                            string cellValue = value != 0 ? value.ToString() : string.Empty;
+                            // these local variable is here to cache value of Cell on the board
+                            var value = board.GetValueAt((r, c));
                             <td>
                                 <Cell ReadOnly="true" HighlightClass="@null"
-                                    Value="@cellValue"
+                                    Value="@(value != 0 ? value.ToString() : string.Empty)"
                                     SwitchTypeOnFocus="false"
                                     />
                             </td>
