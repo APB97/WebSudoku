@@ -1,14 +1,8 @@
-﻿namespace WebSudoku.Shared.Sudoku
+﻿namespace apb97.github.io.WebSudoku.Shared.Sudoku;
+
+public class CountingSolver(Neighbors neighbors) : Solver(neighbors)
 {
-    public class CountingSolver : Solver
-    {
-        public int MaxSolutionCount { get; set; } = 2;
-        
-        public CountingSolver(Neighbors neighbors) : base(neighbors)
-        {
+    public int MaxSolutionCount { get; set; } = 2;
 
-        }
-
-        public override bool ShouldStopAtSolution(int currentCount) => currentCount >= MaxSolutionCount;
-    }
+    public override bool ShouldStopAtSolution(int currentCount) => currentCount >= MaxSolutionCount;
 }

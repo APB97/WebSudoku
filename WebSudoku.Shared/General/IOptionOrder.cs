@@ -1,7 +1,6 @@
-﻿namespace WebSudoku.Shared.General
+﻿namespace apb97.github.io.WebSudoku.Shared.General;
+
+public interface IOptionOrder<T>
 {
-    public interface IOptionOrder<T>
-    {
-        IEnumerable<T> Order(IEnumerable<T> sequence);
-    }
+    IEnumerable<T> Order(IEnumerable<T> sequence);
 }

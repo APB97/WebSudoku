@@ -1,4 +1,4 @@
-﻿namespace WebSudoku.Shared.Sudoku;
+﻿namespace apb97.github.io.WebSudoku.Shared.Sudoku;
 
 public static class GameStateVersion
 {

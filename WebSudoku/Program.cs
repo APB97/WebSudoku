@@ -1,3 +1,5 @@
+using apb97.github.io.WebSudoku;
+using apb97.github.io.WebSudoku.Shared.Sudoku;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using WebSudoku;

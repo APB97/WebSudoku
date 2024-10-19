@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using apb97.github.io.WebSudoku.JSInterop;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using WebSudoku.JSInterop;
 
-namespace WebSudoku.Extensions;
+namespace apb97.github.io.WebSudoku.Extensions;
 
 public static class NavigationManagerExtensions
 {
