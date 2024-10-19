@@ -23,9 +23,9 @@
         <option value="50">50%</option>
         <option value="100">100%</option>
     </InputSelect>
-    <button class="btn btn-primary" @onclick="() => GenerateBoards(2)">Prepare 2 sudokus</button>
-    <button class="btn btn-secondary" @onclick="() => GenerateBoards(4)">Prepare 4 sudokus</button>
-    <button class="btn btn-primary" @onclick="() => GenerateBoards(8)">Prepare 8 sudokus</button>
+    <label for="boards-amount">Boards to generate</label>
+    <InputNumber id="boards-amount" min="1" max="32" @bind-Value="boardsToGenerate" />
+    <button class="btn btn-primary" @onclick="GenerateBoards">Add @boardsToGenerate sudokus</button>
     <button class="btn btn-secondary" onclick="print()">Print</button>
 </div>
 
@@ -58,9 +58,9 @@
                     </tr>
                 }
             </table>
-        </div>
-        <div class="d-print-none">
-
+            <div class="d-print-none">
+                <button class="btn btn-danger" @onclick="() => boards.Remove(board)">Remove board</button>
+            </div>
         </div>
     }
 </div>
@@ -71,6 +71,8 @@
     private bool generating;
 
     private float boardWidthPercentage = 100;
+
+    private int boardsToGenerate = 4;
 
     private IJSObjectReference? utilities;
 
@@ -88,6 +90,8 @@
         if (utilities is null) return;
         await utilities.SetSetting("printMultiple_boardWidthPercentage", width);
     }
+
+    private Task GenerateBoards() => GenerateBoards(boardsToGenerate);
 
     private async Task GenerateBoards(int amount)
     {
