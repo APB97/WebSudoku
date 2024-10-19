@@ -149,10 +149,6 @@ button.btn-purple:hover {
         background-color: white;
     }
 
-    .hide-in-print {
-        display: none !important;
-    }
-
     .div-main{
         width: 100% !important;
     }
