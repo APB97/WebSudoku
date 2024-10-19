@@ -1,43 +1,49 @@
-﻿@inject IJSRuntime JS
+﻿@implements IDisposable
 
-<button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? "Hide" : "Show") print settings</button>
+@inject IJSRuntime JS
+@inject StringLocalizer<PrintSettings> Localization
 
-@if (showPrintSettings)
+@if (ShouldRender())
 {
-    <h6><b>Print settings</b></h6>
+    <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? @Localization.Localize("Hide") : @Localization.Localize("Show")) @Localization.Localize("Print settings")</button>
 
-    <div class="d-flex">
-        <InputCheckbox Value="printFilledValues" ValueExpression="() => printFilledValues" ValueChanged="PrintFilledValuesChanged" />
-        <label @onclick="() => PrintFilledValuesChanged(!printFilledValues)" class="user-select-none">Print filled values</label>
-    </div>
+    @if (showPrintSettings)
+    {
+        <h6><b>@Localization.Localize("Print settings")</b></h6>
+
+        <div class="d-flex">
+            <InputCheckbox Value="printFilledValues" ValueExpression="() => printFilledValues" ValueChanged="PrintFilledValuesChanged" />
+            <label @onclick="() => PrintFilledValuesChanged(!printFilledValues)" class="user-select-none">@Localization.Localize("Print filled values")</label>
+        </div>
+        @if (printFilledValues)
+        {
+            <div class="d-flex">
+                <InputCheckbox Value="printHighlightedErrors" ValueExpression="() => printHighlightedErrors" ValueChanged="PrintHighlightedErrorsChanged" />
+                <label @onclick="() => PrintHighlightedErrorsChanged(!printHighlightedErrors)" class="user-select-none">@Localization.Localize("Print highlighted errors")</label>
+            </div>
+        }
+    }
+
+    @if (printHighlightedErrors && printFilledValues)
+    {
+        <style>
+            @@media print{
+                .input-editable.error-highlight {
+                    --cell-error-highlight: rgb(255, 95, 95) !important;
+                }
+            }
+        </style>
+    }
     @if (printFilledValues)
     {
-        <div class="d-flex">
-            <InputCheckbox Value="printHighlightedErrors" ValueExpression="() => printHighlightedErrors" ValueChanged="PrintHighlightedErrorsChanged" />
-            <label @onclick="() => PrintHighlightedErrorsChanged(!printHighlightedErrors)" class="user-select-none">Print highlighted errors</label>
-        </div>
+        <style>
+            @@media print {
+                .input-editable {
+                    --cell-editable-text-color: gray !important;
+                }
+            }
+        </style>
     }
-}
-
-@if (printHighlightedErrors && printFilledValues)
-{
-    <style>
-        @@media print{
-            .input-editable.error-highlight {
-                --cell-error-highlight: rgb(255, 95, 95) !important;
-            }
-        }
-    </style>
-}
-@if (printFilledValues)
-{
-    <style>
-        @@media print {
-            .input-editable {
-                --cell-editable-text-color: gray !important;
-            }
-        }
-    </style>
 }
 
 @code {
@@ -49,9 +55,16 @@
 
     private IJSObjectReference? module;
 
+    protected override bool ShouldRender()
+    {
+        return Localization.IsReady;
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        MainLayout.OnStateChanging += LoadResourcesAsync;
         module = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
+        await Localization.InitializeAsync(LanguageSelect.Culture);
 
         await LoadSetting(v => printFilledValues = v, nameof(printFilledValues));
         await LoadSetting(v => printHighlightedErrors = v, nameof(printHighlightedErrors));
@@ -78,5 +91,16 @@
         printHighlightedErrors = toggle;
         if (module is null) return;
         await module.SetSettingAsync(nameof(printHighlightedErrors), toggle);
+    }
+
+    private async Task LoadResourcesAsync()
+    {
+        await Localization.InitializeAsync(LanguageSelect.Culture);
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        MainLayout.OnStateChanging -= LoadResourcesAsync;
     }
 }
