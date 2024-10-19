@@ -1,5 +1,6 @@
 ﻿@page "/sudoku"
 @using System.Linq
+@using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute
 @using WebSudoku.Shared
 @using WebSudoku.Shared.General
 @using WebSudoku.Shared.Serialization
@@ -8,7 +9,6 @@
 @inject CountingSolver Solver
 @inject Blanker Blanker
 @inject Validator Validator
-@inject NavigationManager Navigation
 @inject IJSRuntime JS
 
 @implements IAsyncDisposable
@@ -33,7 +33,7 @@
                             <td>
                                 <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightClass="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
                                     Value="@cellValue"
-                                    OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1, cells[row, column])"
+                                    OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
                                     SwitchTypeOnFocus="isMobile"
                                     DefaultType="@(isFirefox && isMobile ? Cell.InputTypeNumber : Cell.InputTypeText)"
                                     />
@@ -44,7 +44,7 @@
             </table>
         </div>
     
-        <div class="div-options hide-in-print">
+        <div class="div-options d-print-none">
             <button class="btn btn-primary" @onclick="Save">Save</button>
             <button class="btn btn-primary" @onclick="Load">Load</button>
             <button class="btn btn-purple" onclick="print()">Print</button>
@@ -156,26 +156,26 @@ else
         board = new Board(Solver, new RandomOptionOrder<int>(), Blanker, TargetBlanks, AttemptsToRemove);
     }
 
-    private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column, Cell currentCell)
+    private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column)
     {
         if (args.AltKey || args.ShiftKey || args.MetaKey || args.CtrlKey) return;
         switch (args.Code)
         {
             case KeyCodes.ArrowLeft:
                 await BlurAsync(row, column);
-                await FocusAsync(row, column == 1 ? 9 : column - 1);
+                await FocusAsync(row, WrapAroundBetweenEdges(column, -1));
                 return;
             case KeyCodes.ArrowRight:
                 await BlurAsync(row, column);
-                await FocusAsync(row, column == 9 ? 1 : column + 1);
+                await FocusAsync(row, WrapAroundBetweenEdges(column, +1));
                 return;
             case KeyCodes.ArrowUp:
                 await BlurAsync(row, column);
-                await FocusAsync(row == 1 ? 9 : row - 1, column);
+                await FocusAsync(WrapAroundBetweenEdges(row, -1), column);
                 return;
             case KeyCodes.ArrowDown:
                 await BlurAsync(row, column);
-                await FocusAsync(row == 9 ? 1 : row + 1, column);
+                await FocusAsync(WrapAroundBetweenEdges(row, +1), column);
                 return;
             case KeyCodes.CapsLock:
             case KeyCodes.Tab:
@@ -195,28 +195,40 @@ else
                     }
                 }
                 await FocusAsync(row, column);
-            return;
+                return;
         }
 
         if (board.IsPredefined((row - 1, column - 1))) return;
 
-        if (int.TryParse(args.Key, out var number) && number >= 1 && number <= 9)
+        await ProcessNonNavigatingInputAsync(row - 1, column - 1, args.Key);
+    }
+
+    private int WrapAroundBetweenEdges([Range(1, Board.BoardSize)] int cellPositionOnAxis, [Range(-1, 1)] int positionChange)
+    {
+        // Replaces previously used ternary operators with calculation using modulo.
+        // Note that adding Board.BoardSize before using modulo allows wrapping around position from 1 to 9
+        return ((Board.BoardSize + cellPositionOnAxis - 1 + positionChange) % Board.BoardSize) + 1;
+    }
+
+    private async Task ProcessNonNavigatingInputAsync(int row, int column, string key)
+    {
+        if (int.TryParse(key, out var number) && number >= 1 && number <= 9)
         {
-            UpdateCellAsync(row, column, currentCell, number);
+            UpdateCellAsync(row , column, cells[row, column], number);
             CheckForWinCondition();
         }
         else
         {
-            await currentCell.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(currentCell.Value), string.Empty } }));
-            board.ClearCell((row - 1, column - 1));
-            InvalidCells.Remove((row - 1, column - 1));
+            await cells[row, column].SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(Cell.Value), string.Empty } }));
+            board.ClearCell((row, column));
+            InvalidCells.Remove((row, column));
             InvalidCells.RemoveAll(cell => Validator.IsValid(board, cell));
         }
     }
 
     private void UpdateCellAsync(int row, int column, Cell currentCell, int number)
     {
-        board.FillCell((row - 1, column - 1), number);
+        board.FillCell((row, column), number);
         currentCell.OnChange(number.ToString());
         InvalidCells = board.GetInvalidCells(Validator);
     }

@@ -13,7 +13,9 @@
 @inject Validator Validator
 @inject IJSRuntime JS
 
-<div class="hide-in-print">
+<PageTitle>Web Sudoku - print multiple</PageTitle>
+
+<div class="d-print-none">
     <button class="btn btn-danger" @onclick="boards.Clear">Clear all</button>
     <label for="width">Board width [%]</label>
     <InputSelect id="width" TValue="float" Value="boardWidthPercentage" ValueExpression="() => boardWidthPercentage" ValueChanged="UpdateBoardWidth">
@@ -56,6 +58,9 @@
                     </tr>
                 }
             </table>
+        </div>
+        <div class="d-print-none">
+
         </div>
     }
 </div>
