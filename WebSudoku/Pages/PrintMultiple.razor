@@ -25,7 +25,7 @@
     </InputSelect>
     <label for="boards-amount">Boards to generate</label>
     <InputNumber id="boards-amount" min="1" max="32" @bind-Value="boardsToGenerate" />
-    <button class="btn btn-primary" @onclick="GenerateBoards">Add @boardsToGenerate sudokus</button>
+    <button disabled="@(generating ? "disabled" : null)" class="btn btn-primary" @onclick="GenerateBoards">Add @boardsToGenerate sudoku(s)</button>
     <button class="btn btn-secondary" onclick="print()">Print</button>
 </div>
 
@@ -60,6 +60,7 @@
             </table>
             <div class="d-print-none">
                 <button class="btn btn-danger" @onclick="() => boards.Remove(board)">Remove board</button>
+                <button class="btn btn-success" disabled="@(generating ? "disabled" : null)" @onclick="() => Regenerate(board)">Regenerate board</button>
             </div>
         </div>
     }
@@ -119,6 +120,30 @@
             }
             StateHasChanged();
         });
+    }
+
+    private async Task Regenerate(Board board)
+    {
+        if (generating) return;
+        var index = boards.FindIndex(b => b == board);
+        if (index < 0) return;
+
+        try
+        {
+            generating = true;
+            boards[index] = new Board(Solver, new RandomOptionOrder<int>(), Blanker, 40, 64);
+        }
+        catch (Exception ex)
+        {
+            if (utilities is not null)
+            {
+                await utilities.Alert(ex.Message);
+            }
+        }
+        finally
+        {
+            generating = false;
+        }
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
