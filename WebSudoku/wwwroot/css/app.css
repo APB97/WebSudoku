@@ -140,7 +140,8 @@ button.btn-purple:hover {
 }
 
 .input-editable.error-highlight {
-    background-color: rgb(255, 95, 95);
+    --cell-error-highlight: #b32121;
+    background-color: var(--cell-error-highlight);
 }
 
 @media print {
