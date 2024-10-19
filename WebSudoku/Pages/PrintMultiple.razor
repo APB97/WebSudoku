@@ -77,8 +77,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        utilities = await JS.InvokeAsync<IJSObjectReference>("import", "./js/utilities.js");
-        var setting = await utilities.GetSetting<string>("printMultiple_boardWidthPercentage");
+        utilities = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
+        var setting = await utilities.GetSettingAsync<string>("printMultiple_boardWidthPercentage");
         if (!float.TryParse(setting, CultureInfo.InvariantCulture, out var result)) return;
         boardWidthPercentage = result;
     }
@@ -87,7 +87,7 @@
     {
         boardWidthPercentage = width;
         if (utilities is null) return;
-        await utilities.SetSetting("printMultiple_boardWidthPercentage", width);
+        await utilities.SetSettingAsync("printMultiple_boardWidthPercentage", width);
     }
 
     private Task GenerateBoards() => GenerateBoards(boardsToGenerate);
@@ -109,7 +109,7 @@
             {
                 if (utilities is not null)
                 {
-                    await utilities.Alert(ex.Message);
+                    await utilities.AlertAsync(ex.Message);
                 }
             }
             finally
@@ -135,7 +135,7 @@
         {
             if (utilities is not null)
             {
-                await utilities.Alert(ex.Message);
+                await utilities.AlertAsync(ex.Message);
             }
         }
         finally

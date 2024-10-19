@@ -77,9 +77,8 @@ else
 
     private TimerDisplay? timer;
 
-    private LocalStorage? localStorage;
-
     private IJSObjectReference? module;
+    private IJSObjectReference? utilitiesModule;
 
     private bool isMobile;
 
@@ -90,7 +89,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        localStorage = new LocalStorage(JS);
+
         module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Sudoku.razor.js");
         if (module != null)
         {
@@ -106,21 +105,23 @@ else
             }
         }
 
+        utilitiesModule = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
+
         CreateNewBoard();
     }
 
     private async Task Save()
     {
-        if (localStorage == null) return;
+        if (utilitiesModule == null) return;
 
-        await localStorage.SetItem(SudokuStateKey, BoardSerializer.SerializeToJson(board, timer?.SpanToShow, GameStateVersion.Current));
+        await utilitiesModule.SetSettingAsync(SudokuStateKey, BoardSerializer.SerializeToJson(board, timer?.SpanToShow, GameStateVersion.Current));
     }
 
     private async Task Load()
     {
-        if (localStorage == null) return;
+        if (utilitiesModule == null) return;
 
-        var jsonState = await localStorage.GetItem(SudokuStateKey);
+        var jsonState = await utilitiesModule.GetSettingAsync<string>(SudokuStateKey);
         if (jsonState != null)
         {
             // Load V2 save
@@ -141,7 +142,7 @@ else
                     InvalidCells = board.GetInvalidCells(Validator);
                 }
 
-                var jsonTimer = await localStorage.GetItem(TimerStateKey);
+                var jsonTimer = await utilitiesModule.GetSettingAsync<string>(TimerStateKey);
                 if (timer != null && jsonTimer != null && TimeSpan.TryParse(jsonTimer, out var loadedTimerOnly))
                 {
                     timer.SetTime(loadedTimerOnly);

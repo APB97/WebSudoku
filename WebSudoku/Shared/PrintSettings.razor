@@ -52,7 +52,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        module = await JS.InvokeAsync<IJSObjectReference>("import", "./js/utilities.js");
+        module = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
 
         await LoadSetting(v => printFilledValues = v, nameof(printFilledValues));
         await LoadSetting(v => printHighlightedErrors = v, nameof(printHighlightedErrors));
@@ -61,7 +61,7 @@
     private async Task LoadSetting(Action<bool> setting, string key)
     {
         if (module is null) return;
-        var value = await module.GetSetting<string>(key);
+        var value = await module.GetSettingAsync<string>(key);
 
         if (value is null || !bool.TryParse(value, out var result)) return;
         setting.Invoke(result);
@@ -71,13 +71,13 @@
     {
         printFilledValues = toggle;
         if (module is null) return;
-        await module.SetSetting(nameof(printFilledValues), toggle);
+        await module.SetSettingAsync(nameof(printFilledValues), toggle);
     }
 
     private async Task PrintHighlightedErrorsChanged(bool toggle)
     {
         printHighlightedErrors = toggle;
         if (module is null) return;
-        await module.SetSetting(nameof(printHighlightedErrors), toggle);
+        await module.SetSettingAsync(nameof(printHighlightedErrors), toggle);
     }
 }

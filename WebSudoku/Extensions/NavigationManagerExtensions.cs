@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using WebSudoku.JSInterop;
 
 namespace WebSudoku.Extensions;
 
@@ -9,9 +10,10 @@ public static class NavigationManagerExtensions
 
     public static async Task NavigateToStoredDestinationIfAnyAsync(this NavigationManager navigation, IJSRuntime js)
     {
-        var destination = await js.InvokeAsync<string>("sessionStorage.getItem", DestinationKey);
+        await using var utilitiesModule = await js.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
+        var destination = await utilitiesModule.GetSessionSettingAsync<string>(DestinationKey);
         if (string.IsNullOrEmpty(destination)) return;
-        await js.InvokeVoidAsync("sessionStorage.removeItem", DestinationKey);
+        await utilitiesModule.RemoveSessionSettingAsync(DestinationKey);
         navigation.NavigateTo(destination[1..]);
     }
 }
