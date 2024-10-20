@@ -1,13 +1,13 @@
 ﻿@using apb97.github.io.WebSudoku.Services
 
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JS
 @inject NavigationManager Navigation
 @inject StringLocalizer<LanguageSelect> Loc
 
 <label for="language" class="text-white">
     @(Loc["Select your locale"]):
 </label>
-<InputSelect id="language" style="background-color: transparent; border: none; color: white;" TValue="string" DisplayName="Language" Value="@CurrentUICulture" ValueChanged="SetCultureAndReload" ValueExpression="() => CurrentUICulture">
+<InputSelect id="language" style="background-color: transparent; border: none; color: white;" TValue="string" DisplayName="Language" Value="@Culture" ValueChanged="UpdateLocalizationAsync" ValueExpression="() => Culture">
     @foreach (var culture in supportedCultures)
     {
         <option value="@culture.Value" class="@(culture.Value == Culture ? "current" : null)">@culture.Key</option>
@@ -19,9 +19,7 @@
     [CascadingParameter]
     public required MainLayout Layout { get; set; }
 
-    public string? CurrentUICulture { get => Culture; private set => Culture = value; }
-
-    public static string? Culture { get; private set; }
+    public string? Culture { get; private set; }
 
     private IJSObjectReference? utilitiesModule;
 
@@ -38,7 +36,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        utilitiesModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
+        utilitiesModule = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
         if (utilitiesModule is not null)
             Culture = await utilitiesModule.GetSettingAsync<string>("BlazorCulture") ?? "en-US";
 
@@ -46,7 +44,7 @@
         await Layout.NotifyStateChanged();
     }
 
-    private async Task SetCultureAndReload(string value)
+    private async Task UpdateLocalizationAsync(string value)
     {
         Culture = value;
         await Loc.InitializeAsync(value);

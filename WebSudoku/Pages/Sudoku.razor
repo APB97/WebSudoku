@@ -67,6 +67,9 @@
 }
 
 @code {
+    [CascadingParameter]
+    public required MainLayout Layout { get; set; }
+
     private Board board = new Board();
     private const string SudokuStateKey = "sudokuState";
     private const string TimerStateKey = "timerState";
@@ -97,8 +100,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        MainLayout.OnStateChanging += LoadResourcesAsync;
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        Layout.OnStateChanging += LoadResourcesAsync;
+        await Loc.InitializeAsync(Layout.Culture);
         module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Sudoku.razor.js");
         if (module != null)
         {
@@ -264,13 +267,13 @@
 
     private async Task LoadResourcesAsync()
     {
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(Layout.Culture);
         StateHasChanged();
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        MainLayout.OnStateChanging -= LoadResourcesAsync;
+        Layout.OnStateChanging -= LoadResourcesAsync;
         if (module is null) return;
         await module.DisposeAsync();
     }

@@ -76,6 +76,9 @@
 }
 
 @code {
+    [CascadingParameter]
+    public required MainLayout Layout { get; set; }
+
     protected override bool ShouldRender()
     {
         return Loc.IsReady;
@@ -83,19 +86,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        MainLayout.OnStateChanging += LoadResourcesAsync;
+        Layout.OnStateChanging += LoadResourcesAsync;
         await Navigation.NavigateToStoredDestinationIfAnyAsync(JS);
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(Layout.Culture);
     }
 
     private async Task LoadResourcesAsync()
     {
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(Layout.Culture);
         StateHasChanged();
     }
 
     void IDisposable.Dispose()
     {
-        MainLayout.OnStateChanging -= LoadResourcesAsync;
+        Layout.OnStateChanging -= LoadResourcesAsync;
     }
 }

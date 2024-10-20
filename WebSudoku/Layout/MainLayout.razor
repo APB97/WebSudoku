@@ -27,7 +27,7 @@
 
 <CascadingValue Value="this">
     <div class="page">
-        <div class="sidebar d-print-none d-flex flex-column">
+        <div class="sidebar d-print-none d-flex flex-column position-sticky top-0">
             <NavMenu @ref="navMenu" />
         </div>
 
@@ -46,7 +46,9 @@
 
     public string LayoutMode { get; private set; } = "Dark";
 
-    public static event Func<Task> OnStateChanging = delegate { return Task.CompletedTask; };
+    public event Func<Task> OnStateChanging = delegate { return Task.CompletedTask; };
+
+    public string? Culture => navMenu?.Culture;
 
     protected override async Task OnInitializedAsync()
     {

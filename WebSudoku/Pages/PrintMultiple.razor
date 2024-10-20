@@ -68,6 +68,9 @@
 }
 
 @code {
+    [CascadingParameter]
+    public required MainLayout Layout { get; set; }
+
     private List<Board> boards = [];
 
     private bool generating;
@@ -85,8 +88,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        MainLayout.OnStateChanging += LoadResourcesAsync;
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        Layout.OnStateChanging += LoadResourcesAsync;
+        await Loc.InitializeAsync(Layout.Culture);
         utilities = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
         var setting = await utilities.GetSettingAsync<string>("printMultiple_boardWidthPercentage");
         if (!float.TryParse(setting, CultureInfo.InvariantCulture, out var result)) return;
@@ -156,13 +159,13 @@
 
     private async Task LoadResourcesAsync()
     {
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(Layout.Culture);
         StateHasChanged();
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        MainLayout.OnStateChanging -= LoadResourcesAsync;
+        Layout.OnStateChanging -= LoadResourcesAsync;
         if (utilities is null) return;
         await utilities.DisposeAsync();
     }

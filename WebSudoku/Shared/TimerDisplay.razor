@@ -8,6 +8,9 @@
 }
 
 @code {
+    [CascadingParameter]
+    public required MainLayout Layout { get; set; }
+
     [Parameter]
     public EventCallback<TimeSpan> OnTimePassed { get; set; }
 
@@ -22,8 +25,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        MainLayout.OnStateChanging += LoadResourcesAsync;
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        Layout.OnStateChanging += LoadResourcesAsync;
+        await Loc.InitializeAsync(Layout.Culture);
         StateHasChanged();
         using (timer = new PeriodicTimer(TimeSpan.FromSeconds(1)))
         {
@@ -50,12 +53,12 @@
 
     private async Task LoadResourcesAsync()
     {
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(Layout.Culture);
         StateHasChanged();
     }
 
     void IDisposable.Dispose()
     {
-        MainLayout.OnStateChanging -= LoadResourcesAsync;
+        Layout.OnStateChanging -= LoadResourcesAsync;
     }
 }

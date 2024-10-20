@@ -47,6 +47,9 @@
 }
 
 @code {
+    [CascadingParameter]
+    public required MainLayout Layout { get; set; }
+
     private bool showPrintSettings;
 
     private bool printHighlightedErrors;
@@ -62,9 +65,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        MainLayout.OnStateChanging += LoadResourcesAsync;
+        Layout.OnStateChanging += LoadResourcesAsync;
         module = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(Layout.Culture);
 
         await LoadSetting(v => printFilledValues = v, nameof(printFilledValues));
         await LoadSetting(v => printHighlightedErrors = v, nameof(printHighlightedErrors));
@@ -95,12 +98,12 @@
 
     private async Task LoadResourcesAsync()
     {
-        await Loc.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(Layout.Culture);
         StateHasChanged();
     }
 
     void IDisposable.Dispose()
     {
-        MainLayout.OnStateChanging -= LoadResourcesAsync;
+        Layout.OnStateChanging -= LoadResourcesAsync;
     }
 }
