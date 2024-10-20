@@ -136,6 +136,10 @@ main[b-834vkyk4rs] {
     color: white;
 }
 
+.collapse[b-z3xvy1gwk2] {
+    display: none !important;
+}
+
 @media (min-width: 641px) {
     .navbar-toggler[b-z3xvy1gwk2] {
         display: none;
@@ -147,7 +151,7 @@ main[b-834vkyk4rs] {
 
     .collapse[b-z3xvy1gwk2] {
         /* Never collapse the sidebar for wide screens */
-        display: block;
+        display: flex !important;
     }
     
     .nav-scrollable[b-z3xvy1gwk2] {
