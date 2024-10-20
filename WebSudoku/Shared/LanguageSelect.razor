@@ -4,15 +4,18 @@
 @inject NavigationManager Navigation
 @inject StringLocalizer<LanguageSelect> Loc
 
-<label for="language" class="text-white">
-    @(Loc["Select your locale"]):
-</label>
-<InputSelect id="language" style="background-color: transparent; border: none; color: white;" TValue="string" DisplayName="Language" Value="@Culture" ValueChanged="UpdateLocalizationAsync" ValueExpression="() => Culture">
-    @foreach (var culture in supportedCultures)
-    {
-        <option value="@culture.Value" class="@(culture.Value == Culture ? "current" : null)">@culture.Key</option>
-    }
-</InputSelect>
+@if (ShouldRender())
+{
+    <label for="language" class="text-white">
+        @Loc["Select your locale"]:
+    </label>
+    <InputSelect id="language" style="background-color: transparent; border: none; color: white;" TValue="string" DisplayName="Language" Value="@Culture" ValueChanged="UpdateLocalizationAsync" ValueExpression="() => Culture">
+        @foreach (var culture in supportedCultures)
+        {
+            <option value="@culture.Value" class="@(culture.Value == Culture ? "current" : null)">@culture.Key</option>
+        }
+    </InputSelect>
+}
 
 @code
 {
