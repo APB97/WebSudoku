@@ -18,6 +18,8 @@ public class StringLocalizer<T>(StringLocalizerFactory factory)
         localization = await factory.GetLocalizationAsync<T>(cultureName);
     }
 
+    public string this[string key] => Localize(key);
+
     public string Localize(string key)
     {
         if (localization == null)

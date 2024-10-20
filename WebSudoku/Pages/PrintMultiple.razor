@@ -11,29 +11,29 @@
 @inject Blanker Blanker
 @inject Validator Validator
 @inject IJSRuntime JS
-@inject StringLocalizer<PrintMultiple> Localization
+@inject StringLocalizer<PrintMultiple> Loc
 
 @if (ShouldRender())
 {
-    <PageTitle>Web Sudoku - @Localization.Localize("print multiple")</PageTitle>
+    <PageTitle>Web Sudoku - @Loc["print multiple"]</PageTitle>
 
     <div class="d-print-none">
-        <button class="btn btn-danger" @onclick="boards.Clear">@Localization.Localize("Clear all")</button>
-        <label for="width">@Localization.Localize("Board width") [%]</label>
+        <button class="btn btn-danger" @onclick="boards.Clear">@Loc["Clear all"]</button>
+        <label for="width">@Loc["Board width"] [%]</label>
         <InputSelect id="width" TValue="float" Value="boardWidthPercentage" ValueExpression="() => boardWidthPercentage" ValueChanged="UpdateBoardWidth">
             <option value="33.3333">33%</option>
             <option value="50">50%</option>
             <option value="100">100%</option>
         </InputSelect>
-        <label for="boards-amount">@Localization.Localize("Boards to generate")</label>
+        <label for="boards-amount">@Loc["Boards to generate"]</label>
         <InputNumber id="boards-amount" min="1" max="32" @bind-Value="boardsToGenerate" />
-        <button disabled="@(generating ? "disabled" : null)" class="btn btn-primary" @onclick="GenerateBoards">@Localization.Localize("Add") @boardsToGenerate @Localization.Localize("sudoku(s)")</button>
-        <button class="btn btn-secondary" onclick="print()">@Localization.Localize("Print")</button>
+        <button disabled="@(generating ? "disabled" : null)" class="btn btn-primary" @onclick="GenerateBoards">@Loc["Add"] @boardsToGenerate @Loc["sudoku(s)"]</button>
+        <button class="btn btn-secondary" onclick="print()">@Loc["Print"]</button>
     </div>
 
     @if (generating)
     {
-        <div class="border border-2 border-info">Generating additional sudokus...</div>
+        <div class="border border-2 border-info">@Loc["Generating additional sudokus..."]</div>
     }
 
     <div class="d-flex flex-wrap">
@@ -59,8 +59,8 @@
                     }
                 </table>
                 <div class="d-print-none">
-                    <button class="btn btn-danger" @onclick="() => boards.Remove(board)">Remove board</button>
-                    <button class="btn btn-success" disabled="@(generating ? "disabled" : null)" @onclick="() => Regenerate(board)">Regenerate board</button>
+                    <button class="btn btn-danger" @onclick="() => boards.Remove(board)">@Loc["Remove board"]</button>
+                    <button class="btn btn-success" disabled="@(generating ? "disabled" : null)" @onclick="() => Regenerate(board)">@Loc["Regenerate board"]</button>
                 </div>
             </div>
         }
@@ -80,13 +80,13 @@
 
     protected override bool ShouldRender()
     {
-        return Localization.IsReady;
+        return Loc.IsReady;
     }
 
     protected override async Task OnInitializedAsync()
     {
         MainLayout.OnStateChanging += LoadResourcesAsync;
-        await Localization.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(LanguageSelect.Culture);
         utilities = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
         var setting = await utilities.GetSettingAsync<string>("printMultiple_boardWidthPercentage");
         if (!float.TryParse(setting, CultureInfo.InvariantCulture, out var result)) return;
@@ -156,7 +156,7 @@
 
     private async Task LoadResourcesAsync()
     {
-        await Localization.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(LanguageSelect.Culture);
         StateHasChanged();
     }
 

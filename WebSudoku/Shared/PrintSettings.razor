@@ -1,25 +1,25 @@
 ﻿@implements IDisposable
 
 @inject IJSRuntime JS
-@inject StringLocalizer<PrintSettings> Localization
+@inject StringLocalizer<PrintSettings> Loc
 
 @if (ShouldRender())
 {
-    <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? @Localization.Localize("Hide") : @Localization.Localize("Show")) @Localization.Localize("Print settings")</button>
+    <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? @Loc["Hide"] : @Loc["Show"]) @Loc["Print settings"]</button>
 
     @if (showPrintSettings)
     {
-        <h6><b>@Localization.Localize("Print settings")</b></h6>
+        <h6><b>@Loc["Print settings"]</b></h6>
 
         <div class="d-flex">
             <InputCheckbox Value="printFilledValues" ValueExpression="() => printFilledValues" ValueChanged="PrintFilledValuesChanged" />
-            <label @onclick="() => PrintFilledValuesChanged(!printFilledValues)" class="user-select-none">@Localization.Localize("Print filled values")</label>
+            <label @onclick="() => PrintFilledValuesChanged(!printFilledValues)" class="user-select-none">@Loc["Print filled values"]</label>
         </div>
         @if (printFilledValues)
         {
             <div class="d-flex">
                 <InputCheckbox Value="printHighlightedErrors" ValueExpression="() => printHighlightedErrors" ValueChanged="PrintHighlightedErrorsChanged" />
-                <label @onclick="() => PrintHighlightedErrorsChanged(!printHighlightedErrors)" class="user-select-none">@Localization.Localize("Print highlighted errors")</label>
+                <label @onclick="() => PrintHighlightedErrorsChanged(!printHighlightedErrors)" class="user-select-none">@Loc["Print highlighted errors"]</label>
             </div>
         }
     }
@@ -57,14 +57,14 @@
 
     protected override bool ShouldRender()
     {
-        return Localization.IsReady;
+        return Loc.IsReady;
     }
 
     protected override async Task OnInitializedAsync()
     {
         MainLayout.OnStateChanging += LoadResourcesAsync;
         module = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
-        await Localization.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(LanguageSelect.Culture);
 
         await LoadSetting(v => printFilledValues = v, nameof(printFilledValues));
         await LoadSetting(v => printHighlightedErrors = v, nameof(printHighlightedErrors));
@@ -95,7 +95,7 @@
 
     private async Task LoadResourcesAsync()
     {
-        await Localization.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(LanguageSelect.Culture);
         StateHasChanged();
     }
 

@@ -117,34 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="print multiple" xml:space="preserve">
-    <value>print multiple</value>
+  <data name="Sudoku Rules" xml:space="preserve">
+    <value>Reguły sudoku</value>
   </data>
-  <data name="Clear all" xml:space="preserve">
-    <value>Clear all</value>
+  <data name="Print multiple" xml:space="preserve">
+    <value>Drukuj wiele</value>
   </data>
-  <data name="Board width" xml:space="preserve">
-    <value>Sudoku width</value>
-  </data>
-  <data name="Boards to generate" xml:space="preserve">
-    <value>Sudokus to generate</value>
-  </data>
-  <data name="Print" xml:space="preserve">
-    <value>Print</value>
-  </data>
-  <data name="Add" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="sudoku(s)" xml:space="preserve">
-    <value>sudoku(s)</value>
-  </data>
-  <data name="Generating additional sudokus..." xml:space="preserve">
-    <value>Generating additional sudokus...</value>
-  </data>
-  <data name="Remove board" xml:space="preserve">
-    <value>Remove sudoku</value>
-  </data>
-  <data name="Regenerate board" xml:space="preserve">
-    <value>Regenerate sudoku</value>
+  <data name="Code" xml:space="preserve">
+    <value>Kod</value>
   </data>
 </root>

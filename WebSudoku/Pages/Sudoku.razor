@@ -10,7 +10,7 @@
 @inject Blanker Blanker
 @inject Validator Validator
 @inject IJSRuntime JS
-@inject StringLocalizer<Sudoku> Localization
+@inject StringLocalizer<Sudoku> Loc
 
 @implements IAsyncDisposable
 
@@ -48,21 +48,21 @@
             </div>
     
             <div class="div-options d-print-none">
-                <button class="btn btn-primary" @onclick="Save">@Localization.Localize("Save")</button>
-                <button class="btn btn-primary" @onclick="Load">@Localization.Localize("Load")</button>
-                <button class="btn btn-purple" onclick="print()">@Localization.Localize("Print")</button>
+                <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
+                <button class="btn btn-primary" @onclick="Load">@Loc["Load"]</button>
+                <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
                 <PrintSettings />
             </div>
         </div>
     }
     else
     {
-        <h1>@Localization.Localize("Success")</h1>
+        <h1>@Loc["Success"]</h1>
         @if (timePassed.HasValue)
         {
-            <p>@Localization.Localize("You finished with time") @timePassed.</p>
+            <p>@Loc["You finished with time"] @timePassed.</p>
         }
-        <button class="btn btn-primary" @onclick="CreateNewBoard">@Localization.Localize("Play again")</button>
+        <button class="btn btn-primary" @onclick="CreateNewBoard">@Loc["Play again"]</button>
     }
 }
 
@@ -92,13 +92,13 @@
 
     protected override bool ShouldRender()
     {
-        return Localization.IsReady;
+        return Loc.IsReady;
     }
 
     protected override async Task OnInitializedAsync()
     {
         MainLayout.OnStateChanging += LoadResourcesAsync;
-        await Localization.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(LanguageSelect.Culture);
         module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Sudoku.razor.js");
         if (module != null)
         {
@@ -264,7 +264,7 @@
 
     private async Task LoadResourcesAsync()
     {
-        await Localization.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(LanguageSelect.Culture);
         StateHasChanged();
     }
 

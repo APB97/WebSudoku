@@ -1,9 +1,9 @@
 ﻿@implements IDisposable
-@inject StringLocalizer<TimerDisplay> Localization
+@inject StringLocalizer<TimerDisplay> Loc
 
 @if (ShouldRender())
 {
-    <span class="d-print-none">@Localization.Localize("Your time"): </span>
+    <span class="d-print-none">@Loc["Your time"]: </span>
     <span class="d-print-none">@SpanToShow</span>
 }
 
@@ -17,13 +17,13 @@
 
     protected override bool ShouldRender()
     {
-        return Localization.IsReady;
+        return Loc.IsReady;
     }
 
     protected override async Task OnInitializedAsync()
     {
         MainLayout.OnStateChanging += LoadResourcesAsync;
-        await Localization.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(LanguageSelect.Culture);
         StateHasChanged();
         using (timer = new PeriodicTimer(TimeSpan.FromSeconds(1)))
         {
@@ -50,7 +50,7 @@
 
     private async Task LoadResourcesAsync()
     {
-        await Localization.InitializeAsync(LanguageSelect.Culture);
+        await Loc.InitializeAsync(LanguageSelect.Culture);
         StateHasChanged();
     }
 

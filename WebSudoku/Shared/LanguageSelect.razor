@@ -2,10 +2,10 @@
 
 @inject IJSRuntime JSRuntime
 @inject NavigationManager Navigation
-@inject StringLocalizer<LanguageSelect> localization
+@inject StringLocalizer<LanguageSelect> Loc
 
 <label for="language" class="text-white">
-    @(localization.Localize("Select your locale")):
+    @(Loc["Select your locale"]):
 </label>
 <InputSelect id="language" style="background-color: transparent; border: none; color: white;" TValue="string" DisplayName="Language" Value="@CurrentUICulture" ValueChanged="SetCultureAndReload" ValueExpression="() => CurrentUICulture">
     @foreach (var culture in supportedCultures)
@@ -33,7 +33,7 @@
 
     protected override bool ShouldRender()
     {
-        return localization.IsReady;
+        return Loc.IsReady;
     }
 
     protected override async Task OnInitializedAsync()
@@ -42,14 +42,14 @@
         if (utilitiesModule is not null)
             Culture = await utilitiesModule.GetSettingAsync<string>("BlazorCulture") ?? "en-US";
 
-        await localization.InitializeAsync(Culture);
+        await Loc.InitializeAsync(Culture);
         await Layout.NotifyStateChanged();
     }
 
     private async Task SetCultureAndReload(string value)
     {
         Culture = value;
-        await localization.InitializeAsync(value);
+        await Loc.InitializeAsync(value);
         StateHasChanged();
 
         await Layout.NotifyStateChanged();
