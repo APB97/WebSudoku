@@ -20,6 +20,7 @@ builder.Services.AddOptions<LocalizationOptions>()
     {
         options.ResourcesPath = "Resources";
         options.ProjectNamespace = "apb97.github.io.WebSudoku";
+        options.DataFormat = DataFormat.JSON;
     });
 builder.Services.AddScoped<StringLocalizerFactory>();
 builder.Services.AddScoped(typeof(StringLocalizer<>));

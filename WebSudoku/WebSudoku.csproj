@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="ResxResources\**\*.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Shared\TimerDisplay.razor" />
   </ItemGroup>
 
