@@ -20,6 +20,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build
     - name: Publish
       run: dotnet publish WebSudoku.sln --configuration Release
     - name: Rewrite base href
