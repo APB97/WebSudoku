@@ -2,22 +2,27 @@
 
 public class Neighbors
 {
-    public HashSet<CellPosition>[,] CellNeighbors { get; private set; }
+    private readonly HashSet<CellPosition>[,] cellNeighbors;
+
+    public IReadOnlySet<CellPosition> this[int row, int column]
+    {
+        get => cellNeighbors[row, column];
+    }
 
     public Neighbors()
     {
-        CellNeighbors = new HashSet<CellPosition>[9, 9];
+        cellNeighbors = new HashSet<CellPosition>[Board.BoardSize, Board.BoardSize];
 
         InitializeCellNeighbors(CreateSquareCellsArray());
     }
 
     private void InitializeCellNeighbors(IEnumerable<CellPosition>[,] squareCells)
     {
-        for (int row = 0; row < 9; row++)
+        for (int row = 0; row < Board.BoardSize; row++)
         {
-            for (int column = 0; column < 9; column++)
+            for (int column = 0; column < Board.BoardSize; column++)
             {
-                CellNeighbors[row, column] = new(WithinRow(row).Concat(WithinColumn(column)).Concat(squareCells[row / 3, column / 3]));
+                cellNeighbors[row, column] = new(WithinRow(row).Concat(WithinColumn(column)).Concat(squareCells[row / 3, column / 3]));
             }
         }
     }
@@ -44,11 +49,11 @@ public class Neighbors
 
     public static IEnumerable<CellPosition> WithinRow(int row)
     {
-        return Enumerable.Range(0, 9).Select(column => new CellPosition(row, column));
+        return Enumerable.Range(0, Board.BoardSize).Select(column => new CellPosition(row, column));
     }
 
     public static IEnumerable<CellPosition> WithinColumn(int column)
     {
-        return Enumerable.Range(0, 9).Select(row => new CellPosition(row, column));
+        return Enumerable.Range(0, Board.BoardSize).Select(row => new CellPosition(row, column));
     }
 }

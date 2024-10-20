@@ -26,7 +26,7 @@ public class Validator(Neighbors neighbors)
             return true;
         }
 
-        return neighbors.CellNeighbors[row, column].Count(cell => board.GetValueAt(cell) == value) == 1;
+        return neighbors[row, column].Count(cell => board.GetValueAt(cell) == value) == 1;
     }
 
     public IEnumerable<CellPosition> ConflictingCells(Board board, CellPosition editedPosition)
@@ -35,6 +35,6 @@ public class Validator(Neighbors neighbors)
         int value = board.GetValueAt(editedPosition);
         if (value == 0) return [];
 
-        return neighbors.CellNeighbors[row, column].Where(cell => cell != editedPosition && board.GetValueAt(cell) == value);
+        return neighbors[row, column].Where(cell => cell != editedPosition && board.GetValueAt(cell) == value);
     }
 }

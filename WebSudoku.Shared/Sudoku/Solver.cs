@@ -42,7 +42,7 @@ public class Solver(Neighbors neighbors)
             return false;
         }
 
-        var cellNeighbors = neighbors.CellNeighbors[cell.Value.Row, cell.Value.Column];
+        var cellNeighbors = neighbors[cell.Value.Row, cell.Value.Column];
         var usedValues = new HashSet<int>(cellNeighbors.Select(position => board[position.Row, position.Column]));
 
         IEnumerable<int> availableValues = Enumerable.Range(1, 9).Except(usedValues);

@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSudoku", "WebSudoku\WebS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSudoku.Shared", "WebSudoku.Shared\WebSudoku.Shared.csproj", "{BFA4A7A2-37AE-4C00-B913-576C50308CC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSudoku.Shared.Tests", "WebSudoku.Shared.Tests\WebSudoku.Shared.Tests.csproj", "{90A8B0D9-7D49-4E4F-B61F-1CC124C4703E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSudoku.Tests", "WebSudoku.Tests\WebSudoku.Tests.csproj", "{CFC66056-8FA2-4203-AD42-B7C14BF6D7FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{BFA4A7A2-37AE-4C00-B913-576C50308CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFA4A7A2-37AE-4C00-B913-576C50308CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFA4A7A2-37AE-4C00-B913-576C50308CC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90A8B0D9-7D49-4E4F-B61F-1CC124C4703E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90A8B0D9-7D49-4E4F-B61F-1CC124C4703E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90A8B0D9-7D49-4E4F-B61F-1CC124C4703E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90A8B0D9-7D49-4E4F-B61F-1CC124C4703E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFC66056-8FA2-4203-AD42-B7C14BF6D7FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC66056-8FA2-4203-AD42-B7C14BF6D7FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC66056-8FA2-4203-AD42-B7C14BF6D7FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC66056-8FA2-4203-AD42-B7C14BF6D7FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

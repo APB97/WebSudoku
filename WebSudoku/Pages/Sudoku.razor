@@ -1,6 +1,5 @@
 ﻿@page "/sudoku"
 @using System.Linq
-@using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute
 @using apb97.github.io.WebSudoku.Shared
 @using apb97.github.io.WebSudoku.Shared.General
 @using apb97.github.io.WebSudoku.Shared.Serialization
@@ -8,7 +7,7 @@
 
 @inject CountingSolver Solver
 @inject Blanker Blanker
-@inject Validator Validator
+@inject Validator SudokuValidator
 @inject IJSRuntime JS
 @inject StringLocalizer<Sudoku> Loc
 
@@ -142,7 +141,7 @@
             {
                 board = loadedBoard;
                 timer?.SetTime(loadedTimer.Value);
-                InvalidCells = board.GetInvalidCells(Validator);
+                InvalidCells = board.GetInvalidCells(SudokuValidator);
             }
             else
             {
@@ -151,7 +150,7 @@
                 if (v1board != null)
                 {
                     board = v1board;
-                    InvalidCells = board.GetInvalidCells(Validator);
+                    InvalidCells = board.GetInvalidCells(SudokuValidator);
                 }
 
                 var jsonTimer = await utilitiesModule.GetSettingAsync<string>(TimerStateKey);
@@ -214,8 +213,11 @@
         await ProcessNonNavigatingInputAsync(row - 1, column - 1, args.Key);
     }
 
-    private int WrapAroundBetweenEdges([Range(1, Board.BoardSize)] int cellPositionOnAxis, [Range(-1, 1)] int positionChange)
+    public static int WrapAroundBetweenEdges(int cellPositionOnAxis, int positionChange)
     {
+        if (cellPositionOnAxis < 1 || cellPositionOnAxis > 9) throw new ArgumentOutOfRangeException(nameof(cellPositionOnAxis));
+        if (Math.Abs(positionChange) > 1) throw new ArgumentOutOfRangeException(nameof(positionChange));
+        
         // Replaces previously used ternary operators with calculation using modulo.
         // Note that adding Board.BoardSize before using modulo allows wrapping around position from 1 to 9
         return ((Board.BoardSize + cellPositionOnAxis - 1 + positionChange) % Board.BoardSize) + 1;
@@ -233,7 +235,7 @@
             await cells[row, column].SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(Cell.Value), string.Empty } }));
             board.ClearCell((row, column));
             InvalidCells.Remove((row, column));
-            InvalidCells.RemoveAll(cell => Validator.IsValid(board, cell));
+            InvalidCells.RemoveAll(cell => SudokuValidator.IsValid(board, cell));
         }
     }
 
@@ -241,12 +243,12 @@
     {
         board.FillCell((row, column), number);
         currentCell.OnChange(number.ToString());
-        InvalidCells = board.GetInvalidCells(Validator);
+        InvalidCells = board.GetInvalidCells(SudokuValidator);
     }
 
     private void CheckForWinCondition()
     {
-        if (board.EmptyCells.Count == 0 && Validator.IsValidBoard(board))
+        if (board.EmptyCells.Count == 0 && SudokuValidator.IsValidBoard(board))
         {
             success = true;
             timePassed = timer?.SpanToShow;
