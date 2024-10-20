@@ -1,65 +1,69 @@
 ﻿@page "/sudoku"
 @using System.Linq
 @using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute
-@using WebSudoku.Shared
-@using WebSudoku.Shared.General
-@using WebSudoku.Shared.Serialization
-@using WebSudoku.Shared.Sudoku
+@using apb97.github.io.WebSudoku.Shared
+@using apb97.github.io.WebSudoku.Shared.General
+@using apb97.github.io.WebSudoku.Shared.Serialization
+@using apb97.github.io.WebSudoku.Shared.Sudoku
 
 @inject CountingSolver Solver
 @inject Blanker Blanker
 @inject Validator Validator
 @inject IJSRuntime JS
+@inject StringLocalizer<Sudoku> Loc
 
 @implements IAsyncDisposable
 
 <PageTitle>Web Sudoku - sudoku</PageTitle>
 
-@if (!success)
+@if (ShouldRender())
 {
-    <div class="d-flex flex-direction-var">
-        <div class="div-main">
-            <TimerDisplay @ref="timer" />
-            <table class="sudoku-table" style="border-spacing: 0px;">
-                @for (int r = 0; r < Board.BoardSize; r++)
-                {
-                    <tr>
-                        @for (int c = 0; c < Board.BoardSize; c++)
-                        {
-                            // these local variables are needed to cache position of Cell on the board
-                            int row = r, column = c;
-                            var value = board.GetValueAt((row, column));
-                            string cellValue = value != 0 ? value.ToString() : string.Empty;
-                            <td>
-                                <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightClass="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
-                                    Value="@cellValue"
-                                    OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
-                                    SwitchTypeOnFocus="isMobile"
-                                    DefaultType="@(isFirefox && isMobile ? Cell.InputTypeNumber : Cell.InputTypeText)"
-                                    />
-                            </td>
-                        }
-                    </tr>
-                }
-            </table>
-        </div>
-    
-        <div class="div-options d-print-none">
-            <button class="btn btn-primary" @onclick="Save">Save</button>
-            <button class="btn btn-primary" @onclick="Load">Load</button>
-            <button class="btn btn-purple" onclick="print()">Print</button>
-            <PrintSettings />
-        </div>
-    </div>
-}
-else
-{
-    <h1>Success</h1>
-    @if (timePassed.HasValue)
+    @if (!success)
     {
-        <p>You finished with time @timePassed.</p>
+        <div class="d-flex flex-direction-var">
+            <div class="div-main">
+                <TimerDisplay @ref="timer" />
+                <table class="sudoku-table" style="border-spacing: 0px;">
+                    @for (int r = 0; r < Board.BoardSize; r++)
+                    {
+                        <tr>
+                            @for (int c = 0; c < Board.BoardSize; c++)
+                            {
+                                // these local variables are needed to cache position of Cell on the board
+                                int row = r, column = c;
+                                var value = board.GetValueAt((row, column));
+                                string cellValue = value != 0 ? value.ToString() : string.Empty;
+                                <td>
+                                    <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightClass="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
+                                        Value="@cellValue"
+                                        OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
+                                        SwitchTypeOnFocus="isMobile"
+                                        DefaultType="@(isFirefox && isMobile ? Cell.InputTypeNumber : Cell.InputTypeText)"
+                                        />
+                                </td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+    
+            <div class="div-options d-print-none">
+                <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
+                <button class="btn btn-primary" @onclick="Load">@Loc["Load"]</button>
+                <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
+                <PrintSettings />
+            </div>
+        </div>
     }
-    <button class="btn btn-primary" @onclick="CreateNewBoard">Play again</button>
+    else
+    {
+        <h1>@Loc["Success"]</h1>
+        @if (timePassed.HasValue)
+        {
+            <p>@Loc["You finished with time"] @timePassed.</p>
+        }
+        <button class="btn btn-primary" @onclick="CreateNewBoard">@Loc["Play again"]</button>
+    }
 }
 
 @code {
@@ -86,10 +90,15 @@ else
 
     private Cell[,] cells = new Cell[Board.BoardSize, Board.BoardSize];
 
+    protected override bool ShouldRender()
+    {
+        return Loc.IsReady;
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-
+        MainLayout.OnStateChanging += LoadResourcesAsync;
+        await Loc.InitializeAsync(LanguageSelect.Culture);
         module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Sudoku.razor.js");
         if (module != null)
         {
@@ -253,8 +262,15 @@ else
         await module.InvokeVoidAsync("blurCell", row, column);
     }
 
+    private async Task LoadResourcesAsync()
+    {
+        await Loc.InitializeAsync(LanguageSelect.Culture);
+        StateHasChanged();
+    }
+
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
+        MainLayout.OnStateChanging -= LoadResourcesAsync;
         if (module is null) return;
         await module.DisposeAsync();
     }

@@ -1,7 +1,6 @@
-﻿namespace WebSudoku.JSInterop
+﻿namespace apb97.github.io.WebSudoku.JSInterop;
+
+public static class JSModules
 {
-    public static class JSModules
-    {
-        public const string UtilitiesModule = "./js/utilities.js";
-    }
+    public const string UtilitiesModule = "./js/utilities.js";
 }

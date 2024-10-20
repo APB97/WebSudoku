@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <RootNamespace>apb97.github.io.WebSudoku</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

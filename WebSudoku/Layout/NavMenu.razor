@@ -1,4 +1,9 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using apb97.github.io.WebSudoku.Shared
+
+@implements IDisposable
+@inject StringLocalizer<NavMenu> Loc
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="https://apb97.github.io">APB97</a>
         <button style="border: none; background-color: transparent; padding: 0;" @onclick="() => Layout.ToggleLayoutMode()">
@@ -15,17 +20,20 @@
                 </div>
             }
         </button>
+        <div class="navbar-language-select">
+            <LanguageSelect />
+        </div>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
-<div style="overflow-y: auto;" class="@NavMenuCssClass" @onclick="CollapseNavMenu">
-    <nav class="flex-column">
+<div style="overflow-y: auto;" class="@NavMenuCssClass d-flex flex-grow-1" @onclick="CollapseNavMenu">
+    <nav class="d-flex flex-column flex-grow-1">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="rules" Match="NavLinkMatch.All">
-                Sudoku Rules
+                @Loc["Sudoku Rules"]
             </NavLink>
         </div>
         <div class="nav-item px-3">
@@ -35,12 +43,20 @@
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="printMultiple">
-                Print Multiple
+                @Loc["Print Multiple"]
             </NavLink>
         </div>
 
-        <div class="bottom-0 nav-item px-3 d-print-none">
-            <a class="text-decoration-underline nav-link" href="https://github.com/APB97/WebSudoku" target="_blank">Code</a>
+        <div class="flex-grow-1" />
+
+        <div class="nav-item px-3">
+            <a class="text-decoration-underline nav-link" href="https://github.com/APB97/WebSudoku" target="_blank">@Loc["Code"]</a>
+        </div>
+
+        <div class="nav-item px-3">
+            <div class="nav-link">
+                <LanguageSelect />
+            </div>
         </div>
     </nav>
 </div>
@@ -53,6 +69,17 @@
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    protected override bool ShouldRender()
+    {
+        return Loc.IsReady;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MainLayout.OnStateChanging += LoadResourcesAsync;
+        await Loc.InitializeAsync(LanguageSelect.Culture);
+    }
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
@@ -62,5 +89,16 @@
     {
         collapseNavMenu = true;
         StateHasChanged();
+    }
+
+    private async Task LoadResourcesAsync()
+    {
+        await Loc.InitializeAsync(LanguageSelect.Culture);
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        MainLayout.OnStateChanging -= LoadResourcesAsync;
     }
 }

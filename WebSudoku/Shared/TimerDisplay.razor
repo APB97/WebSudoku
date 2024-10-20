@@ -1,5 +1,11 @@
-﻿<span class="d-print-none">Your time: </span>
-<span class="d-print-none">@SpanToShow</span>
+﻿@implements IDisposable
+@inject StringLocalizer<TimerDisplay> Loc
+
+@if (ShouldRender())
+{
+    <span class="d-print-none">@Loc["Your time"]: </span>
+    <span class="d-print-none">@SpanToShow</span>
+}
 
 @code {
     [Parameter]
@@ -9,8 +15,16 @@
 
     protected PeriodicTimer? timer;
 
+    protected override bool ShouldRender()
+    {
+        return Loc.IsReady;
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        MainLayout.OnStateChanging += LoadResourcesAsync;
+        await Loc.InitializeAsync(LanguageSelect.Culture);
+        StateHasChanged();
         using (timer = new PeriodicTimer(TimeSpan.FromSeconds(1)))
         {
             await TimerLoop();
@@ -32,5 +46,16 @@
     {
         SpanToShow = time;
         StateHasChanged();
+    }
+
+    private async Task LoadResourcesAsync()
+    {
+        await Loc.InitializeAsync(LanguageSelect.Culture);
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        MainLayout.OnStateChanging -= LoadResourcesAsync;
     }
 }

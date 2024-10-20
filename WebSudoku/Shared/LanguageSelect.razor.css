@@ -1,0 +1,9 @@
+﻿option {
+    background-color: unset;
+    color: black;
+}
+
+option.current {
+    color: gray;
+    background-color: unset;
+}

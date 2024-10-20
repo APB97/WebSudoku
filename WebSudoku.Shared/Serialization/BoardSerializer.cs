@@ -1,38 +1,37 @@
-﻿using System.Text.Json;
-using WebSudoku.Shared.Sudoku;
+﻿using apb97.github.io.WebSudoku.Shared.Sudoku;
+using System.Text.Json;
 
-namespace WebSudoku.Shared.Serialization
+namespace apb97.github.io.WebSudoku.Shared.Serialization;
+
+public static class BoardSerializer
 {
-    public static class BoardSerializer
+    public static Board? DeserializeFromJson(string json)
     {
-        public static Board? DeserializeFromJson(string json)
-        {
-            return new Board(JsonSerializer.Deserialize<BoardState>(json));
-        }
+        return new Board(JsonSerializer.Deserialize<BoardState>(json));
+    }
 
-        public static Board? DeserializeFromJson(string json, out TimeSpan? timer)
+    public static Board? DeserializeFromJson(string json, out TimeSpan? timer)
+    {
+        timer = null;
+        try
         {
-            timer = null;
-            try
-            {
-                GameState gameState = JsonSerializer.Deserialize<GameState>(json);
-                timer = gameState.Timer;
-                return new Board(gameState.Board);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            GameState gameState = JsonSerializer.Deserialize<GameState>(json);
+            timer = gameState.Timer;
+            return new Board(gameState.Board);
         }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 
-        public static string SerializeToJson(Board board)
-        {
-            return JsonSerializer.Serialize(board.GetState());
-        }
+    public static string SerializeToJson(Board board)
+    {
+        return JsonSerializer.Serialize(board.GetState());
+    }
 
-        public static string SerializeToJson(Board board, TimeSpan? timer, string version)
-        {
-            return JsonSerializer.Serialize(new GameState { Board = board.GetState(), Timer = timer, Version = version });
-        }
+    public static string SerializeToJson(Board board, TimeSpan? timer, string version)
+    {
+        return JsonSerializer.Serialize(new GameState { Board = board.GetState(), Timer = timer, Version = version });
     }
 }
