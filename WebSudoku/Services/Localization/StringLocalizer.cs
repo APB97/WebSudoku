@@ -1,17 +1,10 @@
-﻿using System.Globalization;
-
-namespace apb97.github.io.WebSudoku.Services.Localization;
+﻿namespace apb97.github.io.WebSudoku.Services.Localization;
 
 public class StringLocalizer<T>(StringLocalizerFactory factory)
 {
     private Dictionary<string, string>? localization;
 
     public bool IsReady => localization != null;
-
-    public async Task InitializeAsync(CultureInfo? cultureInfo)
-    {
-        localization = await factory.GetLocalizationAsync<T>(cultureInfo?.Name ?? CultureInfo.CurrentUICulture.Name);
-    }
 
     public async Task InitializeAsync(string? cultureName)
     {

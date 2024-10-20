@@ -66,7 +66,7 @@
     protected override async Task OnInitializedAsync()
     {
         Layout.OnStateChanging += LoadResourcesAsync;
-        module = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
+        module = await JS.ImportAsync(JSModules.UtilitiesModule);
         await Loc.InitializeAsync(Layout.Culture);
 
         await LoadSetting(v => printFilledValues = v, nameof(printFilledValues));

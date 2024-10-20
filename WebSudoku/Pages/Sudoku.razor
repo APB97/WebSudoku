@@ -101,7 +101,7 @@
     {
         Layout.OnStateChanging += LoadResourcesAsync;
         await Loc.InitializeAsync(Layout.Culture);
-        module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Sudoku.razor.js");
+        module = await JS.ImportAsync("./Pages/Sudoku.razor.js");
         if (module != null)
         {
             try
@@ -116,7 +116,7 @@
             }
         }
 
-        utilitiesModule = await JS.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
+        utilitiesModule = await JS.ImportAsync(JSModules.UtilitiesModule);
 
         CreateNewBoard();
     }

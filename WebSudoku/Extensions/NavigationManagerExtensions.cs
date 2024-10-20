@@ -10,7 +10,7 @@ public static class NavigationManagerExtensions
 
     public static async Task NavigateToStoredDestinationIfAnyAsync(this NavigationManager navigation, IJSRuntime js)
     {
-        await using var utilitiesModule = await js.InvokeAsync<IJSObjectReference>("import", JSModules.UtilitiesModule);
+        await using var utilitiesModule = await js.ImportAsync(JSModules.UtilitiesModule);
         var destination = await utilitiesModule.GetSessionSettingAsync<string>(DestinationKey);
         if (string.IsNullOrEmpty(destination)) return;
         await utilitiesModule.RemoveSessionSettingAsync(DestinationKey);
