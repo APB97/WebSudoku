@@ -141,6 +141,10 @@ main[b-834vkyk4rs] {
         display: none;
     }
 
+    .navbar-language-select[b-z3xvy1gwk2] {
+        display: none;
+    }
+
     .collapse[b-z3xvy1gwk2] {
         /* Never collapse the sidebar for wide screens */
         display: block;
@@ -357,4 +361,14 @@ main[b-834vkyk4rs] {
     .display-var[b-245jprxzxn] {
         display: none;
     }
+}
+/* /Shared/LanguageSelect.razor.rz.scp.css */
+option[b-wzhoucr2k6] {
+    background-color: unset;
+    color: black;
+}
+
+option.current[b-wzhoucr2k6] {
+    color: gray;
+    background-color: unset;
 }
