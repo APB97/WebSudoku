@@ -8,6 +8,14 @@
     <RootNamespace>apb97.github.io.WebSudoku</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <Target Condition="$(ContinuousIntegrationBuild)==''" Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="SimpleResxToJson.CLI.exe --input=$(ProjectDir)ResxResources --output=$(ProjectDir)wwwroot/Resources" />
+  </Target>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
