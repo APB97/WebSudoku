@@ -181,7 +181,7 @@
     <value>Stan sudoku może być zapisany i wczytany.</value>
   </data>
   <data name="Currently saves to and loads from browser's LocalStorage." xml:space="preserve">
-    <value>Obecnie zapiuje i wczytuje z lokalnej pamięci przeglądarki.</value>
+    <value>Obecnie aplikacja zapisuje i wczytuje stan z lokalnej pamięci przeglądarki.</value>
   </data>
   <data name="Printing" xml:space="preserve">
     <value>Drukowanie</value>

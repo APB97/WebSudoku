@@ -181,7 +181,7 @@
     <value>Sudoku state can be saved and loaded.</value>
   </data>
   <data name="Currently saves to and loads from browser's LocalStorage." xml:space="preserve">
-    <value>Currently saves to and loads from browser's LocalStorage.</value>
+    <value>Currently saves to and loads state from browser's LocalStorage.</value>
   </data>
   <data name="Printing" xml:space="preserve">
     <value>Printing</value>
