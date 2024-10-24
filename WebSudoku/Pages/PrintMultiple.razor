@@ -35,8 +35,10 @@
 
     @if (generating)
     {
-        <div class="border border-2 border-info d-print-none">@Loc["Generating additional sudokus..."]</div>
-        <button class="btn btn-danger" @onclick="Cancel">@Loc["Cancel"]</button>
+        <div class="border border-2 border-info d-print-none">
+            @Loc["Generating additional sudokus..."]
+            <button class="btn btn-danger" @onclick="Cancel">@Loc["Cancel"]</button>
+        </div>
     }
 
     <div class="d-flex flex-wrap">
