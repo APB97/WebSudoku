@@ -27,6 +27,8 @@
         </InputSelect>
         <label for="boards-amount">@Loc["Boards to generate"]</label>
         <InputNumber id="boards-amount" min="1" max="32" @bind-Value="BoardsToGenerate" />
+        <label title="@Loc["Speeds up the process but"]" for="use-more-resources">@Loc["Use more resources"]</label>
+        <InputCheckbox id="use-more-resources" @bind-Value="useMoreResources" />
         <button disabled="@(generating ? "disabled" : null)" class="btn btn-primary" @onclick="GenerateBoards">@Loc["Add"] @boardsToGenerate @Loc["sudoku(s)"]</button>
         <button class="btn btn-secondary" onclick="print()">@Loc["Print"]</button>
     </div>
@@ -34,6 +36,7 @@
     @if (generating)
     {
         <div class="border border-2 border-info d-print-none">@Loc["Generating additional sudokus..."]</div>
+        <button class="btn btn-danger" @onclick="Cancel">@Loc["Cancel"]</button>
     }
 
     <div class="d-flex flex-wrap">
@@ -71,11 +74,15 @@
     [CascadingParameter]
     public required MainLayout Layout { get; set; }
 
-    private int MillisecondsDelay => 150;
+    private int millisecondsDelay = 150;
+
+    private CancellationTokenSource cts = new();
 
     private List<Board> boards = [];
 
     private bool generating;
+
+    private bool useMoreResources;
 
     private float boardWidthPercentage = 100;
 
@@ -111,7 +118,16 @@
         await utilities.SetSettingAsync("printMultiple_boardWidthPercentage", width);
     }
 
-    private async Task GenerateBoards()
+    private void Cancel()
+    {
+        cts.Cancel();
+        cts.Dispose();
+        cts = new();
+    }
+
+    private Task GenerateBoards() => GenerateBoards(cts.Token);
+
+    private async Task GenerateBoards(CancellationToken cancellationToken)
     {
         generating = true;
         {
@@ -119,12 +135,17 @@
             {
                 for (int i = 0; i< boardsToGenerate; i++)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     generating = true;
                     boards.Add(new Board(Solver, new RandomOptionOrder<int>(), Blanker, 40, 64));
                     StateHasChanged();
                     // makes UI responsive
-                    await Task.Delay(MillisecondsDelay);
+                    await Task.Delay(useMoreResources ? 1 : millisecondsDelay);
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                // don't do anything when cancelling
             }
             catch (Exception ex)
             {
@@ -173,6 +194,7 @@
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
         Layout.OnStateChanging -= LoadResourcesAsync;
+        cts.Dispose();
         if (utilities is null) return;
         await utilities.DisposeAsync();
     }

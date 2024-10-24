@@ -147,4 +147,13 @@
   <data name="Regenerate board" xml:space="preserve">
     <value>Regenerate sudoku</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Use more resources" xml:space="preserve">
+    <value>Use more resources</value>
+  </data>
+  <data name="Speeds up the process but" xml:space="preserve">
+    <value>Speeds up the process but decreases responsiveness.</value>
+  </data>
 </root>
