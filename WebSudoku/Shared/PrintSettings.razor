@@ -5,7 +5,9 @@
 
 @if (ShouldRender())
 {
-    <button class="btn btn-primary" @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? @Loc["Hide"] : @Loc["Show"]) @Loc["Print settings"]</button>
+    <button class="btn btn-primary"
+        style="margin: 2pt;"
+        @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? @Loc["Hide"] : @Loc["Show"]) @Loc["Print settings"]</button>
 
     @if (showPrintSettings)
     {
