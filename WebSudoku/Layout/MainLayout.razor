@@ -1,6 +1,5 @@
-﻿@using WebSudoku.Shared
+﻿@using apb97.github.io.WebSudoku.Shared
 @inherits LayoutComponentBase
-@implements IAsyncDisposable
 
 @inject IJSRuntime JS
 
@@ -42,8 +41,6 @@
 @code {
     private NavMenu? navMenu;
 
-    private IJSObjectReference? utilitiesModule;
-
     public string LayoutMode { get; private set; } = "Dark";
 
     public event Func<Task> OnStateChanging = delegate { return Task.CompletedTask; };
@@ -52,7 +49,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        utilitiesModule = await JS.ImportAsync(JSModules.UtilitiesModule);
+        await using var utilitiesModule = await JS.ImportAsync(JSModules.UtilitiesModule);
         var mode = await utilitiesModule.GetSettingAsync<string>("LayoutMode");
         if (mode is null) return;
         LayoutMode = mode;
@@ -68,13 +65,5 @@
     {
         await OnStateChanging.Invoke();
         StateHasChanged();
-    }
-
-    async ValueTask IAsyncDisposable.DisposeAsync()
-    {
-        if (utilitiesModule is not null)
-        {
-            await utilitiesModule.DisposeAsync();
-        }
     }
 }

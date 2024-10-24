@@ -26,14 +26,14 @@
             <option value="100">100%</option>
         </InputSelect>
         <label for="boards-amount">@Loc["Boards to generate"]</label>
-        <InputNumber id="boards-amount" min="1" max="32" @bind-Value="boardsToGenerate" />
+        <InputNumber id="boards-amount" min="1" max="32" @bind-Value="BoardsToGenerate" />
         <button disabled="@(generating ? "disabled" : null)" class="btn btn-primary" @onclick="GenerateBoards">@Loc["Add"] @boardsToGenerate @Loc["sudoku(s)"]</button>
         <button class="btn btn-secondary" onclick="print()">@Loc["Print"]</button>
     </div>
 
     @if (generating)
     {
-        <div class="border border-2 border-info">@Loc["Generating additional sudokus..."]</div>
+        <div class="border border-2 border-info d-print-none">@Loc["Generating additional sudokus..."]</div>
     }
 
     <div class="d-flex flex-wrap">
@@ -71,6 +71,8 @@
     [CascadingParameter]
     public required MainLayout Layout { get; set; }
 
+    private int MillisecondsDelay => 150;
+
     private List<Board> boards = [];
 
     private bool generating;
@@ -78,6 +80,12 @@
     private float boardWidthPercentage = 100;
 
     private int boardsToGenerate = 4;
+
+    private int BoardsToGenerate
+    {
+        get => boardsToGenerate;
+        set => boardsToGenerate = Math.Clamp(value, 1, 32);
+    }
 
     private IJSObjectReference? utilities;
 
@@ -103,19 +111,19 @@
         await utilities.SetSettingAsync("printMultiple_boardWidthPercentage", width);
     }
 
-    private Task GenerateBoards() => GenerateBoards(boardsToGenerate);
-
-    private async Task GenerateBoards(int amount)
+    private async Task GenerateBoards()
     {
         generating = true;
-        await Task.Run(async () =>
         {
             try
             {
-                for (int i = 0; i < amount; i++)
+                for (int i = 0; i< boardsToGenerate; i++)
                 {
                     generating = true;
                     boards.Add(new Board(Solver, new RandomOptionOrder<int>(), Blanker, 40, 64));
+                    StateHasChanged();
+                    // makes UI responsive
+                    await Task.Delay(MillisecondsDelay);
                 }
             }
             catch (Exception ex)
@@ -129,8 +137,7 @@
             {
                 generating = false;
             }
-            StateHasChanged();
-        });
+        };
     }
 
     private async Task Regenerate(Board board)
