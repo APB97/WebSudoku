@@ -21,7 +21,6 @@ main[b-834vkyk4rs] {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
-    height: 3.5rem;
     display: flex;
     align-items: center;
 }
@@ -86,7 +85,6 @@ main[b-834vkyk4rs] {
 }
 
 .top-row[b-z3xvy1gwk2] {
-    height: 3.5rem;
     background-color: rgba(0,0,0,0.4);
 }
 
