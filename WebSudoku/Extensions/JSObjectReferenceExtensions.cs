@@ -16,53 +16,53 @@ public static class JSObjectReferenceExtensions
     /// </summary>
     /// <param name="utilitiesModule">JavaScript Module "./js/utilities.js"</param>
     /// <param name="message">Message to be shown</param>
-    public static async Task AlertAsync(this IJSObjectReference utilitiesModule, string message)
+    public static ValueTask AlertAsync(this IJSObjectReference utilitiesModule, string message)
     {
-        await utilitiesModule.InvokeVoidAsync(AlertFunction, message);
+        return utilitiesModule.InvokeVoidAsync(AlertFunction, message);
     }
 
     /// <summary>
     /// Set setting in localStorage
     /// </summary>
     /// <param name="utilitiesModule">JavaScript Module "./js/utilities.js"</param>
-    public static async Task SetSettingAsync<T>(this IJSObjectReference utilitiesModule, string key, T value)
+    public static ValueTask SetSettingAsync<T>(this IJSObjectReference utilitiesModule, string key, T value)
     {
-        await utilitiesModule.InvokeVoidAsync(SetSettingFunction, key, value);
+        return utilitiesModule.InvokeVoidAsync(SetSettingFunction, key, value);
     }
 
     /// <summary>
     /// Get setting from localStorage
     /// </summary>
     /// <param name="utilitiesModule">JavaScript Module "./js/utilities.js"</param>
-    public static async Task<T?> GetSettingAsync<T>(this IJSObjectReference utilitiesModule, string key)
+    public static ValueTask<T> GetSettingAsync<T>(this IJSObjectReference utilitiesModule, string key)
     {
-        return await utilitiesModule.InvokeAsync<T>(GetSettingFunction, key);
+        return utilitiesModule.InvokeAsync<T>(GetSettingFunction, key);
     }
 
     /// <summary>
     /// Remove setting from localStorage
     /// </summary>
     /// <param name="utilitiesModule">JavaScript Module "./js/utilities.js"</param>
-    public static async Task RemoveSettingAsync(this IJSObjectReference utilitiesModule, string key)
+    public static ValueTask RemoveSettingAsync(this IJSObjectReference utilitiesModule, string key)
     {
-        await utilitiesModule.InvokeVoidAsync(RemoveSettingFunction, key);
+        return utilitiesModule.InvokeVoidAsync(RemoveSettingFunction, key);
     }
 
     /// <summary>
     /// Get setting from sessionStorage
     /// </summary>
     /// <param name="utilitiesModule">JavaScript Module "./js/utilities.js"</param>
-    public static async Task<T?> GetSessionSettingAsync<T>(this IJSObjectReference utilitiesModule, string key)
+    public static ValueTask<T> GetSessionSettingAsync<T>(this IJSObjectReference utilitiesModule, string key)
     {
-        return await utilitiesModule.InvokeAsync<T>(GetSessionSettingFunction, key);
+        return utilitiesModule.InvokeAsync<T>(GetSessionSettingFunction, key);
     }
 
     /// <summary>
     /// Remove setting from sessionStorage
     /// </summary>
     /// <param name="utilitiesModule">JavaScript Module "./js/utilities.js"</param>
-    public static async Task RemoveSessionSettingAsync(this IJSObjectReference utilitiesModule, string key)
+    public static ValueTask RemoveSessionSettingAsync(this IJSObjectReference utilitiesModule, string key)
     {
-        await utilitiesModule.InvokeVoidAsync(RemoveSessionSettingFunction, key);
+        return utilitiesModule.InvokeVoidAsync(RemoveSessionSettingFunction, key);
     }
 }
