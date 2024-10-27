@@ -13,6 +13,8 @@
 
 @implements IAsyncDisposable
 
+<SettingsProvider @ref="settingsProvider" />
+
 <PageTitle>Web Sudoku - sudoku</PageTitle>
 
 @if (ShouldRender())
@@ -76,8 +78,9 @@
     private Board board = new Board();
     private const string SudokuStateKey = "sudokuState";
     private const string TimerStateKey = "timerState";
-    private const int TargetBlanks = 35;
-    private const int AttemptsToRemove = 4;
+
+    private int targetBlanks = 35;
+    private int attemptsToRemove = 4;
 
     private bool success = false;
 
@@ -101,6 +104,8 @@
     private string StatusMessage = string.Empty;
 
     private CancellationTokenSource cts = new();
+
+    private SettingsProvider? settingsProvider;
 
     protected override bool ShouldRender()
     {
@@ -128,7 +133,21 @@
 
         utilitiesModule = await JS.ImportAsync(JSModules.UtilitiesModule);
         await FetchSavedState();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        if (settingsProvider is null) return;
+        settingsProvider.AfterSettingsLoadedAsync += OnAfterSettingsLoadedAsync;
+    }
+
+    private Task OnAfterSettingsLoadedAsync()
+    {
+        targetBlanks = settingsProvider.GetInt(SettingsProvider.DesiredBlankCells);
+        attemptsToRemove = settingsProvider.GetInt(SettingsProvider.CellBlankingAttempts);
         CreateNewBoard();
+        return Task.CompletedTask;
     }
 
     private async ValueTask FetchSavedState()
@@ -200,7 +219,7 @@
     protected void CreateNewBoard()
     {
         success = false;
-        board = new Board(Solver, new RandomOptionOrder<int>(), Blanker, TargetBlanks, AttemptsToRemove);
+        board = new Board(Solver, new RandomOptionOrder<int>(), Blanker, targetBlanks, attemptsToRemove);
     }
 
     private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column)
@@ -290,16 +309,16 @@
         }
     }
 
-    private async Task FocusAsync(int row, int column)
+    private ValueTask FocusAsync(int row, int column)
     {
-        if (module is null) return;
-        await module.InvokeVoidAsync("focusCell", row, column);
+        if (module is null) return default;
+        return module.InvokeVoidAsync("focusCell", row, column);
     }
 
-    private async Task BlurAsync(int row, int column)
+    private ValueTask BlurAsync(int row, int column)
     {
-        if (module is null) return;
-        await module.InvokeVoidAsync("blurCell", row, column);
+        if (module is null) return default;
+        return module.InvokeVoidAsync("blurCell", row, column);
     }
 
     private async Task LoadResourcesAsync()
@@ -312,6 +331,8 @@
     {
         Layout.OnStateChanging -= LoadResourcesAsync;
         cts?.Dispose();
+        if (settingsProvider is not null)
+            settingsProvider.AfterSettingsLoadedAsync -= OnAfterSettingsLoadedAsync;
         if (module is null) return;
         await module.DisposeAsync();
     }

@@ -243,4 +243,22 @@
   <data name="Target cell will have its value selected." xml:space="preserve">
     <value>Target cell will have its value selected.</value>
   </data>
+  <data name="Manage settings" xml:space="preserve">
+    <value>Manage settings</value>
+  </data>
+  <data name="Adjustable settings" xml:space="preserve">
+    <value>Adjustable settings</value>
+  </data>
+  <data name="Desired blank cells" xml:space="preserve">
+    <value>Desired blank cells</value>
+  </data>
+  <data name="Cell blanking attempts" xml:space="preserve">
+    <value>Cell blanking attempts</value>
+  </data>
+  <data name="Maximum amount of cells that can be blank" xml:space="preserve">
+    <value>Maximum amount of cells that can be blank. Increasing this parameter extends sudoku generation time.</value>
+  </data>
+  <data name="Maximum attempts to blank next cell" xml:space="preserve">
+    <value>Maximum attempts to blank next cell. Increasing this parameter slightly extends sudoku generation time and increases frequency of generated sudokus with desired amount of empty cells.</value>
+  </data>
 </root>
