@@ -11,32 +11,38 @@
     <PageTitle>Web Sudoku - @Loc["Settings"]</PageTitle>
 
     <div>
-        <div class="d-flex flex-wrap">
-            @if (settingsProvider is not null)
-            {
-                foreach (var setting in settingsProvider.Settings)
+        <table>
+            <tbody>
+                @if (settingsProvider is not null)
                 {
-                    <div class="align-content-center">
-                        <label for="@setting.Key">@Loc[setting.Key]</label>
-                        @switch (setting.Value.GetType().Name)
-                        {
-                            case nameof(Int32):
-                                var integer = (int)setting.Value;
-                                RangeAttribute? range = null;
-                                if (settingsProvider.Validations.TryGetValue(setting.Key, out var validations))
+                    foreach (var setting in settingsProvider.Settings)
+                    {
+                        <tr>
+                            <td>
+                                <label for="@setting.Key">@Loc[setting.Key]</label>
+                            </td>
+                            <td>
+                                @switch (setting.Value.GetType().Name)
                                 {
-                                    range = validations.OfType<RangeAttribute>().FirstOrDefault();
+                                    case nameof(Int32):
+                                        var integer = (int)setting.Value;
+                                        RangeAttribute? range = null;
+                                        if (settingsProvider.Validations.TryGetValue(setting.Key, out var validations))
+                                        {
+                                            range = validations.OfType<RangeAttribute>().FirstOrDefault();
+                                        }
+                                        <InputNumber id="@setting.Key" min="@range?.Minimum" max="@range?.Maximum" style="width: 3rem;"
+                                            TValue="int" Value="integer" ValueExpression="() => integer" ValueChanged="i => UpdateSettingAsync(setting.Key, i)" />
+                                        break;
+                                    default:
+                                        break;
                                 }
-                                <InputNumber id="@setting.Key" min="@range?.Minimum" max="@range?.Maximum"
-                                    TValue="int" Value="integer" ValueExpression="() => integer" ValueChanged="i => UpdateSettingAsync(setting.Key, i)" />
-                                break;
-                            default:
-                                break;
-                        }
-                    </div>
+                            </td>
+                        </tr>
                     }
                 }
-        </div>
+            </tbody>
+        </table>
     </div>
 }
 
