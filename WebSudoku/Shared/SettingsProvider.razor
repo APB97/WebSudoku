@@ -9,7 +9,7 @@
 
     public IReadOnlyDictionary<string, ValidationAttribute[]> Validations => settingValidations;
 
-    public event Func<Task> AfterSettingsLoadedAsync = delegate { return Task.CompletedTask; };
+    public event Action AfterSettingsLoaded = delegate { };
 
     private static Dictionary<string, object> settingValues = new()
     {
@@ -27,7 +27,7 @@
     {
         await base.AfterImportAsync(objectReference)
             .ContinueWith(async _ => await LoadSettingsAsync()
-                .ContinueWith(async _ => await AfterSettingsLoadedAsync()));
+                .ContinueWith(_ => AfterSettingsLoaded()));
     }
 
     public async Task LoadSettingsAsync()

@@ -142,14 +142,14 @@
     {
         if (!firstRender) return;
         if (settingsProvider is null) return;
-        settingsProvider.AfterSettingsLoadedAsync += OnAfterSettingsLoadedAsync;
+        settingsProvider.AfterSettingsLoaded += OnAfterSettingsLoaded;
     }
 
-    private Task OnAfterSettingsLoadedAsync()
+    private void OnAfterSettingsLoaded()
     {
+        if (settingsProvider is null) return;
         targetBlanks = settingsProvider.GetInt(SettingsProvider.DesiredBlankCells);
         attemptsToRemove = settingsProvider.GetInt(SettingsProvider.CellBlankingAttempts);
-        return Task.CompletedTask;
     }
 
     private async ValueTask LoadSettings(IJSObjectReference utilities)
@@ -257,6 +257,8 @@
     {
         Layout.OnStateChanging -= LoadResourcesAsync;
         cts.Dispose();
+        if (settingsProvider is not null)
+            settingsProvider.AfterSettingsLoaded -= OnAfterSettingsLoaded;
         if (utilities is null) return;
         await utilities.SetSettingAsync(SettingKeyFor(nameof(boardsToGenerate)), boardsToGenerate);
         await utilities.DisposeAsync();

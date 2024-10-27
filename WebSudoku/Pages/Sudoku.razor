@@ -135,19 +135,21 @@
         await FetchSavedState();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (!firstRender) return;
         if (settingsProvider is null) return;
-        settingsProvider.AfterSettingsLoadedAsync += OnAfterSettingsLoadedAsync;
+        settingsProvider.AfterSettingsLoaded += OnAfterSettingsLoaded;
     }
 
-    private Task OnAfterSettingsLoadedAsync()
+    private void OnAfterSettingsLoaded()
     {
-        targetBlanks = settingsProvider.GetInt(SettingsProvider.DesiredBlankCells);
-        attemptsToRemove = settingsProvider.GetInt(SettingsProvider.CellBlankingAttempts);
+        if(settingsProvider is not null)
+        {
+            targetBlanks = settingsProvider.GetInt(SettingsProvider.DesiredBlankCells);
+            attemptsToRemove = settingsProvider.GetInt(SettingsProvider.CellBlankingAttempts);
+        }
         CreateNewBoard();
-        return Task.CompletedTask;
     }
 
     private async ValueTask FetchSavedState()
@@ -332,7 +334,7 @@
         Layout.OnStateChanging -= LoadResourcesAsync;
         cts?.Dispose();
         if (settingsProvider is not null)
-            settingsProvider.AfterSettingsLoadedAsync -= OnAfterSettingsLoadedAsync;
+            settingsProvider.AfterSettingsLoaded -= OnAfterSettingsLoaded;
         if (module is null) return;
         await module.DisposeAsync();
     }
