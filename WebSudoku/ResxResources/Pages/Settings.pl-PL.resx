@@ -117,16 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Sudoku Rules" xml:space="preserve">
-    <value>Reguły sudoku</value>
-  </data>
-  <data name="Print Multiple" xml:space="preserve">
-    <value>Drukuj wiele</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Kod</value>
-  </data>
   <data name="Settings" xml:space="preserve">
     <value>Ustawienia</value>
+  </data>
+  <data name="WebSudoku-desiredBlankCells" xml:space="preserve">
+    <value>Oczekiwana ilość pustych komórek</value>
+  </data>
+  <data name="WebSudoku-cellBlankingAttempts" xml:space="preserve">
+    <value>Ilość prób wyczyszczenia komórki </value>
   </data>
 </root>

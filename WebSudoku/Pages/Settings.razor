@@ -1,0 +1,57 @@
+﻿@page "/settings"
+
+@using System.ComponentModel.DataAnnotations
+@using apb97.github.io.WebSudoku.Shared
+@inherits LocalizableComponent<Settings>
+
+<SettingsProvider @ref="settingsProvider" />
+
+@if (ShouldRender())
+{
+    <PageTitle>Web Sudoku - @Loc["Settings"]</PageTitle>
+
+    <div>
+        <div class="d-flex flex-wrap">
+            @if (settingsProvider is not null)
+            {
+                foreach (var setting in settingsProvider.Settings)
+                {
+                    <div class="align-content-center">
+                        <label for="@setting.Key">@Loc[setting.Key]</label>
+                        @switch (setting.Value.GetType().Name)
+                        {
+                            case nameof(Int32):
+                                var integer = (int)setting.Value;
+                                RangeAttribute? range = null;
+                                if (settingsProvider.Validations.TryGetValue(setting.Key, out var validations))
+                                {
+                                    range = validations.OfType<RangeAttribute>().FirstOrDefault();
+                                }
+                                <InputNumber id="@setting.Key" min="@range?.Minimum" max="@range?.Maximum"
+                                    TValue="int" Value="integer" ValueExpression="() => integer" ValueChanged="i => UpdateSettingAsync(setting.Key, i)" />
+                                break;
+                            default:
+                                break;
+                        }
+                    </div>
+                    }
+                }
+        </div>
+    </div>
+}
+
+@code {
+    private SettingsProvider? settingsProvider;
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (settingsProvider is null) return Task.CompletedTask;
+        return settingsProvider.LoadSettingsAsync();
+    }
+
+    private Task UpdateSettingAsync(string key, object value)
+    {
+        if (settingsProvider is null) return Task.CompletedTask;
+        return settingsProvider.UpdateSettingAsync(key, value);
+    }
+}

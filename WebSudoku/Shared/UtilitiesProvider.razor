@@ -1,0 +1,34 @@
+﻿@implements IJSObjectReference
+
+@inject IJSRuntime JS
+
+@code {
+    protected IJSObjectReference? utilities;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await JS.ImportAsync(JSModules.UtilitiesModule)
+            .AsTask()
+            .ContinueWith(async t => await AfterImportAsync(t.Result));
+    }
+
+    protected virtual Task AfterImportAsync(IJSObjectReference objectReference) { utilities = objectReference; return Task.CompletedTask; }
+
+    public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
+    {
+        if (utilities is null) return default;
+        return utilities.InvokeAsync<TValue>(identifier, args);
+    }
+
+    public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
+    {
+        if (utilities is null) return default;
+        return utilities.InvokeAsync<TValue>(identifier, cancellationToken, args);
+    }
+
+    ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (utilities is null) return ValueTask.CompletedTask;
+        return utilities.DisposeAsync();
+    }
+}

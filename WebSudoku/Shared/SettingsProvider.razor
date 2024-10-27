@@ -1,0 +1,64 @@
+﻿@using System.ComponentModel.DataAnnotations
+@inherits UtilitiesProvider
+
+@code {
+    public const string DesiredBlankCells = "WebSudoku-desiredBlankCells";
+    public const string CellBlankingAttempts = "WebSudoku-cellBlankingAttempts";
+
+    public IReadOnlyDictionary<string, object> Settings => settingValues;
+
+    public IReadOnlyDictionary<string, ValidationAttribute[]> Validations => settingValidations;
+
+    public event Func<Task> AfterSettingsLoadedAsync = delegate { return Task.CompletedTask; };
+
+    private static Dictionary<string, object> settingValues = new()
+    {
+        { DesiredBlankCells, 35 },
+        { CellBlankingAttempts, 32 }
+    };
+
+    private static Dictionary<string, ValidationAttribute[]> settingValidations = new()
+    {
+        { DesiredBlankCells, [new RangeAttribute(20, 45)] },
+        { CellBlankingAttempts, [new RangeAttribute(4, 128)] }
+    };
+
+    protected override async Task AfterImportAsync(IJSObjectReference objectReference)
+    {
+        await base.AfterImportAsync(objectReference)
+            .ContinueWith(async _ => await LoadSettingsAsync()
+                .ContinueWith(async _ => await AfterSettingsLoadedAsync()));
+    }
+
+    public async Task LoadSettingsAsync()
+    {
+        if (utilities is null) return;
+        foreach (var setting in settingValues.ToArray())
+        {
+            var settingAsString = await utilities.GetSettingAsync<string>(setting.Key);
+            if (string.IsNullOrEmpty(settingAsString)) continue;
+            switch (setting.Value.GetType().Name)
+            {
+                case nameof(Int32):
+                    if (int.TryParse(settingAsString, out int settingValue))
+                        settingValues[setting.Key] = settingValue;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public async Task UpdateSettingAsync(string key, object value)
+    {
+        if (!settingValidations.TryGetValue(key, out var validations) || validations.Any(v => !v.IsValid(value))) return;
+        settingValues[key] = value;
+        if (utilities is null) return;
+        await utilities.SetSettingAsync(key, value);
+    }
+
+    public int GetInt(string key)
+    {
+        return int.TryParse(settingValues[key].ToString(), out var value) ? value : default;
+    }
+}

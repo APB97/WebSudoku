@@ -126,4 +126,7 @@
   <data name="Code" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
 </root>
