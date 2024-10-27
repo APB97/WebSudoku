@@ -246,4 +246,19 @@
   <data name="Manage settings" xml:space="preserve">
     <value>Zarządzaj ustawieniami</value>
   </data>
+  <data name="Adjustable settings" xml:space="preserve">
+    <value>Dostosowywalne ustawienia</value>
+  </data>
+  <data name="Desired blank cells" xml:space="preserve">
+    <value>Docelowa liczba pustych komórek</value>
+  </data>
+  <data name="Cell blanking attempts" xml:space="preserve">
+    <value>Ilość prób wyczyszczenia komórki</value>
+  </data>
+  <data name="Maximum amount of cells that can be blank" xml:space="preserve">
+    <value>Maksymalna liczba komórek które mogą być puste. Zwiększenie tego parametru wydłuża czas generowania sudoku.</value>
+  </data>
+  <data name="Maximum attempts to blank next cell" xml:space="preserve">
+    <value>Maksymalna liczba prób wyczyszczenia następnej komórki. Zwiększenie tego parametru nieznacznie wydłuża czas generowania sudoku i zwiększa częstotliwość generowania sudoku z oczekiwaną liczbą pustych komórek.</value>
+  </data>
 </root>
