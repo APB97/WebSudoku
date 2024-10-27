@@ -16,6 +16,7 @@ main[b-834vkyk4rs] {
 .sidebar[b-834vkyk4rs] {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
     flex-direction: column !important;
+    z-index: 100;
 }
 
 .top-row[b-834vkyk4rs] {
@@ -211,6 +212,22 @@ main[b-834vkyk4rs] {
 .sudoku-table > tbody > tr > td:last-child[b-9u40iigr4e], .sudoku-table > tr > td:last-child[b-9u40iigr4e] {
     border-right: 2px solid black !important;
 }
+
+.sticky-top-portrait[b-9u40iigr4e] {
+    top: 6rem;
+}
+
+@media (min-width: 400px) {
+    .sticky-top-portrait[b-9u40iigr4e] {
+        top: 3.5rem;
+    }
+}
+
+@media (min-width: 641px) {
+    .sticky-top-portrait[b-9u40iigr4e] {
+        top: 0;
+    }
+}
 /* /Pages/Sudoku.razor.rz.scp.css */
 .sudoku-table > tbody > tr > td[b-245jprxzxn], .sudoku-table > tr > td[b-245jprxzxn] {
     border: 2px solid black;
@@ -328,6 +345,10 @@ main[b-834vkyk4rs] {
 
     .display-var[b-245jprxzxn] {
         display: none;
+    }
+
+    .sticky-bottom-portrait[b-245jprxzxn] {
+        bottom: 0;
     }
 }
 
