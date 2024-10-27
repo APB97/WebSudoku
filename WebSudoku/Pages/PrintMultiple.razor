@@ -45,7 +45,7 @@
 
     @if (generating)
     {
-        <div class="border border-2 border-info d-print-none">
+        <div class="alert alert-info d-print-none position-sticky sticky-top sticky-top-portrait">
             @Loc["Generating additional sudokus..."]
             <button class="btn btn-danger" @onclick="Cancel">@Loc["Cancel"]</button>
         </div>

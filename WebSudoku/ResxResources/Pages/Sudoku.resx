@@ -135,4 +135,13 @@
   <data name="You finished with time" xml:space="preserve">
     <value>You finished with time</value>
   </data>
+  <data name="Previous save not found" xml:space="preserve">
+    <value>Previous save not found</value>
+  </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="Loaded" xml:space="preserve">
+    <value>Loaded</value>
+  </data>
 </root>

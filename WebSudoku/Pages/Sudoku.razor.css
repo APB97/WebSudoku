@@ -115,6 +115,10 @@
     .display-var {
         display: none;
     }
+
+    .sticky-bottom-portrait {
+        bottom: 0;
+    }
 }
 
 @media (max-width : 640px) and (orientation : portrait) {
