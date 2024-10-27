@@ -243,4 +243,7 @@
   <data name="Target cell will have its value selected." xml:space="preserve">
     <value>Wartość docelowej komórki zostanie zaznaczona.</value>
   </data>
+  <data name="Manage settings" xml:space="preserve">
+    <value>Zarządzaj ustawieniami</value>
+  </data>
 </root>

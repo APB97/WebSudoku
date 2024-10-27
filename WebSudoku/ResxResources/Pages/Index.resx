@@ -243,4 +243,7 @@
   <data name="Target cell will have its value selected." xml:space="preserve">
     <value>Target cell will have its value selected.</value>
   </data>
+  <data name="Manage settings" xml:space="preserve">
+    <value>Manage settings</value>
+  </data>
 </root>

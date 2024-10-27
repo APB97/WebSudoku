@@ -13,6 +13,8 @@
 @inject IJSRuntime JS
 @inject StringLocalizer<PrintMultiple> Loc
 
+<SettingsProvider @ref="settingsProvider" />
+
 @if (ShouldRender())
 {
     <PageTitle>Web Sudoku - @Loc["print multiple"]</PageTitle>
@@ -61,7 +63,7 @@
                         <tr>
                             @for (int c = 0; c < Board.BoardSize; c++)
                             {
-                                // these local variable is here to cache value of Cell on the board
+                                // this local variable is here to cache value of Cell on the board
                                 var value = board.GetValueAt((r, c));
                                 <td>
                                     <Cell ReadOnly="true" HighlightClass="@null"
@@ -111,6 +113,11 @@
     private const string PageName = "printMultiple";
     private const string FormatSetting = "{0}_{1}";
 
+    private SettingsProvider? settingsProvider;
+
+    private int targetBlanks;
+    private int attemptsToRemove;
+
     private string SettingKeyFor(string settingName)
     {
         return string.Format(FormatSetting, PageName, settingName);
@@ -129,6 +136,20 @@
         if (utilities is null) return;
 
         await LoadSettings(utilities);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender) return;
+        if (settingsProvider is null) return;
+        settingsProvider.AfterSettingsLoadedAsync += OnAfterSettingsLoadedAsync;
+    }
+
+    private Task OnAfterSettingsLoadedAsync()
+    {
+        targetBlanks = settingsProvider.GetInt(SettingsProvider.DesiredBlankCells);
+        attemptsToRemove = settingsProvider.GetInt(SettingsProvider.CellBlankingAttempts);
+        return Task.CompletedTask;
     }
 
     private async ValueTask LoadSettings(IJSObjectReference utilities)
@@ -179,7 +200,7 @@
             for (int i = 0; i < boardsToGenerate; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                boards.Add(new Board(Solver, new RandomOptionOrder<int>(), Blanker, 40, 64));
+                boards.Add(new Board(Solver, new RandomOptionOrder<int>(), Blanker, targetBlanks, attemptsToRemove));
                 StateHasChanged();
                 // makes UI responsive
                 await Task.Delay(useMoreResources ? 1 : millisecondsDelay);
@@ -211,7 +232,7 @@
         try
         {
             generating = true;
-            boards[index] = new Board(Solver, new RandomOptionOrder<int>(), Blanker, 40, 64);
+            boards[index] = new Board(Solver, new RandomOptionOrder<int>(), Blanker, targetBlanks, attemptsToRemove);
         }
         catch (Exception ex)
         {
