@@ -261,4 +261,7 @@
   <data name="Maximum attempts to blank next cell" xml:space="preserve">
     <value>Maksymalna liczba prób wyczyszczenia następnej komórki. Zwiększenie tego parametru nieznacznie wydłuża czas generowania sudoku i zwiększa częstotliwość generowania sudoku z oczekiwaną liczbą pustych komórek.</value>
   </data>
+  <data name="The following sudoku generation settings can be adjusted" xml:space="preserve">
+    <value>Poniższe ustawienia generowania sudoku mogą być dostosowane</value>
+  </data>
 </root>
