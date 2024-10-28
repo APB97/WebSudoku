@@ -8,25 +8,22 @@
     [CascadingParameter]
     public required MainLayout Layout { get; set; }
 
-    [Parameter]
-    public required RenderFragment<StringLocalizer<T>> ChildContent { get; set; }
-
     protected StringLocalizer<T> Loc => Localization;
 
     protected override bool ShouldRender()
     {
-        return Loc.IsReady;
+        return Localization.IsReady;
     }
 
     protected override async Task OnInitializedAsync()
     {
         Layout.OnStateChanging += LoadResourcesAsync;
-        await Loc.InitializeAsync(Layout.Culture);
+        await Localization.InitializeAsync(Layout.Culture);
     }
 
     private async Task LoadResourcesAsync()
     {
-        await Loc.InitializeAsync(Layout.Culture);
+        await Localization.InitializeAsync(Layout.Culture);
         StateHasChanged();
     }
 

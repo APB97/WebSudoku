@@ -1,7 +1,6 @@
-﻿@implements IDisposable
+﻿@inherits LocalizableComponent<PrintSettings>
 
 @inject IJSRuntime JS
-@inject StringLocalizer<PrintSettings> Loc
 
 @if (ShouldRender())
 {
@@ -49,9 +48,6 @@
 }
 
 @code {
-    [CascadingParameter]
-    public required MainLayout Layout { get; set; }
-
     private bool showPrintSettings;
 
     private bool printHighlightedErrors;
@@ -60,16 +56,10 @@
 
     private IJSObjectReference? module;
 
-    protected override bool ShouldRender()
-    {
-        return Loc.IsReady;
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        Layout.OnStateChanging += LoadResourcesAsync;
+        await base.OnInitializedAsync();
         module = await JS.ImportAsync(JSModules.UtilitiesModule);
-        await Loc.InitializeAsync(Layout.Culture);
 
         await LoadSetting(v => printFilledValues = v, nameof(printFilledValues));
         await LoadSetting(v => printHighlightedErrors = v, nameof(printHighlightedErrors));
@@ -96,16 +86,5 @@
         printHighlightedErrors = toggle;
         if (module is null) return;
         await module.SetSettingAsync(nameof(printHighlightedErrors), toggle);
-    }
-
-    private async Task LoadResourcesAsync()
-    {
-        await Loc.InitializeAsync(Layout.Culture);
-        StateHasChanged();
-    }
-
-    void IDisposable.Dispose()
-    {
-        Layout.OnStateChanging -= LoadResourcesAsync;
     }
 }
