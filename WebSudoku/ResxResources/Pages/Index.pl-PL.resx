@@ -226,7 +226,7 @@
     <value>Walidacja</value>
   </data>
   <data name="Any editable cells' values conflicting with sudoku rules are highlighted automatically after changing cell's value." xml:space="preserve">
-    <value>Wartości każdej edytowalnej komórki, które są niezgodne z zasadami sudoku są automatycznie podśwetlane po zmianie wartości komórki.</value>
+    <value>Wartości każdej edytowalnej komórki, które są niezgodne z zasadami sudoku są automatycznie podświetlane po zmianie wartości komórki.</value>
   </data>
   <data name="Navigation" xml:space="preserve">
     <value>Nawigacja</value>
