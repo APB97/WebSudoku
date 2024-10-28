@@ -23,19 +23,18 @@
         { CellBlankingAttempts, [new RangeAttribute(4, 128)] }
     };
 
-    protected override async Task AfterImportAsync(IJSObjectReference objectReference)
+    protected override async Task AfterImportAsync()
     {
-        await base.AfterImportAsync(objectReference)
+        await base.AfterImportAsync()
             .ContinueWith(async _ => await LoadSettingsAsync()
                 .ContinueWith(_ => AfterSettingsLoaded()));
     }
 
     public async Task LoadSettingsAsync()
     {
-        if (utilities is null) return;
         foreach (var setting in settingValues.ToArray())
         {
-            var settingAsString = await utilities.GetSettingAsync<string>(setting.Key);
+            var settingAsString = await (await utilitiesModule.Value).GetSettingAsync<string>(setting.Key);
             if (string.IsNullOrEmpty(settingAsString)) continue;
             switch (setting.Value.GetType().Name)
             {
@@ -53,8 +52,7 @@
     {
         if (!settingValidations.TryGetValue(key, out var validations) || validations.Any(v => !v.IsValid(value))) return;
         settingValues[key] = value;
-        if (utilities is null) return;
-        await utilities.SetSettingAsync(key, value);
+        await (await utilitiesModule.Value).SetSettingAsync(key, value);
     }
 
     public int GetInt(string key)

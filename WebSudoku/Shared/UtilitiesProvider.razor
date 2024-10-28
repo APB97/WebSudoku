@@ -3,32 +3,28 @@
 @inject IJSRuntime JS
 
 @code {
-    protected IJSObjectReference? utilities;
+    protected Lazy<Task<IJSObjectReference>> utilitiesModule;
 
     protected override async Task OnInitializedAsync()
     {
-        await JS.ImportAsync(JSModules.UtilitiesModule)
-            .AsTask()
-            .ContinueWith(async t => await AfterImportAsync(t.Result));
+        utilitiesModule = new Lazy<Task<IJSObjectReference>>(async () => await JS.ImportAsync(JSModules.UtilitiesModule));
+        await Task.CompletedTask.ContinueWith(async t => await AfterImportAsync());
     }
 
-    protected virtual Task AfterImportAsync(IJSObjectReference objectReference) { utilities = objectReference; return Task.CompletedTask; }
+    protected virtual Task AfterImportAsync() { return Task.CompletedTask; }
 
-    public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
+    public async ValueTask<TValue> InvokeAsync<TValue>(string identifier, params object?[]? args)
     {
-        if (utilities is null) return default;
-        return utilities.InvokeAsync<TValue>(identifier, args);
+        return await (await utilitiesModule.Value).InvokeAsync<TValue>(identifier, args);
     }
 
-    public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
+    public async ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, params object?[]? args)
     {
-        if (utilities is null) return default;
-        return utilities.InvokeAsync<TValue>(identifier, cancellationToken, args);
+        return await (await utilitiesModule.Value).InvokeAsync<TValue>(identifier, cancellationToken, args);
     }
 
-    ValueTask IAsyncDisposable.DisposeAsync()
+    async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (utilities is null) return ValueTask.CompletedTask;
-        return utilities.DisposeAsync();
+        await (await utilitiesModule.Value).DisposeAsync();
     }
 }
