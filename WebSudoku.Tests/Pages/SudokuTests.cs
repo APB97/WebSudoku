@@ -56,16 +56,7 @@ public class SudokuTests
     [InlineData(321, -1)]
     public void GivenAnyValueOrAnyIncrementOutsideOfRange1to9_ThrowsArgumentOutOfRangeException(int number, int increment)
     {
-        try
-        {
-            Sudoku.WrapAroundBetweenEdges(number, increment);
-            Assert.Fail();
-        }
-        catch (Exception ex)
-        {
-            ex.Should()
-                .BeAssignableTo<ArgumentOutOfRangeException>();
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() => Sudoku.WrapAroundBetweenEdges(number, increment));
     }
 
     [Theory]

@@ -1,5 +1,6 @@
 ﻿using apb97.github.io.WebSudoku.Shared.Sudoku;
 using FluentAssertions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace apb97.github.io.WebSudoku.Shared.Tests.Sudoku;
 
@@ -56,6 +57,7 @@ public class ValidatorTests
             .Should().Be(expectedValue);
     }
 
+    [ExcludeFromCodeCoverage]
     public static TheoryData<int, int, int, int[], bool> GivenBoardWithNearlyFilledColumn_OnlyRemainingValueIsValid_Data()
     {
         return new TheoryData<int, int, int, int[], bool>
