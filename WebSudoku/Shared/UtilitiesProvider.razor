@@ -3,7 +3,7 @@
 @inject IJSRuntime JS
 
 @code {
-    protected Lazy<Task<IJSObjectReference>> utilitiesModule;
+    protected Lazy<Task<IJSObjectReference>> utilitiesModule = new Lazy<Task<IJSObjectReference>>();
 
     protected override async Task OnInitializedAsync()
     {
