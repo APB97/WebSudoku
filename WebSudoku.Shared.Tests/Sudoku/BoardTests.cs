@@ -46,4 +46,22 @@ public class BoardTests
             .Should()
             .NotBeEmpty();
     }
+
+    [Fact]
+    public void ThrowIfInvalidDimensions_GivenMultidimensionalArray_ThrowsArgumentException()
+    {
+        Assert.Throws<ArgumentException>(() => Board.ThrowIfInvalidDimensions(new int[Board.BoardSize, Board.BoardSize], "Board"));
+    }
+
+    [Fact]
+    public void ThrowIfInvalidDimensions_GivenSmallerArray_ThrowsArgumentException()
+    {
+        Assert.Throws<ArgumentException>(() => Board.ThrowIfInvalidDimensions(new int[Board.BoardSize * Board.BoardSize - 1], "Board"));
+    }
+
+    [Fact]
+    public void ThrowIfInvalidDimensions_GivenBiggerArray_ThrowsArgumentException()
+    {
+        Assert.Throws<ArgumentException>(() => Board.ThrowIfInvalidDimensions(new int[Board.BoardSize * Board.BoardSize + 1], "Board"));
+    }
 }

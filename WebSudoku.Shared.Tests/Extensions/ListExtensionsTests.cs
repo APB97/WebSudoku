@@ -20,12 +20,15 @@ public class ListExtensionsTests
     public void PopRandomElement_GivenOneElementList_PopsTheOnlyElement(object element)
     {
         List<object> list = [element];
+
         ListExtensions.PopRandomElement(list)
             .Should()
             .Be(element);
 
-        list.Should().BeEmpty();
-        list.Should().NotContain(element);
+        list.Should()
+            .NotContain(element);
+        list.Should()
+            .BeEmpty();
     }
 
     [Theory]
@@ -37,8 +40,14 @@ public class ListExtensionsTests
     public void PopRandomElement_GivenSameValueElementList_PopsOnlyOneElement(object element, int count)
     {
         var list = Enumerable.Repeat(element, count).ToList();
-        ListExtensions.PopRandomElement(list).Should().Be(element);
-        list.Should().HaveCount(count - 1);
-        list.Should().Contain(element);
+
+        ListExtensions.PopRandomElement(list)
+            .Should()
+            .Be(element);
+
+        list.Should()
+            .HaveCount(count - 1);
+        list.Should()
+            .Contain(element);
     }
 }

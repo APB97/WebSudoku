@@ -8,7 +8,7 @@
     protected override async Task OnInitializedAsync()
     {
         utilitiesModule = new Lazy<Task<IJSObjectReference>>(async () => await JS.ImportAsync(JSModules.UtilitiesModule));
-        await Task.CompletedTask.ContinueWith(async t => await AfterImportAsync());
+        await AfterImportAsync();
     }
 
     protected virtual Task AfterImportAsync() { return Task.CompletedTask; }
