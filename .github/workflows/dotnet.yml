@@ -3,6 +3,8 @@ name: .NET
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -23,17 +25,21 @@ jobs:
     - name: Test
       run: dotnet test --no-build
     - name: Publish
+      if: github.event_name == 'push'
       run: dotnet publish WebSudoku.sln --configuration Release
     - name: Rewrite base href
+      if: github.event_name == 'push'
       uses: SteveSandersonMS/ghaction-rewrite-base-href@v1.1.0
       with:
         html_path: WebSudoku/bin/Release/net8.0/publish/wwwroot/index.html
         base_href: WebSudoku
     - name: Move files
+      if: github.event_name == 'push'
       run: |
         mkdir ./public
         mv WebSudoku/bin/Release/net8.0/publish/wwwroot ./public
     - name: GitHub Pages action
+      if: github.event_name == 'push'
       uses: peaceiris/actions-gh-pages@v4.0.0
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
