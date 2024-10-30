@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "WebSudoku",
   "resources": {
-    "hash": "sha256-yN7UeJVDY0HgadgMxpmtA4MmUwGoicdkIPM97qnoNXU=",
+    "hash": "sha256-Haso3tqQJI/P8b6x210QGQUQDoP7Vxk40tVttr30dxo=",
     "jsModuleNative": {
       "dotnet.native.8.0.10.4xsnm8lwn6.js": "sha256-QVxMlY7ohmjgde/bZMA0dlWDAeuUP+tEfkiSdg4DFcE="
     },
@@ -43,20 +43,20 @@
       "System.Net.Http.wasm": "sha256-bcfnHKiPXGU+XcgE6Pk3O8AK92ey7lea05Qd/t3w1S8=",
       "System.Net.Primitives.wasm": "sha256-qVxsE3U6sOnnu0P5A6oXLTbN6v1CQPzUJHnjIcGDkRg=",
       "System.ObjectModel.wasm": "sha256-h7mSIKEVOuIvBRjdar5/r4VZWfBHIAN1xSLSX5QmT5I=",
-      "System.Private.CoreLib.wasm": "sha256-Gk5N/1T7ktwi3CxTZGdc9f7nPIiMtj9i+Tt3iS/wgN0=",
+      "System.Private.CoreLib.wasm": "sha256-moOhoRsYdv3Ztd+4IkLqz7w7XxMF++/VV7DG7dpjxVA=",
       "System.Private.Uri.wasm": "sha256-beB9gNoDPZDbyPHyKNx8MhxjXgb4dEzjhmZx+PPTex4=",
       "System.Private.Xml.wasm": "sha256-JlN6KvycDkYV6oUUmC5hjmtqwuDalcKpzIYHTxCxNXU=",
       "System.Runtime.InteropServices.JavaScript.wasm": "sha256-mQpcsHjvbjtyIhptu+ufj0/TUTZB5cIgQ6ESFHpDSk4=",
       "System.Runtime.Serialization.Primitives.wasm": "sha256-VTF2c5+K+FTPXdL00wpxGyJGkeMHoVI8RUn6a/mTqig=",
-      "System.Runtime.wasm": "sha256-NRY6wuxJvfabXxYNMm9U771RwpdhPq8SP2R1tQEUmHc=",
+      "System.Runtime.wasm": "sha256-Q6CPa701vdQK/hy8S56hLG+4i7VbY+QTLa7uFCwXXyI=",
       "System.Text.Encodings.Web.wasm": "sha256-hmEqWvCZQnS2F8DAjTdmesIMijXij07DuFxe0SVocRQ=",
       "System.Text.Json.wasm": "sha256-AzrXeefcXOqPbodidfixlJxikFs9sgpRrIwhc9wQbis=",
       "System.Text.RegularExpressions.wasm": "sha256-jOXHeQGxYgoiX8kfuXmM8pdDxV74D+IHq+znvu9UKmA=",
       "System.Threading.wasm": "sha256-942pSKu/NRclDZZvbRxDycMEL2PUdLwiP0/0qw8+lJY=",
       "System.wasm": "sha256-sH9OCj7JF+EjOteWJIPR1TDeb2POsT3uyJpKHPmvz2A=",
       "System.Xml.ReaderWriter.wasm": "sha256-RCXDiWcbcRRToHg3SOWKoNwhLP8HAKxk8xkCEeo8C6I=",
-      "WebSudoku.Shared.wasm": "sha256-mKyYdYpOXQDQHNcFmOEx0yR5OBuVpVtzerD/M3lg+LY=",
-      "WebSudoku.wasm": "sha256-Ggtzy68CxQBkwY0M/15ZE3rr3uYAjBtVRd7sJgjxcEo="
+      "WebSudoku.Shared.wasm": "sha256-rvWHYpdHPem4oXQYOfp9ERnKi3UH6CRiBUGXd4raqIo=",
+      "WebSudoku.wasm": "sha256-87SM+b1DA1aw6o1sxEHmY2uw5mbyE9iZ89Y7X1b8cMM="
     }
   },
   "cacheBootResources": true,
