@@ -5,7 +5,6 @@ namespace apb97.github.io.WebSudoku.Shared.Sudoku;
 public class Solver(Neighbors neighbors)
 {
     public virtual bool ShouldStopAtSolution(int currentCount) => true;
-    public event Action OnSolutionFound = delegate { };
 
     public int[,] Solve(int[,] board, IOptionOrder<int> optionOrder, out int solutionsFound)
     {
@@ -37,39 +36,37 @@ public class Solver(Neighbors neighbors)
         var cell = emptyCells.First;
         emptyCells.RemoveFirst();
 
-        if (cell == null)
+        if (cell is not null)
         {
-            return false;
-        }
+            var cellNeighbors = neighbors[cell.Value.Row, cell.Value.Column];
+            var usedValues = new HashSet<int>(cellNeighbors.Select(position => board[position.Row, position.Column]));
 
-        var cellNeighbors = neighbors[cell.Value.Row, cell.Value.Column];
-        var usedValues = new HashSet<int>(cellNeighbors.Select(position => board[position.Row, position.Column]));
+            IEnumerable<int> availableValues = Enumerable.Range(1, 9).Except(usedValues);
+            availableValues = optionOrder.Order(availableValues);
 
-        IEnumerable<int> availableValues = Enumerable.Range(1, 9).Except(usedValues);
-        availableValues = optionOrder.Order(availableValues);
-
-        foreach (int option in availableValues)
-        {
-            board[cell.Value.Row, cell.Value.Column] = option;
-            if (emptyCells.Count == 0)
+            foreach (int option in availableValues)
             {
-                solutionsFound++;
-                if (ShouldStopAtSolution(solutionsFound))
+                board[cell.Value.Row, cell.Value.Column] = option;
+                if (emptyCells.Count == 0)
+                {
+                    solutionsFound++;
+                    if (ShouldStopAtSolution(solutionsFound))
+                    {
+                        return true;
+                    }
+
+                    AddAsFirstEmptyCellAtPosition(cell.Value, board, emptyCells);
+                    return false;
+                }
+
+                if (Fill(board, emptyCells, optionOrder, ref solutionsFound))
                 {
                     return true;
                 }
-
-                AddAsFirstEmptyCellAtPosition(cell.Value, board, emptyCells);
-                return false;
             }
 
-            if (Fill(board, emptyCells, optionOrder, ref solutionsFound))
-            {
-                return true;
-            }
+            AddAsFirstEmptyCellAtPosition(cell.Value, board, emptyCells);
         }
-
-        AddAsFirstEmptyCellAtPosition(cell.Value, board, emptyCells);
         return false;
     }
 
