@@ -1,6 +1,7 @@
 ﻿using apb97.github.io.WebSudoku.Shared.Serialization;
 using apb97.github.io.WebSudoku.Shared.Sudoku;
 using FluentAssertions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace apb97.github.io.WebSudoku.Shared.Tests.Serialization;
 
@@ -15,10 +16,17 @@ public class BoardSerializerTests
     {
         var board = new Board();
         board.RedefineCell((row, column), value);
+
         var deserializedBoard = BoardSerializer.DeserializeFromJson(BoardSerializer.SerializeToJson(board));
-        deserializedBoard.Should().NotBeNull();
-        deserializedBoard!.GetValueAt((row, column)).Should().Be(value);
-        deserializedBoard.IsPredefined((row, column)).Should().BeTrue();
+        
+        deserializedBoard.Should()
+            .NotBeNull();
+        deserializedBoard!.GetValueAt((row, column))
+            .Should()
+            .Be(value);
+        deserializedBoard.IsPredefined((row, column))
+            .Should()
+            .BeTrue();
     }
 
     [Theory]
@@ -30,18 +38,28 @@ public class BoardSerializerTests
     {
         var board = new Board();
         board.FillCell((row, column), value);
+
         var deserializedBoard = BoardSerializer.DeserializeFromJson(BoardSerializer.SerializeToJson(board));
-        deserializedBoard.Should().NotBeNull();
-        deserializedBoard!.GetValueAt((row, column)).Should().Be(value);
-        deserializedBoard.IsPredefined((row, column)).Should().BeFalse();
+        
+        deserializedBoard.Should()
+            .NotBeNull();
+        deserializedBoard!.GetValueAt((row, column))
+            .Should()
+            .Be(value);
+        deserializedBoard.IsPredefined((row, column))
+            .Should()
+            .BeFalse();
     }
 
     [Fact]
     public void DeserializeFromJsonV2_GivenGarbageInput_ReturnsNullBoardAndTimer()
     {
-        TimeSpan? timer = TimeSpan.Zero;
-        BoardSerializer.DeserializeFromJson("<Random garbage here>", out timer).Should().BeNull();
-        timer.HasValue.Should().BeFalse();
+        BoardSerializer.DeserializeFromJson("<Random garbage here>", out var timer)
+            .Should()
+            .BeNull();
+        timer.HasValue
+            .Should()
+            .BeFalse();
     }
 
     [Theory]
@@ -50,12 +68,23 @@ public class BoardSerializerTests
     {
         var board = new Board();
         board.RedefineCell((row, column), value);
+
         var deserializedBoard = BoardSerializer.DeserializeFromJson(BoardSerializer.SerializeToJson(board, time, GameStateVersion.V2), out var timer);
-        deserializedBoard.Should().NotBeNull();
-        deserializedBoard!.GetValueAt((row, column)).Should().Be(value);
-        deserializedBoard.IsPredefined((row, column)).Should().BeTrue();
-        timer.HasValue.Should().BeTrue();
-        timer!.Value.Should().Be(time);
+        
+        deserializedBoard.Should()
+            .NotBeNull();
+        deserializedBoard!.GetValueAt((row, column))
+            .Should()
+            .Be(value);
+        deserializedBoard.IsPredefined((row, column))
+            .Should()
+            .BeTrue();
+        timer.HasValue
+            .Should()
+            .BeTrue();
+        timer!.Value
+            .Should()
+            .Be(time);
     }
 
     [Theory]
@@ -64,14 +93,26 @@ public class BoardSerializerTests
     {
         var board = new Board();
         board.FillCell((row, column), value);
+
         var deserializedBoard = BoardSerializer.DeserializeFromJson(BoardSerializer.SerializeToJson(board, time, GameStateVersion.V2), out var timer);
-        deserializedBoard.Should().NotBeNull();
-        deserializedBoard!.GetValueAt((row, column)).Should().Be(value);
-        deserializedBoard.IsPredefined((row, column)).Should().BeFalse();
-        timer.HasValue.Should().BeTrue();
-        timer!.Value.Should().Be(time);
+        
+        deserializedBoard.Should()
+            .NotBeNull();
+        deserializedBoard!.GetValueAt((row, column))
+            .Should()
+            .Be(value);
+        deserializedBoard.IsPredefined((row, column))
+            .Should()
+            .BeFalse();
+        timer.HasValue
+            .Should()
+            .BeTrue();
+        timer!.Value
+            .Should()
+            .Be(time);
     }
 
+    [ExcludeFromCodeCoverage]
     public static TheoryData<int, int, int, TimeSpan> TestDataV2()
     {
         return new TheoryData<int, int, int, TimeSpan>()

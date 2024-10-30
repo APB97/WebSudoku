@@ -1,4 +1,5 @@
-﻿using apb97.github.io.WebSudoku.Shared.Sudoku;
+﻿using apb97.github.io.WebSudoku.Shared.General;
+using apb97.github.io.WebSudoku.Shared.Sudoku;
 using FluentAssertions;
 using System.Diagnostics.CodeAnalysis;
 
@@ -6,11 +7,15 @@ namespace apb97.github.io.WebSudoku.Shared.Tests.Sudoku;
 
 public class ValidatorTests
 {
+    private const int MinimumAttemptsToRemove = 1;
+    private const int LowValueOfTargetBlanks = 20;
     private static readonly Validator validator;
+    private static readonly Neighbors neighbors;
 
     static ValidatorTests()
     {
-        validator = new Validator(new Neighbors());
+        neighbors = new Neighbors();
+        validator = new Validator(neighbors);
     }
 
     [Theory]
@@ -19,7 +24,7 @@ public class ValidatorTests
     [InlineData(8, 0)]
     [InlineData(8, 8)]
     [InlineData(5, 5)]
-    public void GivenEmptyBoard_DefaultEmptyCellValueIsValid(int row, int column)
+    public void GivenEmptyBoard_DefaultEmptyCellValue_IsValid(int row, int column)
     {
         validator.IsValid(new Board(), (row, column))
             .Should()
@@ -30,7 +35,7 @@ public class ValidatorTests
     [InlineData(0, 0, 1)]
     [InlineData(0, 0, 5)]
     [InlineData(0, 0, 9)]
-    public void GivenEmptyBoard_EnteredSingleValueIsValid(int row, int column, int value)
+    public void GivenEmptyBoard_EnteredSingleValue_IsValid(int row, int column, int value)
     {
         Board emptyboard = new();
         emptyboard.FillCell((row, column), value);
@@ -41,8 +46,8 @@ public class ValidatorTests
     }
 
     [Theory]
-    [MemberData(nameof(GivenBoardWithNearlyFilledColumn_OnlyRemainingValueIsValid_Data))]
-    public void GivenBoardWithNearlyFilledColumn_OnlyRemainingValueIsValid(int row, int column, int value, int[] valuesInColummn, bool expectedValue)
+    [MemberData(nameof(GivenBoardWithNearlyFilledColumn_OnlyRemainingValue_IsValid_Data))]
+    public void GivenBoardWithNearlyFilledColumn_OnlyRemainingValue_IsValid(int row, int column, int value, int[] valuesInColummn, bool expectedValue)
     {
         Board board = new();
         int valueIndex = 0;
@@ -57,8 +62,65 @@ public class ValidatorTests
             .Should().Be(expectedValue);
     }
 
+    [Fact]
+    public void GivenEmptyBoard_IsValidBoard()
+    {
+        Board board = new();
+
+        validator.IsValidBoard(board)
+            .Should()
+            .BeTrue();
+    }
+
+    [Fact]
+    public void GivenDefaultOptionOrderSolvedBoard_IsValidBoard()
+    {
+        Board board = new(new Solver(neighbors), new DefaultOptionOrder<int>());
+
+        validator.IsValidBoard(board)
+            .Should()
+            .BeTrue();
+    }
+
+    [Fact]
+    public void GivenReverseOptionOrderSolvedBoard_IsValidBoard()
+    {
+        Board board = new(new Solver(neighbors), new ReverseOptionOrder<int>());
+
+        validator.IsValidBoard(board)
+            .Should()
+            .BeTrue();
+    }
+
+    [Fact]
+    public void GivenBlankedSolvedBoard_IsValidBoard()
+    {
+        CountingSolver solver = new(neighbors);
+        Board board = new(solver, new DefaultOptionOrder<int>(), new Blanker(solver), LowValueOfTargetBlanks, MinimumAttemptsToRemove);
+
+        validator.IsValidBoard(board)
+            .Should()
+            .BeTrue();
+    }
+
+    [Fact]
+    public void GivenBlankedSolvedBoard_FilledWithSameDigit_IsNotValidBoard()
+    {
+        CountingSolver solver = new(neighbors);
+        Board board = new(solver, new DefaultOptionOrder<int>(), new Blanker(solver), LowValueOfTargetBlanks, MinimumAttemptsToRemove);
+
+        foreach (var emptyCell in board.EmptyCells)
+        {
+            board.FillCell(emptyCell, 7);
+        }
+
+        validator.IsValidBoard(board)
+            .Should()
+            .BeFalse();
+    }
+
     [ExcludeFromCodeCoverage]
-    public static TheoryData<int, int, int, int[], bool> GivenBoardWithNearlyFilledColumn_OnlyRemainingValueIsValid_Data()
+    public static TheoryData<int, int, int, int[], bool> GivenBoardWithNearlyFilledColumn_OnlyRemainingValue_IsValid_Data()
     {
         return new TheoryData<int, int, int, int[], bool>
         {
