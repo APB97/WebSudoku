@@ -49,9 +49,9 @@ public class Board
         DetermineEmptyCells();
     }
 
-    public static void ThrowIfInvalidDimensions(Array array, string? paramName)
+    public static void ThrowIfInvalidDimensions(Array array, string paramName)
     {
-        if (array.Rank != 1 || array.GetLength(0) != TotalCells) throw new ArgumentException(InvalidDimensions, paramName ?? nameof(array));
+        if (array.Rank != 1 || array.GetLength(0) != TotalCells) throw new ArgumentException(InvalidDimensions, paramName);
     }
 
     private void MarkAllAsPredefined()
@@ -143,13 +143,8 @@ public class Board
         return invalidCells;
     }
 
-    public bool HasOneAndOnlySolution(Solver solver)
+    public bool HasOneAndOnlySolution(CountingSolver solver)
     {
-        if (solver == null)
-        {
-            return false;
-        }
-
         _ = solver.Solve(cells, new DefaultOptionOrder<int>(), out int solutionCount);
         return solutionCount == 1;
     }

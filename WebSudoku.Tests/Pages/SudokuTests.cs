@@ -49,10 +49,10 @@ public class SudokuTests
 
     [Theory]
     [InlineData(9, +123)]
-    [InlineData(1, -321)]
+    [InlineData(0, -321)]
     [InlineData(123, +321)]
     [InlineData(321, -123)]
-    [InlineData(123, +1)]
+    [InlineData(-123, +1)]
     [InlineData(321, -1)]
     public void GivenAnyValueOrAnyIncrementOutsideOfRange1to9_ThrowsArgumentOutOfRangeException(int number, int increment)
     {
