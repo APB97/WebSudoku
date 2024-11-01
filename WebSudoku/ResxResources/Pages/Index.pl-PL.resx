@@ -264,4 +264,7 @@
   <data name="The following sudoku generation settings can be adjusted" xml:space="preserve">
     <value>Poniższe ustawienia generowania sudoku mogą być dostosowane</value>
   </data>
+  <data name="When saving or loading a small popup message appears" xml:space="preserve">
+    <value>Podczas zapisywania lub ładowania na krótki moment pojawia się niewielki popup z odpowiednią informacją.</value>
+  </data>
 </root>
