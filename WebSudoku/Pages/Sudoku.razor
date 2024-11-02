@@ -242,16 +242,6 @@
         await keyHandler.Handle(args, row, column);
     }
 
-    public static int WrapAroundBetweenEdges(int cellPositionOnAxis, int positionChange)
-    {
-        if (cellPositionOnAxis < 1 || cellPositionOnAxis > 9) throw new ArgumentOutOfRangeException(nameof(cellPositionOnAxis));
-        if (Math.Abs(positionChange) > 1) throw new ArgumentOutOfRangeException(nameof(positionChange));
-
-        // Replaces previously used ternary operators with calculation using modulo.
-        // Note that adding Board.BoardSize before using modulo allows wrapping around position from 1 to 9
-        return ((Board.BoardSize + cellPositionOnAxis - 1 + positionChange) % Board.BoardSize) + 1;
-    }
-
     private async Task ProcessNonNavigatingInputAsync(KeyboardEventArgs args, int row, int column)
     {
         row -= 1;
