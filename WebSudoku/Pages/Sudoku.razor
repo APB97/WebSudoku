@@ -25,50 +25,15 @@
         <div class="d-flex flex-direction-var">
             <div class="div-main">
                 <TimerDisplay @ref="timer" />
-                <table class="sudoku-table" style="border-spacing: 0px;">
-                    @for (int r = 0; r < Board.BoardSize; r++)
-                    {
-                        <tr>
-                            @for (int c = 0; c < Board.BoardSize; c++)
-                            {
-                                // these local variables are needed to cache position of Cell on the board
-                                int row = r, column = c;
-                                var value = board.GetValueAt((row, column));
-                                string cellValue = value != 0 ? value.ToString() : string.Empty;
-                                <td>
-                                    <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightClass="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
-                                        Value="@cellValue"
-                                        OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
-                                        SwitchTypeOnFocus="isMobile"
-                                        DefaultType="@(isFirefox && isMobile ? Cell.InputTypeNumber : Cell.InputTypeText)"
-                                        />
-                                </td>
-                            }
-                        </tr>
-                    }
-                </table>
+                @SudokuBoardFragment
             </div>
     
-            <div class="div-options d-print-none">
-                <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
-                <button class="btn btn-primary" @onclick="Load"
-                    title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
-                    disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">@Loc["Load"]</button>
-                <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
-                <PrintSettings />
-
-                <span class="alert alert-info position-sticky sticky-bottom-portrait @(string.IsNullOrEmpty(StatusMessage) ? "d-none" : null)" role="status">@StatusMessage</span>
-            </div>
+            @SudokuOptionsFragment
         </div>
     }
     else
     {
-        <h1>@Loc["Success"]</h1>
-        @if (timePassed.HasValue)
-        {
-            <p>@Loc["You finished with time"] @timePassed.</p>
-        }
-        <button class="btn btn-primary" @onclick="CreateNewBoard">@Loc["Play again"]</button>
+        @SudokuFinishedFragment
     }
 }
 
@@ -95,8 +60,8 @@
     private IJSObjectReference? utilitiesModule;
 
     private bool isMobile;
-
     private bool isFirefox;
+    private string CellDefaultType = Cell.InputTypeText;
 
     private Cell[,] cells = new Cell[Board.BoardSize, Board.BoardSize];
 
@@ -109,6 +74,63 @@
     private SettingsProvider? settingsProvider;
 
     private SudokuCellKeyDownHandler? keyHandler;
+
+    private RenderFragment SudokuBoardFragment => __builder =>
+    {
+        <table class="sudoku-table" style="border-spacing: 0px;">
+            @for (int r = 0; r < Board.BoardSize; r++)
+            {
+                <tr>
+                    @for (int c = 0; c < Board.BoardSize; c++)
+                    {
+                        // these local variables are needed to cache position of Cell on the board
+                        int row = r, column = c;
+                        <td>
+                            <Cell @ref="cells[row, column]"
+                                  ReadOnly="board.IsPredefined((row, column))"
+                                  HighlightClass="@HighlightClassFor((row, column))"
+                                  Value="@board.GetValueAsString((row, column))"
+                                  OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
+                                  SwitchTypeOnFocus="isMobile"
+                                  DefaultType="@CellDefaultType" />
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    };
+
+    private string? HighlightClassFor(CellPosition cell)
+    {
+        return InvalidCells.Contains(cell) ? "error-highlight" : null;
+    }
+
+    private RenderFragment SudokuOptionsFragment => __builder =>
+    {
+        <div class="div-options d-print-none">
+            <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
+            <button class="btn btn-primary" @onclick="Load"
+                    title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
+                    disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">
+                @Loc["Load"]
+            </button>
+            <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
+            <PrintSettings />
+
+            <span class="alert alert-info position-sticky sticky-bottom-portrait @(string.IsNullOrEmpty(StatusMessage) ? "d-none" : null)"
+                role="status">@StatusMessage</span>
+        </div>
+    };
+
+    private RenderFragment SudokuFinishedFragment => __builder =>
+    {
+        <h1>@Loc["Success"]</h1>
+        @if (timePassed.HasValue)
+        {
+            <p>@Loc["You finished with time"] @timePassed.</p>
+        }
+        <button class="btn btn-primary" @onclick="CreateNewBoard">@Loc["Play again"]</button>
+    };
 
     protected override bool ShouldRender()
     {
@@ -135,6 +157,7 @@
                 isFirefox = false;
             }
         }
+        CellDefaultType = isMobile && isFirefox ? Cell.InputTypeNumber : Cell.InputTypeText;
 
         utilitiesModule = await JS.ImportAsync(JSModules.UtilitiesModule);
         await FetchSavedState();
