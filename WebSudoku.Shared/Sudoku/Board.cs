@@ -125,9 +125,9 @@ public class Board
         return predefined[cellPosition.Row, cellPosition.Column];
     }
 
-    public List<CellPosition> GetInvalidCells(Validator validator)
+    public HashSet<CellPosition> GetInvalidCells(Validator validator)
     {
-        var invalidCells = new List<CellPosition>();
+        var invalidCells = new HashSet<CellPosition>();
 
         for (int row = 0; row < BoardSize; row++)
         {
