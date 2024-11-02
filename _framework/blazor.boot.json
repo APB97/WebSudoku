@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "WebSudoku",
   "resources": {
-    "hash": "sha256-IRTEm8ZnnGQ0b138celFsOhO+V/yiN7rj8oN556HzcY=",
+    "hash": "sha256-YP23bCPSW5dhtSuwoZYrRrEOTN08LeqUpBJnYs/BJQ8=",
     "jsModuleNative": {
       "dotnet.native.8.0.10.4xsnm8lwn6.js": "sha256-QVxMlY7ohmjgde/bZMA0dlWDAeuUP+tEfkiSdg4DFcE="
     },
@@ -14,8 +14,8 @@
     "assembly": {
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-AB7P72nA6ejuXLycHnmXmIfIqHR2kghw0gVj0mWflDc=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-56Z+m6QYqkWgpzOTBHE0J0Ki7teZHIDNud5aqHXl6xI=",
-      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-AM3xXUgzYqJhFcBxwGhJgsE17qZiDYpO1Xj4aPAc2VQ=",
-      "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-VTyMH1h7LAq/mIc+4P5wrXJein/K9m2gMtRLk+mIbfE=",
+      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-9Q9UychZwLtPRT0Ge8g70BgXT9xgH7rIFoB8ShOEOj8=",
+      "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-n8mIc8+dG/fQ8e1xoZhDal2P6b7MW2iUh22p3knPuaM=",
       "Microsoft.Extensions.Configuration.Abstractions.wasm": "sha256-87sn2TYqgdZ95sXmavjKEzoEfMgHnYQ9LOvnMX+aZcI=",
       "Microsoft.Extensions.Configuration.Json.wasm": "sha256-/VUEfhgVp9FCU1rXnSNAI1mtW6EO5DpkV/5UNWDR/es=",
       "Microsoft.Extensions.Configuration.wasm": "sha256-jYqHUZ07UYWc8POk7xhas6xQYH7t1qoTcylqoDqncJk=",
@@ -25,7 +25,7 @@
       "Microsoft.Extensions.Logging.wasm": "sha256-gRNqDIITN9/LJz459bgijHJ1O+l5fzsybyrFhw0Iqa4=",
       "Microsoft.Extensions.Options.wasm": "sha256-jlB77smEnEgS5759tQfIvYNIsgWMKpU7rDv+uZQBWsU=",
       "Microsoft.Extensions.Primitives.wasm": "sha256-Ms2HR5Gpug/0uRAzdk4SUNT76Ml3CjFv9Jo+dUIMGac=",
-      "Microsoft.JSInterop.wasm": "sha256-nBf1q4P4ZVN1QHlsEeRjVUdvjp5UbfDADJrzqXxS/Fg=",
+      "Microsoft.JSInterop.wasm": "sha256-YiIT17NNCF8NxMuCUVD3segLAm1F4JgILmkDFacmgTI=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-r/+bWAAxKn2+Wu3MRYDXvKEbHjLNuptflgNuNhQdK6w=",
       "System.Collections.Concurrent.wasm": "sha256-HM9uDlZYBElRhsLSOmyM4jmGOEWvlCypeCXH14IL+Os=",
       "System.Collections.NonGeneric.wasm": "sha256-0mpko/S/Rapl7e5hxpF2v/uHSlFj4YpwmmV/+jtbYpc=",
@@ -43,20 +43,20 @@
       "System.Net.Http.wasm": "sha256-bcfnHKiPXGU+XcgE6Pk3O8AK92ey7lea05Qd/t3w1S8=",
       "System.Net.Primitives.wasm": "sha256-qVxsE3U6sOnnu0P5A6oXLTbN6v1CQPzUJHnjIcGDkRg=",
       "System.ObjectModel.wasm": "sha256-h7mSIKEVOuIvBRjdar5/r4VZWfBHIAN1xSLSX5QmT5I=",
-      "System.Private.CoreLib.wasm": "sha256-m5tfcrqSGC4XwzGFC1BYXA89vmD/HGpBHfOdF15eCxM=",
+      "System.Private.CoreLib.wasm": "sha256-Gbxp9WBP8+5+9t4P4Q6tHNs4WDlQ5a1dXPvS+j0GB0A=",
       "System.Private.Uri.wasm": "sha256-beB9gNoDPZDbyPHyKNx8MhxjXgb4dEzjhmZx+PPTex4=",
       "System.Private.Xml.wasm": "sha256-JlN6KvycDkYV6oUUmC5hjmtqwuDalcKpzIYHTxCxNXU=",
       "System.Runtime.InteropServices.JavaScript.wasm": "sha256-mQpcsHjvbjtyIhptu+ufj0/TUTZB5cIgQ6ESFHpDSk4=",
       "System.Runtime.Serialization.Primitives.wasm": "sha256-VTF2c5+K+FTPXdL00wpxGyJGkeMHoVI8RUn6a/mTqig=",
-      "System.Runtime.wasm": "sha256-sXpuxg8ztefq10NKeAbJmph7UY/0flnGkLz5PAG9GxU=",
+      "System.Runtime.wasm": "sha256-clVo17pThS5AyQj0PxHBu//UddsWnC2rkS8UAcBJ1Hw=",
       "System.Text.Encodings.Web.wasm": "sha256-hmEqWvCZQnS2F8DAjTdmesIMijXij07DuFxe0SVocRQ=",
       "System.Text.Json.wasm": "sha256-AzrXeefcXOqPbodidfixlJxikFs9sgpRrIwhc9wQbis=",
       "System.Text.RegularExpressions.wasm": "sha256-jOXHeQGxYgoiX8kfuXmM8pdDxV74D+IHq+znvu9UKmA=",
-      "System.Threading.wasm": "sha256-942pSKu/NRclDZZvbRxDycMEL2PUdLwiP0/0qw8+lJY=",
+      "System.Threading.wasm": "sha256-XSjia/HgD3xT7PRMWu9+rwani+sf4hBy1GhzQZlYvBw=",
       "System.wasm": "sha256-sH9OCj7JF+EjOteWJIPR1TDeb2POsT3uyJpKHPmvz2A=",
       "System.Xml.ReaderWriter.wasm": "sha256-RCXDiWcbcRRToHg3SOWKoNwhLP8HAKxk8xkCEeo8C6I=",
-      "WebSudoku.Shared.wasm": "sha256-+oLeZvoFABAQPGukkkosqUNDPJYA4iw5Ea1/YggAKRY=",
-      "WebSudoku.wasm": "sha256-/eg9TouAawtwpNU75nXz/JDQgeqc514B3sbDD7oMIos="
+      "WebSudoku.Shared.wasm": "sha256-RLo/x+hNOp5BzhmTRSQZKDv3zV87Q5xchQn72K9a03Y=",
+      "WebSudoku.wasm": "sha256-ArCZsSoCRqHtfBiLlwaNmJBMIzFbzIcHaTdEW1p2wn8="
     }
   },
   "cacheBootResources": true,
