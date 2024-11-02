@@ -1,9 +1,9 @@
-using apb97.github.io.WebSudoku.Pages;
+using apb97.github.io.WebSudoku.Services.KeyDownHandling;
 using FluentAssertions;
 
-namespace apb97.github.io.WebSudoku.Tests.Pages;
+namespace apb97.github.io.WebSudoku.Tests.Services.KeyDownHandling;
 
-public class SudokuTests
+public class SudokuCellKeyDownArrowKeyTests
 {
     [Theory]
     [InlineData(1, +1)]
@@ -24,7 +24,7 @@ public class SudokuTests
     [InlineData(9, -1)]
     public void GivenValueAndIncrementWithSumBetween1AndSudokuSize_ReturnsSumOfInputs(int number, int increment)
     {
-        Sudoku.WrapAroundBetweenEdges(number, increment)
+        SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, increment)
             .Should()
             .Be(number + increment);
     }
@@ -33,7 +33,7 @@ public class SudokuTests
     [InlineData(1, -1, 9)]
     public void GivenValueAndIncrementWithSumLessThan1_ReturnsSumWrappedAround(int number, int increment, int expectedValue)
     {
-        Sudoku.WrapAroundBetweenEdges(number, increment)
+        SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, increment)
             .Should()
             .Be(expectedValue);
     }
@@ -42,7 +42,7 @@ public class SudokuTests
     [InlineData(9, +1, 1)]
     public void GivenValueAndIncrementWithSumAboveSudokuSize_ReturnsSumWrappedAround(int number, int increment, int expectedValue)
     {
-        Sudoku.WrapAroundBetweenEdges(number, increment)
+        SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, increment)
             .Should()
             .Be(expectedValue);
     }
@@ -56,7 +56,7 @@ public class SudokuTests
     [InlineData(321, -1)]
     public void GivenAnyValueOrAnyIncrementOutsideOfRange1to9_ThrowsArgumentOutOfRangeException(int number, int increment)
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => Sudoku.WrapAroundBetweenEdges(number, increment));
+        Assert.Throws<ArgumentOutOfRangeException>(() => SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, increment));
     }
 
     [Theory]
@@ -65,7 +65,7 @@ public class SudokuTests
     [InlineData(9)]
     public void GivenAnyValueAndNoIncrement_ReturnsOriginalValue(int number)
     {
-        Sudoku.WrapAroundBetweenEdges(number, 0)
+        SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, 0)
             .Should()
             .Be(number);
     }

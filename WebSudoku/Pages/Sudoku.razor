@@ -1,5 +1,6 @@
 ﻿@page "/sudoku"
 @using System.Linq
+@using apb97.github.io.WebSudoku.Services.KeyDownHandling
 @using apb97.github.io.WebSudoku.Shared
 @using apb97.github.io.WebSudoku.Shared.General
 @using apb97.github.io.WebSudoku.Shared.Serialization
@@ -21,53 +22,26 @@
 {
     @if (!success)
     {
+        if (!generated)
+        {
+            Task.CompletedTask.ContinueWith(t => CreateNewBoard()).ContinueWith(t => generated = true);
+        }
         <div class="d-flex flex-direction-var">
             <div class="div-main">
                 <TimerDisplay @ref="timer" />
-                <table class="sudoku-table" style="border-spacing: 0px;">
-                    @for (int r = 0; r < Board.BoardSize; r++)
-                    {
-                        <tr>
-                            @for (int c = 0; c < Board.BoardSize; c++)
-                            {
-                                // these local variables are needed to cache position of Cell on the board
-                                int row = r, column = c;
-                                var value = board.GetValueAt((row, column));
-                                string cellValue = value != 0 ? value.ToString() : string.Empty;
-                                <td>
-                                    <Cell @ref="cells[row, column]" ReadOnly="board.IsPredefined((row, column))" HighlightClass="@(InvalidCells.Any(c => c.Row == row && c.Column == column) ? "error-highlight" : null)"
-                                        Value="@cellValue"
-                                        OnKeyDown="k => HandleKeyDown(k, row + 1, column + 1)"
-                                        SwitchTypeOnFocus="isMobile"
-                                        DefaultType="@(isFirefox && isMobile ? Cell.InputTypeNumber : Cell.InputTypeText)"
-                                        />
-                                </td>
-                            }
-                        </tr>
-                    }
-                </table>
+                <SudokuBoard @ref="sudokuBoard"
+                    CellDefaultType="@CellDefaultType"
+                    OnWinCondition="OnWinCondition"
+                    SwitchTypeOnFocus="isMobile"
+                    SudokuModule="module" />
             </div>
-    
-            <div class="div-options d-print-none">
-                <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
-                <button class="btn btn-primary" @onclick="Load"
-                    title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
-                    disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">@Loc["Load"]</button>
-                <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
-                <PrintSettings />
 
-                <span class="alert alert-info position-sticky sticky-bottom-portrait @(string.IsNullOrEmpty(StatusMessage) ? "d-none" : null)" role="status">@StatusMessage</span>
-            </div>
+            <SudokuOptions SudokuBoard="sudokuBoard" Timer="timer" />
         </div>
     }
     else
     {
-        <h1>@Loc["Success"]</h1>
-        @if (timePassed.HasValue)
-        {
-            <p>@Loc["You finished with time"] @timePassed.</p>
-        }
-        <button class="btn btn-primary" @onclick="CreateNewBoard">@Loc["Play again"]</button>
+        @SudokuFinishedFragment
     }
 }
 
@@ -75,37 +49,35 @@
     [CascadingParameter]
     public required MainLayout Layout { get; set; }
 
-    private Board board = new Board();
-    private const string SudokuStateKey = "sudokuState";
-    private const string TimerStateKey = "timerState";
+    private SudokuBoard? sudokuBoard;
+
+    private TimerDisplay? timer;
 
     private int targetBlanks = 35;
     private int attemptsToRemove = 4;
 
     private bool success = false;
+    private bool generated = false;
 
     private TimeSpan? timePassed;
 
-    private List<CellPosition> InvalidCells = new List<CellPosition>();
-
-    private TimerDisplay? timer;
-
     private IJSObjectReference? module;
-    private IJSObjectReference? utilitiesModule;
 
     private bool isMobile;
-
     private bool isFirefox;
-
-    private Cell[,] cells = new Cell[Board.BoardSize, Board.BoardSize];
-
-    private string? lastSavedState;
-
-    private string StatusMessage = string.Empty;
-
-    private CancellationTokenSource cts = new();
+    private string CellDefaultType = Cell.InputTypeText;
 
     private SettingsProvider? settingsProvider;
+
+    private RenderFragment SudokuFinishedFragment => __builder =>
+    {
+        <h1>@Loc["Success"]</h1>
+        @if (timePassed.HasValue)
+        {
+            <p>@Loc["You finished with time"] @timePassed.</p>
+        }
+        <button class="btn btn-primary" @onclick="() => success = false">@Loc["Play again"]</button>
+    };
 
     protected override bool ShouldRender()
     {
@@ -117,7 +89,7 @@
         Layout.OnStateChanging += LoadResourcesAsync;
         await Loc.InitializeAsync(Layout.Culture);
         module = await JS.ImportAsync("./Pages/Sudoku.razor.js");
-        if (module != null)
+        if (module is not null)
         {
             try
             {
@@ -130,9 +102,7 @@
                 isFirefox = false;
             }
         }
-
-        utilitiesModule = await JS.ImportAsync(JSModules.UtilitiesModule);
-        await FetchSavedState();
+        CellDefaultType = isMobile && isFirefox ? Cell.InputTypeNumber : Cell.InputTypeText;
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -149,178 +119,26 @@
             targetBlanks = settingsProvider.GetInt(SettingsProvider.DesiredBlankCells);
             attemptsToRemove = settingsProvider.GetInt(SettingsProvider.CellBlankingAttempts);
         }
-        CreateNewBoard();
     }
 
-    private async ValueTask FetchSavedState()
+    protected async Task CreateNewBoard()
     {
-        if (utilitiesModule is null) return;
-        lastSavedState = await utilitiesModule.GetSettingAsync<string>(SudokuStateKey);
-    }
-
-    private async Task Save()
-    {
-        if (utilitiesModule == null) return;
-
-        string savedState = BoardSerializer.SerializeToJson(board, timer?.SpanToShow, GameStateVersion.Current);
-        await utilitiesModule.SetSettingAsync(SudokuStateKey, savedState);
-        lastSavedState = savedState;
-        await SetStatusMessage("Saved");
-    }
-
-    private Task SetStatusMessage(string messageKey)
-    {
-        CancelMessageClear();
-        StatusMessage = Loc[messageKey];
-        return Task.Delay(TimeSpan.FromSeconds(4), cts.Token).ContinueWith(t =>
+        while (sudokuBoard is null) await Task.Delay(25);
+        if (generated) return;
+        lock (this)
         {
-            if (t.IsCanceled) return;
-            StatusMessage = string.Empty;
-        });
-    }
-
-    private void CancelMessageClear()
-    {
-        cts?.Cancel();
-        cts?.Dispose();
-        cts = new();
-    }
-
-    private async Task Load()
-    {
-        if (utilitiesModule == null) return;
-
-        var jsonState = string.IsNullOrEmpty(lastSavedState) ? await utilitiesModule.GetSettingAsync<string>(SudokuStateKey) : lastSavedState;
-        if (jsonState != null)
-        {
-            // Load V2 save
-            var loadedBoard = BoardSerializer.DeserializeFromJson(jsonState, out var loadedTimer);
-            if (loadedBoard != null && loadedTimer.HasValue)
-            {
-                board = loadedBoard;
-                timer?.SetTime(loadedTimer.Value);
-                InvalidCells = board.GetInvalidCells(SudokuValidator);
-                await SetStatusMessage("Loaded");
-            }
-            else
-            {
-                // Load V1 save
-                var v1board = BoardSerializer.DeserializeFromJson(jsonState);
-                var jsonTimer = await utilitiesModule.GetSettingAsync<string>(TimerStateKey);
-                if (v1board != null && timer != null && jsonTimer != null && TimeSpan.TryParse(jsonTimer, out var loadedTimerOnly))
-                {
-                    board = v1board;
-                    timer.SetTime(loadedTimerOnly);
-                    InvalidCells = board.GetInvalidCells(SudokuValidator);
-                    await SetStatusMessage("Loaded");
-                }
-            }
+            success = false;
+            generated = true;
+            sudokuBoard.GenerateNew(targetBlanks, attemptsToRemove);
         }
     }
 
-    protected void CreateNewBoard()
+    private void OnWinCondition()
     {
-        success = false;
-        board = new Board(Solver, new RandomOptionOrder<int>(), Blanker, targetBlanks, attemptsToRemove);
-    }
-
-    private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column)
-    {
-        if (args.AltKey || args.ShiftKey || args.MetaKey || args.CtrlKey) return;
-        switch (args.Code)
-        {
-            case KeyCodes.ArrowLeft:
-                await BlurAsync(row, column);
-                await FocusAsync(row, WrapAroundBetweenEdges(column, -1));
-                return;
-            case KeyCodes.ArrowRight:
-                await BlurAsync(row, column);
-                await FocusAsync(row, WrapAroundBetweenEdges(column, +1));
-                return;
-            case KeyCodes.ArrowUp:
-                await BlurAsync(row, column);
-                await FocusAsync(WrapAroundBetweenEdges(row, -1), column);
-                return;
-            case KeyCodes.ArrowDown:
-                await BlurAsync(row, column);
-                await FocusAsync(WrapAroundBetweenEdges(row, +1), column);
-                return;
-            case KeyCodes.CapsLock:
-            case KeyCodes.Tab:
-                return;
-            case KeyCodes.Enter:
-                await BlurAsync(row, column);
-                column++;
-                if (column > 9)
-                {
-                    column -= 9;
-                    row++;
-                    if (row > 9)
-                    {
-                        row -= 9;
-                    }
-                }
-                await FocusAsync(row, column);
-                return;
-        }
-
-        if (board.IsPredefined((row - 1, column - 1))) return;
-
-        await ProcessNonNavigatingInputAsync(row - 1, column - 1, args.Key);
-    }
-
-    public static int WrapAroundBetweenEdges(int cellPositionOnAxis, int positionChange)
-    {
-        if (cellPositionOnAxis < 1 || cellPositionOnAxis > 9) throw new ArgumentOutOfRangeException(nameof(cellPositionOnAxis));
-        if (Math.Abs(positionChange) > 1) throw new ArgumentOutOfRangeException(nameof(positionChange));
-
-        // Replaces previously used ternary operators with calculation using modulo.
-        // Note that adding Board.BoardSize before using modulo allows wrapping around position from 1 to 9
-        return ((Board.BoardSize + cellPositionOnAxis - 1 + positionChange) % Board.BoardSize) + 1;
-    }
-
-    private async Task ProcessNonNavigatingInputAsync(int row, int column, string key)
-    {
-        if (int.TryParse(key, out var number) && number >= 1 && number <= 9)
-        {
-            UpdateCellAsync(row , column, cells[row, column], number);
-            CheckForWinCondition();
-        }
-        else
-        {
-            await cells[row, column].SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?> { { nameof(Cell.Value), string.Empty } }));
-            board.ClearCell((row, column));
-            InvalidCells.Remove((row, column));
-            InvalidCells.RemoveAll(cell => SudokuValidator.IsValid(board, cell));
-        }
-    }
-
-    private void UpdateCellAsync(int row, int column, Cell currentCell, int number)
-    {
-        board.FillCell((row, column), number);
-        currentCell.OnChange(number.ToString());
-        InvalidCells = board.GetInvalidCells(SudokuValidator);
-    }
-
-    private void CheckForWinCondition()
-    {
-        if (board.EmptyCells.Count == 0 && SudokuValidator.IsValidBoard(board))
-        {
-            success = true;
-            timePassed = timer?.SpanToShow;
-        }
-    }
-
-    private ValueTask FocusAsync(int row, int column)
-    {
-        if (module is null) return default;
-        return module.InvokeVoidAsync("focusCell", row, column);
-    }
-
-    private ValueTask BlurAsync(int row, int column)
-    {
-        if (module is null) return default;
-        return module.InvokeVoidAsync("blurCell", row, column);
+        success = true;
+        generated = false;
+        timePassed = timer?.SpanToShow;
+        StateHasChanged();
     }
 
     private async Task LoadResourcesAsync()
@@ -332,7 +150,6 @@
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
         Layout.OnStateChanging -= LoadResourcesAsync;
-        cts?.Dispose();
         if (settingsProvider is not null)
             settingsProvider.AfterSettingsLoaded -= OnAfterSettingsLoaded;
         if (module is null) return;
