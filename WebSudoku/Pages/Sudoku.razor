@@ -302,18 +302,6 @@
         }
     }
 
-    private ValueTask FocusAsync(int row, int column)
-    {
-        if (module is null) return default;
-        return module.InvokeVoidAsync("focusCell", row, column);
-    }
-
-    private ValueTask BlurAsync(int row, int column)
-    {
-        if (module is null) return default;
-        return module.InvokeVoidAsync("blurCell", row, column);
-    }
-
     private async Task LoadResourcesAsync()
     {
         await Loc.InitializeAsync(Layout.Culture);
