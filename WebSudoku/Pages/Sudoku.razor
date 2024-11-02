@@ -1,5 +1,6 @@
 ﻿@page "/sudoku"
 @using System.Linq
+@using apb97.github.io.WebSudoku.Services.KeyDownHandling
 @using apb97.github.io.WebSudoku.Shared
 @using apb97.github.io.WebSudoku.Shared.General
 @using apb97.github.io.WebSudoku.Shared.Serialization
@@ -107,6 +108,8 @@
 
     private SettingsProvider? settingsProvider;
 
+    private SudokuCellKeyDownHandler? keyHandler;
+
     protected override bool ShouldRender()
     {
         return Loc.IsReady;
@@ -117,6 +120,8 @@
         Layout.OnStateChanging += LoadResourcesAsync;
         await Loc.InitializeAsync(Layout.Culture);
         module = await JS.ImportAsync("./Pages/Sudoku.razor.js");
+        if (module is not null)
+            keyHandler = new SudokuCellKeyDownHandler(module, ProcessNonNavigatingInputAsync);
         if (module != null)
         {
             try
@@ -211,6 +216,7 @@
     private async Task<bool> LoadV1()
     {
         if (lastSavedState == null) return false;
+        if (utilitiesModule == null) return false;
         var v1board = BoardSerializer.DeserializeFromJson(lastSavedState);
         var jsonTimer = await utilitiesModule.GetSettingAsync<string>(TimerStateKey);
         if (v1board == null || timer == null || jsonTimer == null || !TimeSpan.TryParse(jsonTimer, out var loadedTimerOnly))
@@ -231,47 +237,9 @@
 
     private async Task HandleKeyDown(KeyboardEventArgs args, int row, int column)
     {
+        if (keyHandler == null) return;
         if (args.AltKey || args.ShiftKey || args.MetaKey || args.CtrlKey) return;
-        switch (args.Code)
-        {
-            case KeyCodes.ArrowLeft:
-                await BlurAsync(row, column);
-                await FocusAsync(row, WrapAroundBetweenEdges(column, -1));
-                return;
-            case KeyCodes.ArrowRight:
-                await BlurAsync(row, column);
-                await FocusAsync(row, WrapAroundBetweenEdges(column, +1));
-                return;
-            case KeyCodes.ArrowUp:
-                await BlurAsync(row, column);
-                await FocusAsync(WrapAroundBetweenEdges(row, -1), column);
-                return;
-            case KeyCodes.ArrowDown:
-                await BlurAsync(row, column);
-                await FocusAsync(WrapAroundBetweenEdges(row, +1), column);
-                return;
-            case KeyCodes.CapsLock:
-            case KeyCodes.Tab:
-                return;
-            case KeyCodes.Enter:
-                await BlurAsync(row, column);
-                column++;
-                if (column > 9)
-                {
-                    column -= 9;
-                    row++;
-                    if (row > 9)
-                    {
-                        row -= 9;
-                    }
-                }
-                await FocusAsync(row, column);
-                return;
-        }
-
-        if (board.IsPredefined((row - 1, column - 1))) return;
-
-        await ProcessNonNavigatingInputAsync(row - 1, column - 1, args.Key);
+        await keyHandler.Handle(args, row, column);
     }
 
     public static int WrapAroundBetweenEdges(int cellPositionOnAxis, int positionChange)
@@ -284,8 +252,13 @@
         return ((Board.BoardSize + cellPositionOnAxis - 1 + positionChange) % Board.BoardSize) + 1;
     }
 
-    private async Task ProcessNonNavigatingInputAsync(int row, int column, string key)
+    private async Task ProcessNonNavigatingInputAsync(KeyboardEventArgs args, int row, int column)
     {
+        row -= 1;
+        column -= 1;
+
+        if (board.IsPredefined((row, column))) return;
+        string key = args.Key;
         if (int.TryParse(key, out var number) && number >= 1 && number <= 9)
         {
             UpdateCellAsync(row , column, cells[row, column], number);
