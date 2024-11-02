@@ -135,4 +135,10 @@
   <data name="Print" xml:space="preserve">
     <value>Drukuj</value>
   </data>
+  <data name="Save to file" xml:space="preserve">
+    <value>Zapisz do pliku</value>
+  </data>
+  <data name="Load from file" xml:space="preserve">
+    <value>Wczytaj z pliku</value>
+  </data>
 </root>

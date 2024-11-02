@@ -5,18 +5,22 @@
 
 @inject IJSRuntime JS
 
-<button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
-<button class="btn btn-primary" @onclick="Load"
-        title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
-        disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">
-    @Loc["Load"]
-</button>
-<button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
-<PrintSettings />
+<div class="div-options d-print-none">
+    <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
+    <button class="btn btn-primary" @onclick="SaveToFile">@Loc["Save to file"]</button>
+    <button class="btn btn-primary" @onclick="Load"
+            title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
+            disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">
+        @Loc["Load"]
+    </button>
+    <button class="btn btn-primary" onclick="document.querySelector('#load-file-input')?.click()">@Loc["Load from file"]</button>
+    <InputFile OnChange="LoadFromFile" id="load-file-input" accept=".json" class="d-none" hidden />
+    <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
+    <PrintSettings />
 
-<span class="alert alert-info position-sticky sticky-bottom-portrait @(string.IsNullOrEmpty(StatusMessage) ? "d-none" : null)"
-      role="status">@StatusMessage</span>
-
+    <span class="alert alert-info position-sticky sticky-bottom-portrait @(string.IsNullOrEmpty(StatusMessage) ? "d-none" : null)"
+          role="status">@StatusMessage</span>
+</div>
 @code {
     [Parameter]
     public required SudokuBoard? SudokuBoard { get; set; }
@@ -58,10 +62,20 @@
         await SetStatusMessage("Saved");
     }
 
+    private async Task SaveToFile()
+    {
+        if (utilitiesModule is null) return;
+        if (SudokuBoard is null) return;
+        string savedState = BoardSerializer.SerializeToJson(SudokuBoard.Board, Timer?.SpanToShow, GameStateVersion.Current);
+        await utilitiesModule.DownloadFileAsync($"SudokuState-{DateTime.Now.ToString()}.json", savedState, "application/json");
+        await SetStatusMessage("Saved");
+    }
+
     private Task SetStatusMessage(string messageKey)
     {
         CancelMessageClear();
         StatusMessage = Loc[messageKey];
+        StateHasChanged();
         return Task.Delay(TimeSpan.FromSeconds(4), cts.Token).ContinueWith(t =>
         {
             if (t.IsCanceled) return;
@@ -81,11 +95,19 @@
         if (utilitiesModule == null) return;
 
         lastSavedState ??= await utilitiesModule.GetSettingAsync<string>(SudokuStateKey);
-        if (await LoadV2()) return;
-        await LoadV1();
+        if (await LoadV2(lastSavedState)) return;
+        await LoadV1(lastSavedState);
     }
 
-    private async Task<bool> LoadV2()
+    private async Task LoadFromFile(InputFileChangeEventArgs e)
+    {
+        using var stream = e.File.OpenReadStream();
+        using var reader = new StreamReader(stream);
+
+        await LoadV2(await reader.ReadToEndAsync());
+    }
+
+    private async Task<bool> LoadV2(string lastSavedState)
     {
         if (lastSavedState is null) return false;
         if (SudokuBoard is null) return false;
@@ -94,11 +116,12 @@
 
         SudokuBoard.Board = loadedBoard;
         Timer?.SetTime(loadedTimer.Value);
+        await SudokuBoard.SetParametersAsync(ParameterView.Empty);
         await SetStatusMessage("Loaded");
         return true;
     }
 
-    private async Task<bool> LoadV1()
+    private async Task<bool> LoadV1(string lastSavedState)
     {
         if (lastSavedState is null) return false;
         if (utilitiesModule is null) return false;
@@ -110,6 +133,7 @@
 
         SudokuBoard.Board = v1board;
         Timer.SetTime(loadedTimerOnly);
+        await SudokuBoard.SetParametersAsync(ParameterView.Empty);
         await SetStatusMessage("Loaded");
         return true;
     }

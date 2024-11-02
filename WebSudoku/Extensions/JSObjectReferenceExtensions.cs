@@ -10,6 +10,7 @@ public static class JSObjectReferenceExtensions
     private const string RemoveSettingFunction = "removeSetting";
     private const string GetSessionSettingFunction = "getSessionSetting";
     private const string RemoveSessionSettingFunction = "removeSessionSetting";
+    private const string DownloadFileFunction = "downloadFile";
 
     /// <summary>
     /// Show simple alert message
@@ -64,5 +65,10 @@ public static class JSObjectReferenceExtensions
     public static ValueTask RemoveSessionSettingAsync(this IJSObjectReference utilitiesModule, string key)
     {
         return utilitiesModule.InvokeVoidAsync(RemoveSessionSettingFunction, key);
+    }
+
+    public static ValueTask DownloadFileAsync(this IJSObjectReference utilitiesModule, string name, string contents, string mimeType)
+    {
+        return utilitiesModule.InvokeVoidAsync(DownloadFileFunction, name, contents, mimeType);
     }
 }
