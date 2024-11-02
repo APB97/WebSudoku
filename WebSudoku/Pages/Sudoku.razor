@@ -35,8 +35,10 @@
                     SwitchTypeOnFocus="isMobile"
                     SudokuModule="module" />
             </div>
-    
-            @SudokuOptionsFragment
+
+            <div class="div-options d-print-none">
+                <SudokuOptions SudokuBoard="sudokuBoard" Timer="timer" />
+            </div>
         </div>
     }
     else
@@ -51,8 +53,7 @@
 
     private SudokuBoard? sudokuBoard;
 
-    private const string SudokuStateKey = "sudokuState";
-    private const string TimerStateKey = "timerState";
+    private TimerDisplay? timer;
 
     private int targetBlanks = 35;
     private int attemptsToRemove = 4;
@@ -62,39 +63,13 @@
 
     private TimeSpan? timePassed;
 
-    private TimerDisplay? timer;
-
     private IJSObjectReference? module;
-    private IJSObjectReference? utilitiesModule;
 
     private bool isMobile;
     private bool isFirefox;
     private string CellDefaultType = Cell.InputTypeText;
 
-    private string? lastSavedState;
-
-    private string StatusMessage = string.Empty;
-
-    private CancellationTokenSource cts = new();
-
     private SettingsProvider? settingsProvider;
-
-    private RenderFragment SudokuOptionsFragment => __builder =>
-    {
-        <div class="div-options d-print-none">
-            <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
-            <button class="btn btn-primary" @onclick="Load"
-                    title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
-                    disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">
-                @Loc["Load"]
-            </button>
-            <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
-            <PrintSettings />
-
-            <span class="alert alert-info position-sticky sticky-bottom-portrait @(string.IsNullOrEmpty(StatusMessage) ? "d-none" : null)"
-                role="status">@StatusMessage</span>
-        </div>
-    };
 
     private RenderFragment SudokuFinishedFragment => __builder =>
     {
@@ -130,9 +105,6 @@
             }
         }
         CellDefaultType = isMobile && isFirefox ? Cell.InputTypeNumber : Cell.InputTypeText;
-
-        utilitiesModule = await JS.ImportAsync(JSModules.UtilitiesModule);
-        await FetchSavedState();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -149,79 +121,6 @@
             targetBlanks = settingsProvider.GetInt(SettingsProvider.DesiredBlankCells);
             attemptsToRemove = settingsProvider.GetInt(SettingsProvider.CellBlankingAttempts);
         }
-    }
-
-    private async ValueTask FetchSavedState()
-    {
-        if (utilitiesModule is null) return;
-        lastSavedState = await utilitiesModule.GetSettingAsync<string>(SudokuStateKey);
-    }
-
-    private async Task Save()
-    {
-        if (utilitiesModule is null) return;
-        if (sudokuBoard is null) return;
-
-        string savedState = BoardSerializer.SerializeToJson(sudokuBoard.Board, timer?.SpanToShow, GameStateVersion.Current);
-        await utilitiesModule.SetSettingAsync(SudokuStateKey, savedState);
-        lastSavedState = savedState;
-        await SetStatusMessage("Saved");
-    }
-
-    private Task SetStatusMessage(string messageKey)
-    {
-        CancelMessageClear();
-        StatusMessage = Loc[messageKey];
-        return Task.Delay(TimeSpan.FromSeconds(4), cts.Token).ContinueWith(t =>
-        {
-            if (t.IsCanceled) return;
-            StatusMessage = string.Empty;
-        });
-    }
-
-    private void CancelMessageClear()
-    {
-        cts?.Cancel();
-        cts?.Dispose();
-        cts = new();
-    }
-
-    private async Task Load()
-    {
-        if (utilitiesModule == null) return;
-
-        lastSavedState ??= await utilitiesModule.GetSettingAsync<string>(SudokuStateKey);
-        if (await LoadV2()) return;
-        await LoadV1();
-    }
-
-    private async Task<bool> LoadV2()
-    {
-        if (lastSavedState is null) return false;
-        if (sudokuBoard is null) return false;
-        var loadedBoard = BoardSerializer.DeserializeFromJson(lastSavedState, out var loadedTimer);
-        if (loadedBoard == null || !loadedTimer.HasValue) return false;
-
-        sudokuBoard.Board = loadedBoard;
-        timer?.SetTime(loadedTimer.Value);
-        await SetStatusMessage("Loaded");
-        return true;
-    }
-
-    private async Task<bool> LoadV1()
-    {
-        if (lastSavedState is null) return false;
-        if (utilitiesModule is null) return false;
-        if (sudokuBoard is null) return false;
-        var v1board = BoardSerializer.DeserializeFromJson(lastSavedState);
-        var jsonTimer = await utilitiesModule.GetSettingAsync<string>(TimerStateKey);
-        if (v1board == null || timer == null || jsonTimer == null || !TimeSpan.TryParse(jsonTimer, out var loadedTimerOnly))
-            return false;
-
-        sudokuBoard.Board = v1board;
-        timer.SetTime(loadedTimerOnly);
-        await SetStatusMessage("Loaded");
-        return true;
     }
 
     protected async Task CreateNewBoard()
@@ -253,7 +152,6 @@
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
         Layout.OnStateChanging -= LoadResourcesAsync;
-        cts?.Dispose();
         if (settingsProvider is not null)
             settingsProvider.AfterSettingsLoaded -= OnAfterSettingsLoaded;
         if (module is null) return;

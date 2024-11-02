@@ -3,22 +3,6 @@
         flex: 0 0 auto;
     }
 
-    .div-options {
-        flex: 0 0 auto;
-        width: 50%;
-        word-break: break-word;
-        word-wrap: break-word;
-        display: grid;
-        justify-items: stretch;
-        margin: auto;
-        margin-top: 12pt;
-        padding: 2pt;
-    }
-
-    .div-options > button {
-        margin: 2pt;
-    }
-
     .flex-direction-var {
         flex-direction: row;
     }
@@ -33,10 +17,6 @@
         width: 50%;
     }
 
-    .div-options {
-        width: 50%;
-    }
-
     .display-var {
         display: none;
     }
@@ -47,23 +27,13 @@
         width: 50%;
     }
 
-    .div-options {
-        width: 50%;
-    }
-
     .display-var {
         display: none;
     }
 }
 
-
 @media only screen and (orientation: portrait) {
    .div-main {
-        flex: 0 0 auto;
-        width: 100%;
-    }
-
-    .div-options {
         flex: 0 0 auto;
         width: 100%;
     }
@@ -89,11 +59,6 @@
 
 @media (min-width: 768px) and (max-width: 1024px) {
     .div-main {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-
-    .div-options {
         flex: 0 0 auto;
         width: 50%;
     }
