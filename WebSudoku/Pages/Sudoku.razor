@@ -190,32 +190,37 @@
     {
         if (utilitiesModule == null) return;
 
-        var jsonState = string.IsNullOrEmpty(lastSavedState) ? await utilitiesModule.GetSettingAsync<string>(SudokuStateKey) : lastSavedState;
-        if (jsonState != null)
-        {
-            // Load V2 save
-            var loadedBoard = BoardSerializer.DeserializeFromJson(jsonState, out var loadedTimer);
-            if (loadedBoard != null && loadedTimer.HasValue)
-            {
-                board = loadedBoard;
-                timer?.SetTime(loadedTimer.Value);
-                InvalidCells = board.GetInvalidCells(SudokuValidator);
-                await SetStatusMessage("Loaded");
-            }
-            else
-            {
-                // Load V1 save
-                var v1board = BoardSerializer.DeserializeFromJson(jsonState);
-                var jsonTimer = await utilitiesModule.GetSettingAsync<string>(TimerStateKey);
-                if (v1board != null && timer != null && jsonTimer != null && TimeSpan.TryParse(jsonTimer, out var loadedTimerOnly))
-                {
-                    board = v1board;
-                    timer.SetTime(loadedTimerOnly);
-                    InvalidCells = board.GetInvalidCells(SudokuValidator);
-                    await SetStatusMessage("Loaded");
-                }
-            }
-        }
+        lastSavedState ??= await utilitiesModule.GetSettingAsync<string>(SudokuStateKey);
+        if (await LoadV2()) return;
+        await LoadV1();
+    }
+
+    private async Task<bool> LoadV2()
+    {
+        if (lastSavedState == null) return false;
+        var loadedBoard = BoardSerializer.DeserializeFromJson(lastSavedState, out var loadedTimer);
+        if (loadedBoard == null || !loadedTimer.HasValue) return false;
+
+        board = loadedBoard;
+        timer?.SetTime(loadedTimer.Value);
+        InvalidCells = board.GetInvalidCells(SudokuValidator);
+        await SetStatusMessage("Loaded");
+        return true;
+    }
+
+    private async Task<bool> LoadV1()
+    {
+        if (lastSavedState == null) return false;
+        var v1board = BoardSerializer.DeserializeFromJson(lastSavedState);
+        var jsonTimer = await utilitiesModule.GetSettingAsync<string>(TimerStateKey);
+        if (v1board == null || timer == null || jsonTimer == null || !TimeSpan.TryParse(jsonTimer, out var loadedTimerOnly))
+            return false;
+
+        board = v1board;
+        timer.SetTime(loadedTimerOnly);
+        InvalidCells = board.GetInvalidCells(SudokuValidator);
+        await SetStatusMessage("Loaded");
+        return true;
     }
 
     protected void CreateNewBoard()
