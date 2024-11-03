@@ -131,6 +131,7 @@
             generated = true;
             sudokuBoard.GenerateNew(targetBlanks, attemptsToRemove);
         }
+        StateHasChanged();
     }
 
     private void OnWinCondition()
