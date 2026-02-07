@@ -1,5 +1,5 @@
 ﻿using apb97.github.io.WebSudoku.Shared.Sudoku;
-using FluentAssertions;
+using Shouldly;
 
 namespace apb97.github.io.WebSudoku.Shared.Tests.Sudoku;
 
@@ -11,11 +11,9 @@ public class CellPositionTests
         var initedCell = new CellPosition() { Column = 1, Row = 2 };
 
         initedCell.Column
-            .Should()
-            .Be(1);
+            .ShouldBe(1);
 
         initedCell.Row
-            .Should()
-            .Be(2);
+            .ShouldBe(2);
     }
 }

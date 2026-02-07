@@ -1,5 +1,5 @@
 ﻿using apb97.github.io.WebSudoku.Shared.Sudoku;
-using FluentAssertions;
+using Shouldly;
 
 namespace apb97.github.io.WebSudoku.Shared.Tests.Sudoku;
 
@@ -24,8 +24,7 @@ public class CountingSolverTests
         var countingSolver = new CountingSolver(neighbors) { MaxSolutionCount = 1 };
 
         countingSolver.ShouldStopAtSolution(solutions)
-            .Should()
-            .Be(solver.ShouldStopAtSolution(solutions));
+            .ShouldBe(solver.ShouldStopAtSolution(solutions));
     }
 
     [Theory]
@@ -35,8 +34,7 @@ public class CountingSolverTests
         var countingSolver = new CountingSolver(neighbors) { MaxSolutionCount = 2 };
 
         countingSolver.ShouldStopAtSolution(solutions)
-            .Should()
-            .NotBe(solver.ShouldStopAtSolution(solutions));
+            .ShouldNotBe(solver.ShouldStopAtSolution(solutions));
     }
 
     [Theory]
@@ -48,7 +46,6 @@ public class CountingSolverTests
         var countingSolver = new CountingSolver(neighbors) { MaxSolutionCount = 1 };
 
         countingSolver.ShouldStopAtSolution(solutions)
-            .Should()
-            .Be(solver.ShouldStopAtSolution(solutions));
+            .ShouldBe(solver.ShouldStopAtSolution(solutions));
     }
 }
