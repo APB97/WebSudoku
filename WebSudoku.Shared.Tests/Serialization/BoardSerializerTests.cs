@@ -1,6 +1,6 @@
 ﻿using apb97.github.io.WebSudoku.Shared.Serialization;
 using apb97.github.io.WebSudoku.Shared.Sudoku;
-using FluentAssertions;
+using Shouldly;
 using System.Diagnostics.CodeAnalysis;
 
 namespace apb97.github.io.WebSudoku.Shared.Tests.Serialization;
@@ -19,14 +19,11 @@ public class BoardSerializerTests
 
         var deserializedBoard = BoardSerializer.DeserializeFromJson(BoardSerializer.SerializeToJson(board));
         
-        deserializedBoard.Should()
-            .NotBeNull();
+        deserializedBoard.ShouldNotBeNull();
         deserializedBoard!.GetValueAt((row, column))
-            .Should()
-            .Be(value);
+            .ShouldBe(value);
         deserializedBoard.IsPredefined((row, column))
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
     }
 
     [Theory]
@@ -41,25 +38,20 @@ public class BoardSerializerTests
 
         var deserializedBoard = BoardSerializer.DeserializeFromJson(BoardSerializer.SerializeToJson(board));
         
-        deserializedBoard.Should()
-            .NotBeNull();
+        deserializedBoard.ShouldNotBeNull();
         deserializedBoard!.GetValueAt((row, column))
-            .Should()
-            .Be(value);
+            .ShouldBe(value);
         deserializedBoard.IsPredefined((row, column))
-            .Should()
-            .BeFalse();
+            .ShouldBeFalse();
     }
 
     [Fact]
     public void DeserializeFromJsonV2_GivenGarbageInput_ReturnsNullBoardAndTimer()
     {
         BoardSerializer.DeserializeFromJson("<Random garbage here>", out var timer)
-            .Should()
-            .BeNull();
+            .ShouldBeNull();
         timer.HasValue
-            .Should()
-            .BeFalse();
+            .ShouldBeFalse();
     }
 
     [Theory]
@@ -71,20 +63,15 @@ public class BoardSerializerTests
 
         var deserializedBoard = BoardSerializer.DeserializeFromJson(BoardSerializer.SerializeToJson(board, time, GameStateVersion.V2), out var timer);
         
-        deserializedBoard.Should()
-            .NotBeNull();
+        deserializedBoard.ShouldNotBeNull();
         deserializedBoard!.GetValueAt((row, column))
-            .Should()
-            .Be(value);
+            .ShouldBe(value);
         deserializedBoard.IsPredefined((row, column))
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
         timer.HasValue
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
         timer!.Value
-            .Should()
-            .Be(time);
+            .ShouldBe(time);
     }
 
     [Theory]
@@ -96,20 +83,15 @@ public class BoardSerializerTests
 
         var deserializedBoard = BoardSerializer.DeserializeFromJson(BoardSerializer.SerializeToJson(board, time, GameStateVersion.V2), out var timer);
         
-        deserializedBoard.Should()
-            .NotBeNull();
+        deserializedBoard.ShouldNotBeNull();
         deserializedBoard!.GetValueAt((row, column))
-            .Should()
-            .Be(value);
+            .ShouldBe(value);
         deserializedBoard.IsPredefined((row, column))
-            .Should()
-            .BeFalse();
+            .ShouldBeFalse();
         timer.HasValue
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
         timer!.Value
-            .Should()
-            .Be(time);
+            .ShouldBe(time);
     }
 
     [ExcludeFromCodeCoverage]

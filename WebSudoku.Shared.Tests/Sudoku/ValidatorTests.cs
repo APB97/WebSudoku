@@ -1,6 +1,6 @@
 ﻿using apb97.github.io.WebSudoku.Shared.General;
 using apb97.github.io.WebSudoku.Shared.Sudoku;
-using FluentAssertions;
+using Shouldly;
 using System.Diagnostics.CodeAnalysis;
 
 namespace apb97.github.io.WebSudoku.Shared.Tests.Sudoku;
@@ -27,8 +27,7 @@ public class ValidatorTests
     public void GivenEmptyBoard_DefaultEmptyCellValue_IsValid(int row, int column)
     {
         validator.IsValid(new Board(), (row, column))
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
     }
 
     [Theory]
@@ -41,8 +40,7 @@ public class ValidatorTests
         emptyboard.FillCell((row, column), value);
         
         validator.IsValid(emptyboard, (row, column))
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
     }
 
     [Theory]
@@ -59,7 +57,7 @@ public class ValidatorTests
         board.FillCell((row, column), value);
 
         validator.IsValid(board, (row, column))
-            .Should().Be(expectedValue);
+            .ShouldBe(expectedValue);
     }
 
     [Fact]
@@ -68,8 +66,7 @@ public class ValidatorTests
         Board board = new();
 
         validator.IsValidBoard(board)
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
     }
 
     [Fact]
@@ -78,8 +75,7 @@ public class ValidatorTests
         Board board = new(new Solver(neighbors), new DefaultOptionOrder<int>());
 
         validator.IsValidBoard(board)
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
     }
 
     [Fact]
@@ -88,8 +84,7 @@ public class ValidatorTests
         Board board = new(new Solver(neighbors), new ReverseOptionOrder<int>());
 
         validator.IsValidBoard(board)
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
     }
 
     [Fact]
@@ -99,8 +94,7 @@ public class ValidatorTests
         Board board = new(solver, new DefaultOptionOrder<int>(), new Blanker(solver), LowValueOfTargetBlanks, MinimumAttemptsToRemove);
 
         validator.IsValidBoard(board)
-            .Should()
-            .BeTrue();
+            .ShouldBeTrue();
     }
 
     [Fact]
@@ -115,8 +109,7 @@ public class ValidatorTests
         }
 
         validator.IsValidBoard(board)
-            .Should()
-            .BeFalse();
+            .ShouldBeFalse();
     }
 
     [ExcludeFromCodeCoverage]

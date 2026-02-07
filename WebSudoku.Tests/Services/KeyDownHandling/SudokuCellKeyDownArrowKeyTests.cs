@@ -1,5 +1,5 @@
 using apb97.github.io.WebSudoku.Services.KeyDownHandling;
-using FluentAssertions;
+using Shouldly;
 
 namespace apb97.github.io.WebSudoku.Tests.Services.KeyDownHandling;
 
@@ -25,8 +25,7 @@ public class SudokuCellKeyDownArrowKeyTests
     public void GivenValueAndIncrementWithSumBetween1AndSudokuSize_ReturnsSumOfInputs(int number, int increment)
     {
         SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, increment)
-            .Should()
-            .Be(number + increment);
+            .ShouldBe(number + increment);
     }
 
     [Theory]
@@ -34,8 +33,7 @@ public class SudokuCellKeyDownArrowKeyTests
     public void GivenValueAndIncrementWithSumLessThan1_ReturnsSumWrappedAround(int number, int increment, int expectedValue)
     {
         SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, increment)
-            .Should()
-            .Be(expectedValue);
+            .ShouldBe(expectedValue);
     }
 
     [Theory]
@@ -43,8 +41,7 @@ public class SudokuCellKeyDownArrowKeyTests
     public void GivenValueAndIncrementWithSumAboveSudokuSize_ReturnsSumWrappedAround(int number, int increment, int expectedValue)
     {
         SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, increment)
-            .Should()
-            .Be(expectedValue);
+            .ShouldBe(expectedValue);
     }
 
     [Theory]
@@ -66,7 +63,6 @@ public class SudokuCellKeyDownArrowKeyTests
     public void GivenAnyValueAndNoIncrement_ReturnsOriginalValue(int number)
     {
         SudokuCellKeyDownArrowKey.WrapAroundBetweenEdges(number, 0)
-            .Should()
-            .Be(number);
+            .ShouldBe(number);
     }
 }

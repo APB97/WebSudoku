@@ -1,13 +1,10 @@
 ﻿@using apb97.github.io.WebSudoku.Services
 
-@inherits LocalizableComponent<LanguageSelect>
-
 @inject IJSRuntime JS
 
 <UtilitiesProvider @ref="utilitiesModule" />
 
-@if (ShouldRender())
-{
+<LocalizedComponent T="LanguageSelect" Context="Loc" @ref="localizer">
     <label for="language" class="text-white">
         @Loc["Select your locale"]:
     </label>
@@ -17,7 +14,7 @@
             <option value="@culture.Value" class="@(culture.Value == Culture ? "current" : null)">@culture.Key</option>
         }
     </InputSelect>
-}
+</LocalizedComponent>
 
 @code
 {
@@ -26,6 +23,7 @@
     public string? Culture { get => currentCulture; private set => currentCulture = value; }
 
     private IJSObjectReference? utilitiesModule;
+    private LocalizedComponent<LanguageSelect>? localizer;
 
     private readonly static IReadOnlyDictionary<string, string> supportedCultures = new Dictionary<string, string>
     {
@@ -38,16 +36,18 @@
         if (!firstRender) return;
         if (utilitiesModule is null) return;
 
-        await UpdateLocalizationAsync(await utilitiesModule.GetSettingAsync<string>("BlazorCulture"));
+        await UpdateLocalizationAsync(await utilitiesModule.GetSettingAsync<string>("BlazorCulture") ?? "en-US");
     }
 
     private async Task UpdateLocalizationAsync(string value)
     {
         if (Culture == value) return;
         Culture = value ?? "en-US";
-        await Loc.InitializeAsync(value);
-
-        await Layout.NotifyStateChanged();
+        if (localizer is not null)
+        {
+            await localizer.Loc.InitializeAsync(value);
+            await localizer.Layout.NotifyStateChanged();
+        }
 
         if (utilitiesModule is null) return;
         await utilitiesModule.SetSettingAsync("BlazorCulture", value);

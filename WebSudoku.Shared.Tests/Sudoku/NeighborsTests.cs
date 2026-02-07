@@ -1,5 +1,5 @@
 ﻿using apb97.github.io.WebSudoku.Shared.Sudoku;
-using FluentAssertions;
+using Shouldly;
 
 namespace apb97.github.io.WebSudoku.Shared.Tests.Sudoku
 {
@@ -25,8 +25,8 @@ namespace apb97.github.io.WebSudoku.Shared.Tests.Sudoku
         {
             var cells = neighbors[row, column];
 
-            cells.Count.Should().Be(Board.BoardSize + 8 + 4,
-                because: "each cell is in one column, row, and 3x3 square and some cells appear in 2 exact postions of row, column or 3x3 square.");
+            cells.Count.ShouldBe(Board.BoardSize + 8 + 4,
+                customMessage: "each cell is in one column, row, and 3x3 square and some cells appear in 2 exact postions of row, column or 3x3 square.");
         }
     }
 }

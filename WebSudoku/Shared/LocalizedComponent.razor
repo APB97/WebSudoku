@@ -1,0 +1,71 @@
+﻿@implements IReadyable
+@implements IDisposable
+@typeparam T
+@inject StringLocalizer<T> Localizer
+
+@ChildContent(this)
+
+@if (!ShouldRender())
+{
+    <div class="progress progress-bar progress-bar-animated progress-bar-striped" />
+}
+
+@code {
+    [Parameter]
+    public required RenderFragment<LocalizedComponent<T>> ChildContent { get; set; }
+
+    [CascadingParameter]
+    public required MainLayout Layout { get; set; }
+
+    public bool IsReady { get; private set; }
+
+    public bool IsLoading => !IsReady;
+
+    [Parameter]
+    public Action OnReady { get; set; } = delegate { };
+
+    [Parameter]
+    public EventCallback<string> GetAdditionalResources { get; set; }
+
+    public StringLocalizer<T> Loc => Localizer;
+
+    public string this[string key] => Localizer[key];
+
+    protected override bool ShouldRender()
+    {
+        if (!Localizer.IsReady) return false;
+        return base.ShouldRender();
+    }
+
+    protected override void OnInitialized()
+    {
+        OnReady = StateHasChanged;
+        Layout.OnStateChanging += GetResources;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetResources();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!IsReady && Localizer.IsReady)
+        {
+            IsReady = true;
+            OnReady();
+        }
+    }
+
+    public void Dispose()
+    {
+        Layout.OnStateChanging -= GetResources;
+    }
+
+    private async Task GetResources()
+    {
+        await Localizer.InitializeAsync(Layout.Culture);
+        await GetAdditionalResources.InvokeAsync(Layout.Culture);
+        StateHasChanged();
+    }
+}

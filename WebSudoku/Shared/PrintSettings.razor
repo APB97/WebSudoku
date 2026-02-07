@@ -1,9 +1,6 @@
-﻿@inherits LocalizableComponent<PrintSettings>
+﻿@inject IJSRuntime JS
 
-@inject IJSRuntime JS
-
-@if (ShouldRender())
-{
+<LocalizedComponent T="PrintSettings" Context="Loc">
     <button class="btn btn-primary"
         style="margin: 2pt;"
         @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? @Loc["Hide"] : @Loc["Show"]) @Loc["Print settings"]</button>
@@ -45,7 +42,7 @@
             }
         </style>
     }
-}
+</LocalizedComponent>
 
 @code {
     private bool showPrintSettings;

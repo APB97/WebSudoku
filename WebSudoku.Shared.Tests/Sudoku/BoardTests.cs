@@ -1,6 +1,6 @@
 ﻿using apb97.github.io.WebSudoku.Shared.General;
 using apb97.github.io.WebSudoku.Shared.Sudoku;
-using FluentAssertions;
+using Shouldly;
 
 namespace apb97.github.io.WebSudoku.Shared.Tests.Sudoku;
 
@@ -29,8 +29,8 @@ public class BoardTests
         Board board = new(countingSolver, new DefaultOptionOrder<int>(), blanker, targetAmount, 1);
 
         board.EmptyCells
-            .Should()
-            .HaveCount(targetAmount);
+            .Count
+            .ShouldBe(targetAmount);
     }
 
     [Theory]
@@ -42,11 +42,10 @@ public class BoardTests
         Board board = new(countingSolver, new DefaultOptionOrder<int>(), blanker, targetAmount, 1);
 
         board.EmptyCells
-            .Should()
-            .HaveCountLessThanOrEqualTo(targetAmount);
+            .Count
+            .ShouldBeLessThanOrEqualTo(targetAmount);
         board.EmptyCells
-            .Should()
-            .NotBeEmpty();
+            .ShouldNotBeEmpty();
     }
 
     [Fact]
@@ -79,12 +78,10 @@ public class BoardTests
         board.ClearCell((row, column));
 
         board.GetValueAt((row, column))
-            .Should()
-            .Be(0);
+            .ShouldBe(0);
 
         board.EmptyCells
-            .Should()
-            .Contain((row, column));
+            .ShouldContain((row, column));
     }
 
     [Theory]
@@ -107,8 +104,7 @@ public class BoardTests
         var board = new Board();
 
         board.GetInvalidCells(validator)
-            .Should()
-            .BeEmpty();
+            .ShouldBeEmpty();
     }
 
     [Fact]
@@ -117,8 +113,7 @@ public class BoardTests
         var board = new Board(countingSolver, new DefaultOptionOrder<int>());
 
         board.GetInvalidCells(validator)
-            .Should()
-            .BeEmpty();
+            .ShouldBeEmpty();
     }
 
     [Fact]
@@ -127,8 +122,7 @@ public class BoardTests
         var board = new Board(countingSolver, new DefaultOptionOrder<int>(), blanker, 21, 1);
 
         board.GetInvalidCells(validator)
-            .Should()
-            .BeEmpty();
+            .ShouldBeEmpty();
     }
 
     [Theory]
@@ -140,18 +134,18 @@ public class BoardTests
         board.FillCell((row1,  column1), value);
         board.FillCell((row2,  column2), value);
 
-        board.GetInvalidCells(validator)
-            .Should()
-            .Contain((row1, column1))
-            .And
-            .Contain((row2, column2))
-            .And
-            .HaveCount(2);
+        var invalidCells = board.GetInvalidCells(validator);
+        invalidCells
+            .ShouldContain((row1, column1));
+        invalidCells
+            .ShouldContain((row2, column2));
+        invalidCells.Count
+            .ShouldBe(2);
     }
 
     [Theory]
     [InlineData(7)]
-    public void GetInvalidCells_GivenBlanckedBoard_WithConflictinFilledCells_ReturnsTheirPositions(int value)
+    public void GetInvalidCells_GivenBlankedBoard_WithConflictinFilledCells_ReturnsTheirPositions(int value)
     {
         var board = new Board(countingSolver, new DefaultOptionOrder<int>(), blanker, 21, 1);
 
@@ -161,12 +155,13 @@ public class BoardTests
             board.FillCell(emptyCell, value);
         }
 
-        board.GetInvalidCells(validator)
-            .Should()
-            .HaveCountGreaterThan(1)
-            .And
-            .HaveCountLessThanOrEqualTo(4)
-            .And
-            .AllSatisfy(p => emptyCells.Contains(p));
+        var invalidCells = board.GetInvalidCells(validator);
+        invalidCells
+            .Count
+            .ShouldBeGreaterThan(1);
+        invalidCells.Count
+            .ShouldBeLessThanOrEqualTo(4);
+        invalidCells
+            .ShouldAllBe(p => emptyCells.Contains(p));
     }
 }

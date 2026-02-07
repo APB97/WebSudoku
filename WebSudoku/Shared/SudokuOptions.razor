@@ -1,26 +1,27 @@
 ﻿@using apb97.github.io.WebSudoku.Shared.Serialization
 @using apb97.github.io.WebSudoku.Shared.Sudoku
-@inherits LocalizableComponent<SudokuOptions>
 @implements IAsyncDisposable
 
 @inject IJSRuntime JS
 
-<div class="div-options d-print-none">
-    <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
-    <button class="btn btn-primary" @onclick="SaveToFile">@Loc["Save to file"]</button>
-    <button class="btn btn-primary" @onclick="Load"
-            title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
-            disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">
-        @Loc["Load"]
-    </button>
-    <button class="btn btn-primary" onclick="document.querySelector('#load-file-input')?.click()">@Loc["Load from file"]</button>
-    <InputFile OnChange="LoadFromFile" id="load-file-input" accept=".json" class="d-none" hidden />
-    <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
-    <PrintSettings />
+<LocalizedComponent T="SudokuOptions" Context="Loc" @ref="localizer">
+    <div class="div-options d-print-none">
+        <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
+        <button class="btn btn-primary" @onclick="SaveToFile">@Loc["Save to file"]</button>
+        <button class="btn btn-primary" @onclick="Load"
+                title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
+                disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">
+            @Loc["Load"]
+        </button>
+        <button class="btn btn-primary" onclick="document.querySelector('#load-file-input')?.click()">@Loc["Load from file"]</button>
+        <InputFile OnChange="LoadFromFile" id="load-file-input" accept=".json" class="d-none" hidden />
+        <button class="btn btn-purple" onclick="print()">@Loc["Print"]</button>
+        <PrintSettings />
 
-    <span class="alert alert-info position-sticky sticky-bottom-portrait @(string.IsNullOrEmpty(StatusMessage) ? "d-none" : null)"
-          role="status">@StatusMessage</span>
-</div>
+        <span class="alert alert-info position-sticky sticky-bottom-portrait @(string.IsNullOrEmpty(StatusMessage) ? "d-none" : null)"
+              role="status">@StatusMessage</span>
+    </div>
+</LocalizedComponent>
 @code {
     [Parameter]
     public required SudokuBoard? SudokuBoard { get; set; }
@@ -37,6 +38,7 @@
     private CancellationTokenSource cts = new();
 
     private IJSObjectReference? utilitiesModule;
+    private LocalizedComponent<SudokuOptions>? localizer;
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,7 +76,12 @@
     private Task SetStatusMessage(string messageKey)
     {
         CancelMessageClear();
-        StatusMessage = Loc[messageKey];
+        if (localizer is null)
+        {
+            return Task.CompletedTask;
+        }
+
+        StatusMessage = localizer[messageKey];
         StateHasChanged();
         return Task.Delay(TimeSpan.FromSeconds(4), cts.Token).ContinueWith(t =>
         {
