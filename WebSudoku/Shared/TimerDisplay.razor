@@ -1,6 +1,6 @@
 ﻿<LocalizedComponent T="TimerDisplay" Context="Loc">
-    <span class="d-print-none">@Loc["Your time"]: </span>
-    <span class="d-print-none">@SpanToShow</span>
+    <span hidden="@Loc.IsLoading" class="d-print-none">@Loc["Your time"]: </span>
+    <span hidden="@Loc.IsLoading" class="d-print-none">@SpanToShow</span>
 </LocalizedComponent>
 
 @code {

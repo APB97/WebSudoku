@@ -17,7 +17,7 @@
 <LocalizedComponent T="PrintMultiple" Context="Loc">
     <PageTitle>Web Sudoku - @Loc["print multiple"]</PageTitle>
 
-    <div class="d-print-none">
+    <div class="d-print-none" hidden="@Loc.IsLoading">
         <div class="d-flex flex-wrap">
             <div class="align-content-center">
                 <label for="width">@Loc["Board width"] [%]</label>
@@ -37,7 +37,7 @@
             </div>
             <div class="align-content-center">
                 <button class="btn btn-danger" @onclick="boards.Clear">@Loc["Clear all"]</button>
-                <button disabled="@(generating ? "disabled" : null)" class="btn btn-primary" @onclick="GenerateBoards">@Loc["Add"] @boardsToGenerate @Loc["sudoku(s)"]</button>
+                <button disabled="@generating" class="btn btn-primary" @onclick="GenerateBoards">@Loc["Add"] @boardsToGenerate @Loc["sudoku(s)"]</button>
                 <button class="btn btn-secondary" onclick="print()">@Loc["Print"]</button>
             </div>
         </div>
@@ -45,13 +45,13 @@
 
     @if (generating)
     {
-        <div class="alert alert-info d-print-none position-sticky sticky-top sticky-top-portrait">
+        <div class="alert alert-info d-print-none position-sticky sticky-top sticky-top-portrait" hidden="@Loc.IsLoading">
             @Loc["Generating additional sudokus..."]
             <button class="btn btn-danger" @onclick="Cancel">@Loc["Cancel"]</button>
         </div>
     }
 
-    <div class="d-flex flex-wrap">
+    <div class="d-flex flex-wrap" hidden="@Loc.IsLoading">
         @foreach (var board in boards)
         {
             <div class="p-2" style="break-inside: avoid-page; width: @boardWidthPercentage%;">

@@ -2,24 +2,27 @@
 
 <LocalizedComponent T="PrintSettings" Context="Loc">
     <button class="btn btn-primary"
+        hidden="@Loc.IsLoading"
         style="margin: 2pt;"
         @onclick="() => showPrintSettings = !showPrintSettings">@(showPrintSettings ? @Loc["Hide"] : @Loc["Show"]) @Loc["Print settings"]</button>
 
     @if (showPrintSettings)
     {
-        <h6><b>@Loc["Print settings"]</b></h6>
+        <div hidden="@Loc.IsLoading">
+            <h6><b>@Loc["Print settings"]</b></h6>
 
-        <div class="d-flex">
-            <InputCheckbox Value="printFilledValues" ValueExpression="() => printFilledValues" ValueChanged="PrintFilledValuesChanged" />
-            <label @onclick="() => PrintFilledValuesChanged(!printFilledValues)" class="user-select-none">@Loc["Print filled values"]</label>
-        </div>
-        @if (printFilledValues)
-        {
             <div class="d-flex">
-                <InputCheckbox Value="printHighlightedErrors" ValueExpression="() => printHighlightedErrors" ValueChanged="PrintHighlightedErrorsChanged" />
-                <label @onclick="() => PrintHighlightedErrorsChanged(!printHighlightedErrors)" class="user-select-none">@Loc["Print highlighted errors"]</label>
+                <InputCheckbox Value="printFilledValues" ValueExpression="() => printFilledValues" ValueChanged="PrintFilledValuesChanged" />
+                <label @onclick="() => PrintFilledValuesChanged(!printFilledValues)" class="user-select-none">@Loc["Print filled values"]</label>
             </div>
-        }
+            @if (printFilledValues)
+            {
+                <div class="d-flex">
+                    <InputCheckbox Value="printHighlightedErrors" ValueExpression="() => printHighlightedErrors" ValueChanged="PrintHighlightedErrorsChanged" />
+                    <label @onclick="() => PrintHighlightedErrorsChanged(!printHighlightedErrors)" class="user-select-none">@Loc["Print highlighted errors"]</label>
+                </div>
+            }
+        </div>
     }
 
     @if (printHighlightedErrors && printFilledValues)

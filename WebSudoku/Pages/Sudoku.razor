@@ -24,7 +24,7 @@
         {
             Task.CompletedTask.ContinueWith(t => CreateNewBoard()).ContinueWith(t => generated = true);
         }
-        <div class="d-flex flex-direction-var">
+        <div class="d-flex flex-direction-var" hidden="@Loc.IsLoading">
             <div class="div-main">
                 <TimerDisplay @ref="timer" />
                 <SudokuBoard @ref="sudokuBoard"
@@ -69,12 +69,14 @@
 
     private RenderFragment<LocalizedComponent<Sudoku>> SudokuFinishedFragment => Loc => __builder =>
     {
-        <h1>@Loc["Success"]</h1>
-        @if (timePassed.HasValue)
-        {
-            <p>@Loc["You finished with time"] @timePassed.</p>
-        }
-        <button class="btn btn-primary" @onclick="() => success = false">@Loc["Play again"]</button>
+        <div hidden="@Loc.IsLoading">
+            <h1>@Loc["Success"]</h1>
+            @if (timePassed.HasValue)
+            {
+                <p>@Loc["You finished with time"] @timePassed.</p>
+            }
+            <button class="btn btn-primary" @onclick="() => success = false">@Loc["Play again"]</button>
+        </div>
     };
 
     protected override async Task OnInitializedAsync()

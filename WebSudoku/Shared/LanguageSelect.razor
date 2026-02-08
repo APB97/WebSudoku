@@ -5,10 +5,10 @@
 <UtilitiesProvider @ref="utilitiesModule" />
 
 <LocalizedComponent T="LanguageSelect" Context="Loc" @ref="localizer">
-    <label for="language" class="text-white">
+    <label for="language" class="text-white" hidden="@Loc.IsLoading">
         @Loc["Select your locale"]:
     </label>
-    <InputSelect id="language" style="background-color: transparent; border: none; color: white;" TValue="string" DisplayName="Language" Value="@Culture" ValueChanged="UpdateLocalizationAsync" ValueExpression="() => Culture">
+    <InputSelect id="language" hidden="@Loc.IsLoading" style="background-color: transparent; border: none; color: white;" TValue="string" DisplayName="Language" Value="@Culture" ValueChanged="UpdateLocalizationAsync" ValueExpression="() => Culture">
         @foreach (var culture in supportedCultures)
         {
             <option value="@culture.Value" class="@(culture.Value == Culture ? "current" : null)">@culture.Key</option>

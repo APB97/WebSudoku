@@ -8,7 +8,7 @@
 <LocalizedComponent T="Settings" Context="Loc">
     <PageTitle>Web Sudoku - @Loc["Settings"]</PageTitle>
 
-    <div>
+    <div hidden="@Loc.IsLoading">
         <table>
             <tbody>
                 @if (settingsProvider is not null)

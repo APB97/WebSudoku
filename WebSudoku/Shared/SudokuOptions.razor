@@ -5,12 +5,12 @@
 @inject IJSRuntime JS
 
 <LocalizedComponent T="SudokuOptions" Context="Loc" @ref="localizer">
-    <div class="div-options d-print-none">
+    <div class="div-options d-print-none" hidden="@Loc.IsLoading">
         <button class="btn btn-primary" @onclick="Save">@Loc["Save"]</button>
         <button class="btn btn-primary" @onclick="SaveToFile">@Loc["Save to file"]</button>
         <button class="btn btn-primary" @onclick="Load"
                 title="@(string.IsNullOrEmpty(lastSavedState) ? Loc["Previous save not found"] : null)"
-                disabled="@(string.IsNullOrEmpty(lastSavedState) ? "disabled" : null)">
+                disabled="@string.IsNullOrEmpty(lastSavedState)">
             @Loc["Load"]
         </button>
         <button class="btn btn-primary" onclick="document.querySelector('#load-file-input')?.click()">@Loc["Load from file"]</button>
