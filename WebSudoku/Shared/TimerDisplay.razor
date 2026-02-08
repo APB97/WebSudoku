@@ -1,16 +1,9 @@
-﻿@implements IDisposable
-@inject StringLocalizer<TimerDisplay> Loc
-
-@if (ShouldRender())
-{
+﻿<LocalizedComponent T="TimerDisplay" Context="Loc">
     <span class="d-print-none">@Loc["Your time"]: </span>
     <span class="d-print-none">@SpanToShow</span>
-}
+</LocalizedComponent>
 
 @code {
-    [CascadingParameter]
-    public required MainLayout Layout { get; set; }
-
     [Parameter]
     public EventCallback<TimeSpan> OnTimePassed { get; set; }
 
@@ -18,16 +11,8 @@
 
     protected PeriodicTimer? timer;
 
-    protected override bool ShouldRender()
-    {
-        return Loc.IsReady;
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        Layout.OnStateChanging += LoadResourcesAsync;
-        await Loc.InitializeAsync(Layout.Culture);
-        StateHasChanged();
         using (timer = new PeriodicTimer(TimeSpan.FromSeconds(1)))
         {
             await TimerLoop();
@@ -49,16 +34,5 @@
     {
         SpanToShow = time;
         StateHasChanged();
-    }
-
-    private async Task LoadResourcesAsync()
-    {
-        await Loc.InitializeAsync(Layout.Culture);
-        StateHasChanged();
-    }
-
-    void IDisposable.Dispose()
-    {
-        Layout.OnStateChanging -= LoadResourcesAsync;
     }
 }

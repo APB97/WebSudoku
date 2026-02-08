@@ -2,14 +2,10 @@
 @page "/rules"
 @using apb97.github.io.WebSudoku.Shared
 
-@implements IDisposable
-
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-@inject StringLocalizer<Index> Loc
 
-@if (ShouldRender())
-{
+<LocalizedComponent T="Index" Context="Loc">
     <PageTitle>Web Sudoku - @Loc["features and rules"]</PageTitle>
 
     <h1>Web Sudoku</h1>
@@ -95,32 +91,11 @@
             @Loc["You start a game with a board where some of the cells have been assigned a digit that cannot be changed."] @Loc["You should fill the board according to the rules."]
         </li>
     </ul>
-}
+</LocalizedComponent>
 
 @code {
-    [CascadingParameter]
-    public required MainLayout Layout { get; set; }
-
-    protected override bool ShouldRender()
-    {
-        return Loc.IsReady;
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        Layout.OnStateChanging += LoadResourcesAsync;
         await Navigation.NavigateToStoredDestinationIfAnyAsync(JS);
-        await Loc.InitializeAsync(Layout.Culture);
-    }
-
-    private async Task LoadResourcesAsync()
-    {
-        await Loc.InitializeAsync(Layout.Culture);
-        StateHasChanged();
-    }
-
-    void IDisposable.Dispose()
-    {
-        Layout.OnStateChanging -= LoadResourcesAsync;
     }
 }

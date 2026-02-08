@@ -1,81 +1,80 @@
 ﻿@using apb97.github.io.WebSudoku.Services.Dimensions
 @using apb97.github.io.WebSudoku.Shared
 
-@implements IDisposable
-@inject StringLocalizer<NavMenu> Loc
-
-<div class="top-row ps-3 navbar navbar-dark w-100">
-    <div class="container-fluid align-items-stretch">
-        <div class="d-flex w-100-50">
-            <a class="navbar-brand align-content-center" href="https://apb97.github.io">APB97</a>
-            <div class="flex-grow-1"></div>
-            <button style="border: none; background-color: transparent; padding: 0;" @onclick="() => Layout.ToggleLayoutMode()">
-                @if (Layout.LayoutMode == "Light")
-                {
-                    <div style="width: 56px;" onclick="localStorage.setItem('LayoutMode', 'Dark')">
-                        <img style="height: 2rem; filter: invert(0.95);" src="/images/dark.svg" />
+<LocalizedComponent T="NavMenu" Context="Loc">
+    <div class="top-row ps-3 navbar navbar-dark w-100">
+        <div class="container-fluid align-items-stretch">
+            <div class="d-flex w-100-50">
+                <a class="navbar-brand align-content-center" href="https://apb97.github.io">APB97</a>
+                <div class="flex-grow-1"></div>
+                <button style="border: none; background-color: transparent; padding: 0;" @onclick="() => Layout.ToggleLayoutMode()">
+                    @if (Layout.LayoutMode == "Light")
+                    {
+                        <div style="width: 56px;" onclick="localStorage.setItem('LayoutMode', 'Dark')">
+                            <img style="height: 2rem; filter: invert(0.95);" src="/images/dark.svg" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="width: 56px;" onclick="localStorage.setItem('LayoutMode', 'Light')">
+                            <img style="height: 2rem; filter: invert(0.95);" src="/images/light.svg" />
+                        </div>
+                    }
+                </button>
+            </div>
+            <div class="d-flex w-100-50">
+                <HiddenForScreenWidth HideForWidthCondition="width => width > ScreenBreakpoints.Medium">
+                    <div class="navbar-language-select align-content-center">
+                        <LanguageSelect @ref="language" />
                     </div>
-                }
-                else
-                {
-                    <div style="width: 56px;" onclick="localStorage.setItem('LayoutMode', 'Light')">
-                        <img style="height: 2rem; filter: invert(0.95);" src="/images/light.svg" />
-                    </div>
-                }
-            </button>
-        </div>
-        <div class="d-flex w-100-50">
-            <HiddenForScreenWidth HideForWidthCondition="width => width > ScreenBreakpoints.Medium">
-                <div class="navbar-language-select align-content-center">
-                    <LanguageSelect @ref="language" />
-                </div>
-            </HiddenForScreenWidth>
-            <div class="flex-grow-1"></div>
-            <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                </HiddenForScreenWidth>
+                <div class="flex-grow-1"></div>
+                <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<div style="overflow-y: auto;" class="@NavMenuCssClass d-flex flex-grow-1" @onclick="CollapseNavMenu">
-    <nav class="d-flex flex-column flex-grow-1">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="rules" Match="NavLinkMatch.All">
-                @Loc["Sudoku Rules"]
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="sudoku">
-                @Loc["Sudoku"]
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="printMultiple">
-                @Loc["Print Multiple"]
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="settings">
-                @Loc["Settings"]
-            </NavLink>
-        </div>
-
-        <div class="flex-grow-1" />
-
-        <div class="nav-item px-3">
-            <a class="text-decoration-underline nav-link" href="https://github.com/APB97/WebSudoku" target="_blank">@Loc["Code"]</a>
-        </div>
-
-        <HiddenForScreenWidth HideForWidthCondition="width => width <= ScreenBreakpoints.Medium">
+    <div style="overflow-y: auto;" class="@NavMenuCssClass d-flex flex-grow-1" @onclick="CollapseNavMenu">
+        <nav class="d-flex flex-column flex-grow-1">
             <div class="nav-item px-3">
-                <div class="nav-link">
-                    <LanguageSelect @ref="language" />
-                </div>
+                <NavLink class="nav-link" href="rules" Match="NavLinkMatch.All">
+                    @Loc["Sudoku Rules"]
+                </NavLink>
             </div>
-        </HiddenForScreenWidth>
-    </nav>
-</div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="sudoku">
+                    @Loc["Sudoku"]
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="printMultiple">
+                    @Loc["Print Multiple"]
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="settings">
+                    @Loc["Settings"]
+                </NavLink>
+            </div>
+
+            <div class="flex-grow-1" />
+
+            <div class="nav-item px-3">
+                <a class="text-decoration-underline nav-link" href="https://github.com/APB97/WebSudoku" target="_blank">@Loc["Code"]</a>
+            </div>
+
+            <HiddenForScreenWidth HideForWidthCondition="width => width <= ScreenBreakpoints.Medium">
+                <div class="nav-item px-3">
+                    <div class="nav-link">
+                        <LanguageSelect @ref="language" />
+                    </div>
+                </div>
+            </HiddenForScreenWidth>
+        </nav>
+    </div>
+</LocalizedComponent>
 
 @code {
     [CascadingParameter]
@@ -89,17 +88,6 @@
 
     public string? Culture => language?.Culture;
 
-    protected override bool ShouldRender()
-    {
-        return Loc.IsReady;
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        Layout.OnStateChanging += LoadResourcesAsync;
-        await Loc.InitializeAsync(Culture);
-    }
-
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
@@ -109,16 +97,5 @@
     {
         collapseNavMenu = true;
         StateHasChanged();
-    }
-
-    private async Task LoadResourcesAsync()
-    {
-        await Loc.InitializeAsync(Culture);
-        StateHasChanged();
-    }
-
-    void IDisposable.Dispose()
-    {
-        Layout.OnStateChanging -= LoadResourcesAsync;
     }
 }

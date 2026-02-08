@@ -11,12 +11,10 @@
 @inject Blanker Blanker
 @inject Validator Validator
 @inject IJSRuntime JS
-@inject StringLocalizer<PrintMultiple> Loc
 
 <SettingsProvider @ref="settingsProvider" />
 
-@if (ShouldRender())
-{
+<LocalizedComponent T="PrintMultiple" Context="Loc">
     <PageTitle>Web Sudoku - @Loc["print multiple"]</PageTitle>
 
     <div class="d-print-none">
@@ -82,7 +80,7 @@
             </div>
         }
     </div>
-}
+</LocalizedComponent>
 
 @code {
     [CascadingParameter]
@@ -123,15 +121,8 @@
         return string.Format(FormatSetting, PageName, settingName);
     }
 
-    protected override bool ShouldRender()
-    {
-        return Loc.IsReady;
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        Layout.OnStateChanging += LoadResourcesAsync;
-        await Loc.InitializeAsync(Layout.Culture);
         utilities = await JS.ImportAsync(JSModules.UtilitiesModule);
         if (utilities is null) return;
 
@@ -247,15 +238,8 @@
         }
     }
 
-    private async Task LoadResourcesAsync()
-    {
-        await Loc.InitializeAsync(Layout.Culture);
-        StateHasChanged();
-    }
-
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        Layout.OnStateChanging -= LoadResourcesAsync;
         cts.Dispose();
         if (settingsProvider is not null)
             settingsProvider.AfterSettingsLoaded -= OnAfterSettingsLoaded;

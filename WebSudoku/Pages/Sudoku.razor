@@ -10,16 +10,14 @@
 @inject Blanker Blanker
 @inject Validator SudokuValidator
 @inject IJSRuntime JS
-@inject StringLocalizer<Sudoku> Loc
 
 @implements IAsyncDisposable
 
 <SettingsProvider @ref="settingsProvider" />
 
-<PageTitle>Web Sudoku - sudoku</PageTitle>
+<LocalizedComponent T="Sudoku" Context="Loc">
+    <PageTitle>Web Sudoku - sudoku</PageTitle>
 
-@if (ShouldRender())
-{
     @if (!success)
     {
         if (!generated)
@@ -41,9 +39,9 @@
     }
     else
     {
-        @SudokuFinishedFragment
+        @SudokuFinishedFragment(Loc)
     }
-}
+</LocalizedComponent>
 
 @code {
     [CascadingParameter]
@@ -69,7 +67,7 @@
 
     private SettingsProvider? settingsProvider;
 
-    private RenderFragment SudokuFinishedFragment => __builder =>
+    private RenderFragment<LocalizedComponent<Sudoku>> SudokuFinishedFragment => Loc => __builder =>
     {
         <h1>@Loc["Success"]</h1>
         @if (timePassed.HasValue)
@@ -79,15 +77,8 @@
         <button class="btn btn-primary" @onclick="() => success = false">@Loc["Play again"]</button>
     };
 
-    protected override bool ShouldRender()
-    {
-        return Loc.IsReady;
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        Layout.OnStateChanging += LoadResourcesAsync;
-        await Loc.InitializeAsync(Layout.Culture);
         module = await JS.ImportAsync("./Pages/Sudoku.razor.js");
         if (module is not null)
         {
@@ -142,15 +133,8 @@
         StateHasChanged();
     }
 
-    private async Task LoadResourcesAsync()
-    {
-        await Loc.InitializeAsync(Layout.Culture);
-        StateHasChanged();
-    }
-
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        Layout.OnStateChanging -= LoadResourcesAsync;
         if (settingsProvider is not null)
             settingsProvider.AfterSettingsLoaded -= OnAfterSettingsLoaded;
         if (module is null) return;
