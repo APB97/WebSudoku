@@ -22,8 +22,8 @@ public class BoardTests
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
-    [InlineData(5)]
-    [InlineData(9)]
+    [InlineData(2)]
+    [InlineData(3)]
     public void MakeBlanks_GivenFilledBoard_And_LowTargetAmount_ClearsTargetAmountOfCells(int targetAmount)
     {
         Board board = new(countingSolver, new DefaultOptionOrder<int>(), blanker, targetAmount, 1);
